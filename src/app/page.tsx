@@ -174,7 +174,7 @@ export default function HomePage() {
 
     return (
         <main className="min-h-screen bg-gradient-to-b from-cyan-50 to-white">
-            {/* ===== STICKY TOP: Header + SearchBar ===== */}
+            {/* ===== STICKY HEADER ===== */}
             <div className="sticky top-0 z-[100]">
                 {/* Header */}
                 <header className="relative z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
@@ -314,89 +314,93 @@ export default function HomePage() {
                         </div>
                     </div>
                 </header>
+            </div>
 
-                {/* Search Bar - Sticky */}
-                <div className="relative z-40 bg-gradient-to-b from-cyan-50/95 to-cyan-50/80 backdrop-blur-md py-4 px-4 border-b border-cyan-100/50">
-                    <div className="max-w-4xl mx-auto">
-                        <SearchBar onSearch={handleSearch} />
-                    </div>
+            {/* Search Bar - Sticky on Desktop only */}
+            <div className="md:sticky md:top-16 z-40 bg-gradient-to-b from-cyan-50/95 md:to-cyan-50/80 backdrop-blur-md py-4 px-4 border-b border-cyan-100/50">
+                <div className="max-w-4xl mx-auto">
+                    <SearchBar onSearch={handleSearch} />
                 </div>
             </div>
 
             {/* ===== HERO TEXT (only when no search) ===== */}
-            {!hasSearched && (
-                <section className="relative py-12 px-4 text-center overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-blue-500/10"></div>
-                    <div className="relative z-10 max-w-4xl mx-auto">
-                        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3">
-                            {activeTab === 'villa' ? '🏠 Biệt Thự Sang Trọng'
-                                : activeTab === 'homestay' ? '🏡 Homestay Ấm Cúng'
-                                    : '🏖️ Villa & Homestay Vũng Tàu'}
-                        </h2>
-                        <p className="text-lg text-gray-600 mb-6">
-                            Trải nghiệm kỳ nghỉ đẳng cấp với hồ bơi riêng, view biển tuyệt đẹp
-                        </p>
-                        <div className="flex justify-center gap-4 flex-wrap">
-                            <div className="bg-white px-5 py-2.5 rounded-full shadow-md">
-                                <span className="text-xl font-bold text-blue-600">{allProperties.length}</span>
-                                <span className="text-gray-500 ml-2 text-sm">căn cho thuê</span>
-                            </div>
-                            <div className="bg-white px-5 py-2.5 rounded-full shadow-md">
-                                <span className="text-xl font-bold text-green-600">24/7</span>
-                                <span className="text-gray-500 ml-2 text-sm">hỗ trợ</span>
+            {
+                !hasSearched && (
+                    <section className="relative py-12 px-4 text-center overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-blue-500/10"></div>
+                        <div className="relative z-10 max-w-4xl mx-auto">
+                            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3">
+                                {activeTab === 'villa' ? '🏠 Biệt Thự Sang Trọng'
+                                    : activeTab === 'homestay' ? '🏡 Homestay Ấm Cúng'
+                                        : '🏖️ Villa & Homestay Vũng Tàu'}
+                            </h2>
+                            <p className="text-lg text-gray-600 mb-6">
+                                Trải nghiệm kỳ nghỉ đẳng cấp với hồ bơi riêng, view biển tuyệt đẹp
+                            </p>
+                            <div className="flex justify-center gap-4 flex-wrap">
+                                <div className="bg-white px-5 py-2.5 rounded-full shadow-md">
+                                    <span className="text-xl font-bold text-blue-600">{allProperties.length}</span>
+                                    <span className="text-gray-500 ml-2 text-sm">căn cho thuê</span>
+                                </div>
+                                <div className="bg-white px-5 py-2.5 rounded-full shadow-md">
+                                    <span className="text-xl font-bold text-green-600">24/7</span>
+                                    <span className="text-gray-500 ml-2 text-sm">hỗ trợ</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </section>
-            )}
+                    </section>
+                )
+            }
 
             {/* ===== ACTIVE FILTERS BAR ===== */}
-            {hasActiveFilters && (
-                <div ref={resultsRef} className="max-w-7xl mx-auto px-4 pt-6">
-                    <div className="flex items-center gap-3 flex-wrap">
-                        <div className="flex items-center gap-2 text-sm text-gray-500">
-                            <SlidersHorizontal size={16} />
-                            <span className="font-semibold">Đang lọc:</span>
+            {
+                hasActiveFilters && (
+                    <div ref={resultsRef} className="max-w-7xl mx-auto px-4 pt-6">
+                        <div className="flex items-center gap-3 flex-wrap">
+                            <div className="flex items-center gap-2 text-sm text-gray-500">
+                                <SlidersHorizontal size={16} />
+                                <span className="font-semibold">Đang lọc:</span>
+                            </div>
+
+                            {filters.location && (
+                                <span className="inline-flex items-center gap-1.5 bg-cyan-100 text-cyan-700 px-3 py-1.5 rounded-full text-sm font-semibold">
+                                    📍 {filters.location}
+                                    <button onClick={() => setFilters(f => ({ ...f, location: "" }))} className="hover:text-cyan-900">
+                                        <X size={14} />
+                                    </button>
+                                </span>
+                            )}
+
+                            {filters.checkIn && (
+                                <span className="inline-flex items-center gap-1.5 bg-blue-100 text-blue-700 px-3 py-1.5 rounded-full text-sm font-semibold">
+                                    📅 {new Date(filters.checkIn).toLocaleDateString("vi-VN")}
+                                    {filters.checkOut && ` → ${new Date(filters.checkOut).toLocaleDateString("vi-VN")}`}
+                                    <button onClick={() => setFilters(f => ({ ...f, checkIn: "", checkOut: "" }))} className="hover:text-blue-900">
+                                        <X size={14} />
+                                    </button>
+                                </span>
+                            )}
+
+                            {filters.guests > 1 && (
+                                <span className="inline-flex items-center gap-1.5 bg-green-100 text-green-700 px-3 py-1.5 rounded-full text-sm font-semibold">
+                                    👥 {filters.guests} khách
+                                    <button onClick={() => setFilters(f => ({ ...f, guests: 1 }))} className="hover:text-green-900">
+                                        <X size={14} />
+                                    </button>
+                                </span>
+                            )}
+
+                            <button onClick={clearFilters} className="text-sm text-gray-500 hover:text-red-500 font-semibold underline transition-colors">
+                                Xóa tất cả
+                            </button>
+
+                            <span className="ml-auto text-sm text-gray-500">
+                                <strong className="text-gray-900">{filteredProperties.length}</strong> kết quả
+                            </span>
                         </div>
-
-                        {filters.location && (
-                            <span className="inline-flex items-center gap-1.5 bg-cyan-100 text-cyan-700 px-3 py-1.5 rounded-full text-sm font-semibold">
-                                📍 {filters.location}
-                                <button onClick={() => setFilters(f => ({ ...f, location: "" }))} className="hover:text-cyan-900">
-                                    <X size={14} />
-                                </button>
-                            </span>
-                        )}
-
-                        {filters.checkIn && (
-                            <span className="inline-flex items-center gap-1.5 bg-blue-100 text-blue-700 px-3 py-1.5 rounded-full text-sm font-semibold">
-                                📅 {new Date(filters.checkIn).toLocaleDateString("vi-VN")}
-                                {filters.checkOut && ` → ${new Date(filters.checkOut).toLocaleDateString("vi-VN")}`}
-                                <button onClick={() => setFilters(f => ({ ...f, checkIn: "", checkOut: "" }))} className="hover:text-blue-900">
-                                    <X size={14} />
-                                </button>
-                            </span>
-                        )}
-
-                        {filters.guests > 1 && (
-                            <span className="inline-flex items-center gap-1.5 bg-green-100 text-green-700 px-3 py-1.5 rounded-full text-sm font-semibold">
-                                👥 {filters.guests} khách
-                                <button onClick={() => setFilters(f => ({ ...f, guests: 1 }))} className="hover:text-green-900">
-                                    <X size={14} />
-                                </button>
-                            </span>
-                        )}
-
-                        <button onClick={clearFilters} className="text-sm text-gray-500 hover:text-red-500 font-semibold underline transition-colors">
-                            Xóa tất cả
-                        </button>
-
-                        <span className="ml-auto text-sm text-gray-500">
-                            <strong className="text-gray-900">{filteredProperties.length}</strong> kết quả
-                        </span>
                     </div>
-                </div>
-            )}
+                )
+            }
 
             {/* ===== PROPERTIES GRID ===== */}
             <section className={`max-w-7xl mx-auto px-4 ${hasActiveFilters ? 'py-6' : 'py-12'}`}>
@@ -466,6 +470,6 @@ export default function HomePage() {
                     </div>
                 </div>
             </footer>
-        </main>
+        </main >
     );
 }

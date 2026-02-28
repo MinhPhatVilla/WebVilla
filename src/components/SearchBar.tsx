@@ -250,7 +250,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
                 }`}>
 
                 <div
-                    className={`flex-1 px-5 py-4 cursor-pointer rounded-t-3xl md:rounded-none md:rounded-l-full transition-all ${activeField === "location" ? "bg-cyan-50" : "hover:bg-gray-50"
+                    className={`flex-1 px-4 py-3 md:px-5 md:py-4 cursor-pointer rounded-t-3xl md:rounded-none md:rounded-l-full transition-all ${activeField === "location" ? "bg-cyan-50" : "hover:bg-gray-50"
                         }`}
                     onClick={() => setActiveField(activeField === "location" ? null : "location")}
                 >
@@ -279,7 +279,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
 
                 {/* Check-in Field */}
                 <div
-                    className={`flex-1 px-5 py-4 cursor-pointer transition-all ${activeField === "checkin" ? "bg-cyan-50" : "hover:bg-gray-50"
+                    className={`flex-1 px-4 py-3 md:px-5 md:py-4 cursor-pointer transition-all ${activeField === "checkin" ? "bg-cyan-50" : "hover:bg-gray-50"
                         }`}
                     onClick={() => setActiveField(activeField === "checkin" ? null : "checkin")}
                 >
@@ -300,7 +300,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
 
                 {/* Check-out Field */}
                 <div
-                    className={`flex-1 px-5 py-4 cursor-pointer transition-all ${activeField === "checkout" ? "bg-cyan-50" : "hover:bg-gray-50"
+                    className={`flex-1 px-4 py-3 md:px-5 md:py-4 cursor-pointer transition-all ${activeField === "checkout" ? "bg-cyan-50" : "hover:bg-gray-50"
                         }`}
                     onClick={() => setActiveField(activeField === "checkout" ? null : "checkout")}
                 >
@@ -321,7 +321,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
 
                 {/* Guests Field */}
                 <div
-                    className={`flex-1 px-5 py-4 cursor-pointer transition-all ${activeField === "guests" ? "bg-cyan-50" : "hover:bg-gray-50"
+                    className={`flex-1 px-4 py-3 md:px-5 md:py-4 cursor-pointer transition-all ${activeField === "guests" ? "bg-cyan-50" : "hover:bg-gray-50"
                         }`}
                     onClick={() => setActiveField(activeField === "guests" ? null : "guests")}
                 >
@@ -337,10 +337,10 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
                 </div>
 
                 {/* Search Button */}
-                <div className="p-3 md:pr-2 md:p-0">
+                <div className="p-2 md:pr-2 md:p-0">
                     <button
                         onClick={handleSearch}
-                        className="w-full md:w-auto flex justify-center items-center gap-2 bg-gradient-to-r from-rose-500 to-pink-600 text-white p-4 rounded-full hover:from-rose-600 hover:to-pink-700 transition-all shadow-lg hover:shadow-xl active:scale-95"
+                        className="w-full md:w-auto flex justify-center items-center gap-2 bg-gradient-to-r from-rose-500 to-pink-600 text-white p-3 md:p-4 rounded-full hover:from-rose-600 hover:to-pink-700 transition-all shadow-lg hover:shadow-xl active:scale-95"
                     >
                         <Search size={20} />
                         <span className="md:hidden font-bold">Tìm kiếm</span>
