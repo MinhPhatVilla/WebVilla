@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mockup — Trang Thanh Toán</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #f8fafb;
+            color: #1a1a2e;
+        }
+
+        /* Banner */
+        .banner {
+            background: linear-gradient(135deg, #f43f5e, #ec4899);
+            color: white;
+            text-align: center;
+            padding: 40px 24px;
+        }
+
+        .banner h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .banner p {
+            font-size: 15px;
+            opacity: 0.85;
+        }
+
+        .banner .tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #e8ecf0;
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header a {
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header .lock {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #16a34a;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Steps */
+        .steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            padding: 32px 24px 0;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .step-num {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .step-num.active {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            color: white;
+            box-shadow: 0 4px 16px rgba(6, 182, 212, 0.3);
+            transform: scale(1.1);
+        }
+
+        .step-num.done {
+            background: #22c55e;
+            color: white;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
+        }
+
+        .step-num.pending {
+            background: #e5e7eb;
+            color: #9ca3af;
+        }
+
+        .step label {
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+
+        .step label.active-l {
+            color: #111;
+        }
+
+        .step label.pending-l {
+            color: #9ca3af;
+        }
+
+        .step-line {
+            width: 80px;
+            height: 4px;
+            border-radius: 4px;
+            margin: 0 8px;
+            margin-bottom: 18px;
+        }
+
+        .step-line.done {
+            background: #4ade80;
+        }
+
+        .step-line.pending {
+            background: #e5e7eb;
+        }
+
+        /* Layout */
+        .grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 28px;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            border: 1px solid #f0f0f0;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        /* Property Summary */
+        .prop-summary {
+            display: flex;
+            gap: 16px;
+        }
+
+        .prop-img {
+            width: 100px;
+            height: 72px;
+            border-radius: 16px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #ddd;
+        }
+
+        .prop-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .prop-badge {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 50px;
+            font-size: 10px;
+            font-weight: 700;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .prop-name {
+            font-weight: 700;
+            font-size: 15px;
+            color: #111;
+            margin-top: 4px;
+        }
+
+        .prop-loc {
+            font-size: 12px;
+            color: #999;
+            margin-top: 2px;
+        }
+
+        .prop-stats {
+            display: flex;
+            gap: 16px;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid #f0f0f0;
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* Form Fields */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-group label span.req {
+            color: #ef4444;
+        }
+
+        .form-group label span.opt {
+            color: #999;
+            font-weight: 400;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 16px;
+            border: 2px solid #e5e7eb;
+            background: #fafafa;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #06b6d4;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.1);
+        }
+
+        .form-input.error {
+            border-color: #fca5a5;
+        }
+
+        .error-msg {
+            font-size: 12px;
+            color: #ef4444;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        textarea.form-input {
+            resize: none;
+            min-height: 80px;
+        }
+
+        /* Checkbox */
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            border-radius: 16px;
+            cursor: pointer;
+            border: 2px solid #06b6d4;
+            background: #ecfeff;
+        }
+
+        .checkbox-label input {
+            margin-top: 2px;
+            width: 18px;
+            height: 18px;
+            accent-color: #06b6d4;
+        }
+
+        .checkbox-label p {
+            font-size: 13px;
+            font-weight: 600;
+            color: #111;
+        }
+
+        .checkbox-label p small {
+            display: block;
+            font-weight: 400;
+            color: #777;
+            margin-top: 2px;
+            font-size: 12px;
+        }
+
+        /* Payment Methods */
+        .pay-option {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px solid #e5e7eb;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pay-option:hover {
+            border-color: #ccc;
+            background: #fafafa;
+        }
+
+        .pay-option.selected-vnpay {
+            border-color: #06b6d4;
+            background: linear-gradient(135deg, #f0fdfa, #eff6ff);
+        }
+
+        .pay-option.selected-bank {
+            border-color: #22c55e;
+            background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+        }
+
+        .pay-option.selected-cash {
+            border-color: #f59e0b;
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+        }
+
+        .pay-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .pay-icon.vnpay {
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+        }
+
+        .pay-icon.bank {
+            background: linear-gradient(135deg, #22c55e, #10b981);
+        }
+
+        .pay-icon.cash {
+            background: linear-gradient(135deg, #f59e0b, #ea580c);
+        }
+
+        .pay-name {
+            font-weight: 700;
+            font-size: 14px;
+            color: #111;
+        }
+
+        .pay-desc {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .pay-badge {
+            background: #06b6d4;
+            color: white;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 50px;
+            font-weight: 700;
+            margin-left: auto;
+        }
+
+        /* Bank Details */
+        .bank-box {
+            background: #f0fdf4;
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid #bbf7d0;
+            margin-top: 16px;
+        }
+
+        .bank-box h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #166534;
+            margin-bottom: 14px;
+        }
+
+        .bank-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: 12px 16px;
+            border-radius: 14px;
+            margin-bottom: 8px;
+        }
+
+        .bank-row .label {
+            font-size: 11px;
+            color: #999;
+        }
+
+        .bank-row .val {
+            font-size: 13px;
+            font-weight: 700;
+            color: #111;
+        }
+
+        .bank-row .copy-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: #dcfce7;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        /* CTA */
+        .cta {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #f43f5e, #ec4899);
+            color: white;
+            font-family: inherit;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(244, 63, 94, 0.3);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(244, 63, 94, 0.4);
+        }
+
+        /* Security */
+        .security {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            font-size: 12px;
+            color: #bbb;
+            margin-top: 16px;
+        }
+
+        /* RIGHT SIDEBAR */
+        .sidebar {
+            position: sticky;
+            top: 76px;
+        }
+
+        .dates-timeline {
+            position: relative;
+        }
+
+        .date-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .date-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .date-icon.checkin {
+            background: #ecfeff;
+        }
+
+        .date-icon.checkout {
+            background: #eff6ff;
+        }
+
+        .date-label {
+            font-size: 11px;
+            color: #999;
+            font-weight: 600;
+        }
+
+        .date-value {
+            font-size: 13px;
+            font-weight: 700;
+            color: #111;
+        }
+
+        .date-line {
+            border-left: 2px dashed #e5e7eb;
+            height: 16px;
+            margin-left: 22px;
+        }
+
+        .nights-badge {
+            background: #ecfeff;
+            color: #0e7490;
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* Price breakdown */
+        .price-line {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            padding: 4px 0;
+            color: #666;
+        }
+
+        .price-line.deposit span:last-child {
+            color: #06b6d4;
+            font-weight: 700;
+        }
+
+        .price-total {
+            display: flex;
+            justify-content: space-between;
+            border-top: 2px solid #111;
+            margin-top: 8px;
+            padding-top: 12px;
+        }
+
+        .price-total span:first-child {
+            font-weight: 700;
+            font-size: 15px;
+            color: #111;
+        }
+
+        .price-total span:last-child {
+            font-size: 22px;
+            font-weight: 800;
+            color: #111;
+        }
+
+        /* Trust */
+        .trust-card {
+            background: linear-gradient(135deg, #ecfeff, #eff6ff);
+            border-radius: 24px;
+            padding: 24px;
+            border: 1px solid #a5f3fc;
+        }
+
+        .trust-card h4 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0e7490;
+            margin-bottom: 12px;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #155e75;
+            padding: 4px 0;
+        }
+
+        .trust-item .check {
+            color: #22c55e;
+            font-weight: 700;
+        }
+
+        /* Countdown */
+        .countdown {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            border-radius: 16px;
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            margin-bottom: 20px;
+        }
+
+        .countdown-ring {
+            width: 40px;
+            height: 40px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .countdown-ring svg {
+            width: 40px;
+            height: 40px;
+            transform: rotate(-90deg);
+        }
+
+        .countdown-ring .icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+        }
+
+        .countdown h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #92400e;
+        }
+
+        .countdown p {
+            font-size: 12px;
+            color: #92400e;
+            opacity: 0.7;
+        }
+
+        /* Confirmation */
+        .confirm-card {
+            background: white;
+            border-radius: 28px;
+            padding: 40px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f0f0f0;
+            text-align: center;
+            max-width: 600px;
+            margin: 40px auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .confirm-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4ade80, #10b981);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 24px rgba(34, 197, 94, 0.3);
+            font-size: 36px;
+            color: white;
+        }
+
+        .confirm-code {
+            background: linear-gradient(135deg, #ecfeff, #eff6ff);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #a5f3fc;
+            margin: 20px 0;
+        }
+
+        .confirm-code label {
+            font-size: 10px;
+            color: #999;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .confirm-code h3 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #0e7490;
+            letter-spacing: 4px;
+            margin-top: 4px;
+        }
+
+        .next-steps {
+            text-align: left;
+            margin-top: 24px;
+        }
+
+        .next-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            margin-bottom: 8px;
+        }
+
+        .next-step.cyan {
+            background: #ecfeff;
+        }
+
+        .next-step.blue {
+            background: #eff6ff;
+        }
+
+        .next-step.green {
+            background: #f0fdf4;
+        }
+
+        .next-step .num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .next-step.cyan .num {
+            background: #06b6d4;
+        }
+
+        .next-step.blue .num {
+            background: #3b82f6;
+        }
+
+        .next-step.green .num {
+            background: #22c55e;
+        }
+
+        .next-step p {
+            font-size: 13px;
+            font-weight: 600;
+            color: #111;
+        }
+
+        .next-step p small {
+            display: block;
+            font-weight: 400;
+            color: #777;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .confirm-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .confirm-actions a {
+            flex: 1;
+            padding: 16px;
+            border-radius: 16px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-home {
+            background: #f0f0f0;
+            color: #555;
+        }
+
+        .btn-home:hover {
+            background: #e5e5e5;
+        }
+
+        .btn-zalo {
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            color: white;
+        }
+
+        .btn-zalo:hover {
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Sections */
+        .section-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin: 48px 0 16px;
+            text-align: center;
+            color: #111;
+        }
+
+        .section-desc {
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        .divider {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .divider hr {
+            border: none;
+            border-top: 2px dashed #e5e7eb;
+            margin: 20px 0;
+        }
+
+        /* Flow */
+        .flow-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px 60px;
+        }
+
+        .flow-label {
+            text-align: center;
+            font-size: 14px;
+            color: #999;
+            font-weight: 700;
+            padding: 12px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            margin: 32px 0 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BANNER -->
+    <div class="banner">
+        <h1>📐 MOCKUP — Trang Thanh Toán</h1>
+        <p>Flow: Chọn ngày → Đặt ngay → Thông tin → Thanh toán → Xác nhận</p>
+        <span class="tag">Minh Phát Villa & Homestay • 3 Bước</span>
+    </div>
+
+    <!-- ============================== -->
+    <!-- STEP 1: THÔNG TIN KHÁCH HÀNG  -->
+    <!-- ============================== -->
+    <div class="section-title">BƯỚC 1 — Thông tin khách hàng</div>
+    <div class="section-desc">Khách nhập họ tên, SĐT, email để xác nhận đặt phòng</div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-inner">
+            <a href="#">← Quay lại</a>
+            <div style="display:flex;align-items:center;gap:8px;">
+                <div
+                    style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#06b6d4,#0891b2);display:flex;align-items:center;justify-content:center;">
+                    <span style="color:white;font-size:11px;font-weight:700;">MP</span></div>
+                <span style="font-weight:700;font-size:13px;color:#111;">Thanh toán đặt phòng</span>
+            </div>
+            <div class="lock">🔒 Bảo mật SSL</div>
+        </div>
+    </div>
+
+    <!-- Steps -->
+    <div class="steps">
+        <div class="step">
+            <div class="step-num active">1</div>
+            <label class="active-l">Thông tin</label>
+        </div>
+        <div class="step-line pending"></div>
+        <div class="step">
+            <div class="step-num pending">2</div>
+            <label class="pending-l">Thanh toán</label>
+        </div>
+        <div class="step-line pending"></div>
+        <div class="step">
+            <div class="step-num pending">3</div>
+            <label class="pending-l">Xác nhận</label>
+        </div>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid">
+        <!-- LEFT -->
+        <div>
+            <!-- Property Summary -->
+            <div class="card">
+                <div class="prop-summary">
+                    <div class="prop-img"><img
+                            src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=200&auto=format&fit=crop"
+                            alt=""></div>
+                    <div>
+                        <span class="prop-badge">VILLA</span>
+                        <span style="font-size:12px;">⭐ <b>5.0</b></span>
+                        <div class="prop-name">Villa Ocean View</div>
+                        <div class="prop-loc">📍 Bãi Sau, Vũng Tàu</div>
+                    </div>
+                </div>
+                <div class="prop-stats">
+                    <span>📅 4 đêm</span>
+                    <span>👥 6 khách</span>
+                    <span>🛏️ 5 phòng ngủ</span>
+                </div>
+            </div>
+
+            <!-- Customer Info Form -->
+            <div class="card">
+                <h2>👤 Thông tin khách hàng</h2>
+
+                <div class="form-group">
+                    <label>Họ và tên <span class="req">*</span></label>
+                    <input type="text" class="form-input" placeholder="Nguyễn Văn A" value="Nguyễn Minh Tuấn">
+                </div>
+
+                <div class="form-group">
+                    <label>Số điện thoại <span class="req">*</span></label>
+                    <input type="tel" class="form-input" placeholder="0912 345 678" value="0912 345 678">
+                </div>
+
+                <div class="form-group">
+                    <label>Email <span class="opt">(tùy chọn)</span></label>
+                    <input type="email" class="form-input" placeholder="email@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label>Ghi chú cho chủ nhà <span class="opt">(tùy chọn)</span></label>
+                    <textarea class="form-input"
+                        placeholder="Ví dụ: Đến muộn lúc 18:00, cần thêm chăn gối..."></textarea>
+                </div>
+
+                <label class="checkbox-label">
+                    <input type="checkbox" checked>
+                    <div>
+                        <p>Tôi đồng ý với điều khoản và chính sách
+                            <small>Bao gồm chính sách hủy phòng, quy định nhận/trả phòng và các điều khoản sử
+                                dụng.</small>
+                        </p>
+                    </div>
+                </label>
+            </div>
+
+            <!-- CTA -->
+            <button class="cta">Tiếp tục thanh toán →</button>
+            <div class="security">
+                <span>🛡️ Thanh toán an toàn</span>
+                <span>🔒 Mã hóa SSL 256-bit</span>
+            </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="sidebar">
+            <!-- Booking Dates -->
+            <div class="card">
+                <h3>📅 Chi tiết đặt phòng</h3>
+                <div class="dates-timeline">
+                    <div class="date-item">
+                        <div class="date-icon checkin">📅</div>
+                        <div>
+                            <div class="date-label">Nhận phòng — 14:00</div>
+                            <div class="date-value">Thứ Bảy, 14/02/2026</div>
+                        </div>
+                    </div>
+                    <div class="date-line"></div>
+                    <div class="date-item">
+                        <div class="date-icon checkout">📅</div>
+                        <div>
+                            <div class="date-label">Trả phòng — 12:00</div>
+                            <div class="date-value">Thứ Tư, 18/02/2026</div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:14px;border-top:1px solid #f0f0f0;">
+                    <span style="font-size:13px;color:#888;">Thời gian lưu trú</span>
+                    <span class="nights-badge">4 đêm</span>
+                </div>
+            </div>
+
+            <!-- Price -->
+            <div class="card">
+                <h3>💰 Chi tiết giá</h3>
+                <div class="price-line"><span>4.000.000đ × 4 đêm</span><span style="font-weight:600;">16.000.000đ</span>
+                </div>
+                <div style="border-top:1px solid #f0f0f0;margin-top:8px;padding-top:8px;">
+                    <div class="price-line deposit"><span>Cọc giữ phòng (50%)</span><span>8.000.000đ</span></div>
+                    <div class="price-line"><span>Thanh toán khi đến</span><span>8.000.000đ</span></div>
+                </div>
+                <div class="price-total"><span>Tổng cộng</span><span>16.000.000đ</span></div>
+            </div>
+
+            <!-- Trust -->
+            <div class="trust-card">
+                <h4>✨ Cam kết của chúng tôi</h4>
+                <div class="trust-item"><span class="check">✓</span> Giá không thay đổi sau khi đặt</div>
+                <div class="trust-item"><span class="check">✓</span> Hủy miễn phí trước 10 ngày</div>
+                <div class="trust-item"><span class="check">✓</span> Hỗ trợ 24/7 qua Zalo</div>
+                <div class="trust-item"><span class="check">✓</span> Check-in nhanh, không chờ đợi</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================== -->
+    <!-- STEP 2: THANH TOÁN            -->
+    <!-- ============================== -->
+    <div class="divider">
+        <hr>
+    </div>
+    <div class="section-title">BƯỚC 2 — Chọn phương thức thanh toán</div>
+    <div class="section-desc">Countdown 15 phút giữ giá. 3 phương thức: VNPay, Chuyển khoản, Tiền mặt</div>
+
+    <div class="grid">
+        <div>
+            <!-- Countdown -->
+            <div class="countdown">
+                <div class="countdown-ring">
+                    <svg viewBox="0 0 36 36">
+                        <path d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                            fill="none" stroke="#fde68a" stroke-width="3" />
+                        <path d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                            fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="75, 100"
+                            stroke-linecap="round" />
+                    </svg>
+                    <span class="icon">⏱️</span>
+                </div>
+                <div>
+                    <h4>Giữ giá trong 11:24</h4>
+                    <p>Hoàn tất thanh toán để giữ đặt phòng</p>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="card">
+                <h2>💳 Phương thức thanh toán</h2>
+
+                <div class="pay-option selected-vnpay">
+                    <input type="radio" checked style="accent-color:#06b6d4;width:18px;height:18px;">
+                    <div class="pay-icon vnpay">💳</div>
+                    <div style="flex:1;">
+                        <div class="pay-name">VNPay</div>
+                        <div class="pay-desc">Quét mã QR, thẻ ATM nội địa, Visa/Mastercard</div>
+                    </div>
+                    <span class="pay-badge">Khuyên dùng</span>
+                </div>
+
+                <div class="pay-option">
+                    <input type="radio" style="width:18px;height:18px;">
+                    <div class="pay-icon bank">🏦</div>
+                    <div style="flex:1;">
+                        <div class="pay-name">Chuyển khoản ngân hàng</div>
+                        <div class="pay-desc">Chuyển khoản trực tiếp đến tài khoản chủ villa</div>
+                    </div>
+                </div>
+
+                <div class="pay-option">
+                    <input type="radio" style="width:18px;height:18px;">
+                    <div class="pay-icon cash">💵</div>
+                    <div style="flex:1;">
+                        <div class="pay-name">Tiền mặt khi nhận phòng</div>
+                        <div class="pay-desc">Thanh toán 100% khi check-in</div>
+                    </div>
+                </div>
+
+                <!-- Bank Transfer Details (shown when selected) -->
+                <div class="bank-box">
+                    <h4>🏦 Thông tin chuyển khoản (khi chọn CK)</h4>
+                    <div class="bank-row">
+                        <div>
+                            <div class="label">Ngân hàng</div>
+                            <div class="val">Vietcombank</div>
+                        </div><button class="copy-btn">📋</button>
+                    </div>
+                    <div class="bank-row">
+                        <div>
+                            <div class="label">Số tài khoản</div>
+                            <div class="val">1234567890</div>
+                        </div><button class="copy-btn">📋</button>
+                    </div>
+                    <div class="bank-row">
+                        <div>
+                            <div class="label">Chủ tài khoản</div>
+                            <div class="val">NGUYEN MINH PHAT</div>
+                        </div><button class="copy-btn">📋</button>
+                    </div>
+                    <div class="bank-row">
+                        <div>
+                            <div class="label">Số tiền cọc</div>
+                            <div class="val">8.000.000đ</div>
+                        </div><button class="copy-btn">📋</button>
+                    </div>
+                    <div class="bank-row">
+                        <div>
+                            <div class="label">Nội dung CK</div>
+                            <div class="val">MPXYZ123 NGUYEN MINH TUAN</div>
+                        </div><button class="copy-btn">📋</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Info Preview -->
+            <div class="card">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                    <h3 style="margin:0;">👤 Thông tin khách</h3>
+                    <a href="#" style="color:#06b6d4;font-size:13px;font-weight:600;text-decoration:none;">Sửa</a>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                    <div style="background:#f8fafc;border-radius:14px;padding:12px;">
+                        <div style="font-size:11px;color:#999;">Họ tên</div>
+                        <div style="font-size:13px;font-weight:700;">Nguyễn Minh Tuấn</div>
+                    </div>
+                    <div style="background:#f8fafc;border-radius:14px;padding:12px;">
+                        <div style="font-size:11px;color:#999;">Điện thoại</div>
+                        <div style="font-size:13px;font-weight:700;">0912 345 678</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="cta">🔒 Xác nhận & Thanh toán 8.000.000đ</button>
+        </div>
+        <div></div>
+    </div>
+
+    <!-- ============================== -->
+    <!-- STEP 3: XÁC NHẬN             -->
+    <!-- ============================== -->
+    <div class="divider">
+        <hr>
+    </div>
+    <div class="section-title">BƯỚC 3 — Xác nhận đặt phòng thành công</div>
+    <div class="section-desc">Màn hình hiển thị sau khi thanh toán, với mã đặt phòng và bước tiếp theo</div>
+
+    <div style="max-width:700px;margin:0 auto;padding:0 24px 60px;">
+        <!-- Steps (all done) -->
+        <div class="steps" style="padding-top:0;">
+            <div class="step">
+                <div class="step-num done">✓</div><label class="active-l">Thông tin</label>
+            </div>
+            <div class="step-line done"></div>
+            <div class="step">
+                <div class="step-num done">✓</div><label class="active-l">Thanh toán</label>
+            </div>
+            <div class="step-line done"></div>
+            <div class="step">
+                <div class="step-num active">3</div><label class="active-l">Xác nhận</label>
+            </div>
+        </div>
+
+        <div class="confirm-card">
+            <div style="position:absolute;inset:0;opacity:0.04;pointer-events:none;">
+                <span style="position:absolute;top:10px;left:20px;font-size:40px;">🎉</span>
+                <span style="position:absolute;top:30px;right:30px;font-size:32px;">✨</span>
+                <span style="position:absolute;bottom:20px;left:40px;font-size:30px;">🎊</span>
+                <span style="position:absolute;bottom:10px;right:20px;font-size:38px;">🌟</span>
+            </div>
+
+            <div class="confirm-icon">✓</div>
+            <h1 style="font-size:28px;font-weight:800;">Đặt phòng thành công! 🎉</h1>
+            <p style="color:#888;margin-top:6px;">Cảm ơn bạn đã tin tưởng Minh Phát Villa</p>
+
+            <div class="confirm-code">
+                <label>MÃ ĐẶT PHÒNG</label>
+                <h3>MP3XYZ9K</h3>
+            </div>
+
+            <!-- Summary -->
+            <div style="text-align:left;background:#f8fafc;border-radius:16px;padding:20px;margin-top:20px;">
+                <div style="display:flex;align-items:center;gap:14px;">
+                    <div
+                        style="width:72px;height:56px;border-radius:12px;overflow:hidden;flex-shrink:0;background:#ddd;">
+                        <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=150&auto=format&fit=crop"
+                            style="width:100%;height:100%;object-fit:cover;">
+                    </div>
+                    <div>
+                        <div style="font-weight:700;font-size:14px;">Villa Ocean View</div>
+                        <div style="font-size:12px;color:#888;">📍 Bãi Sau, Vũng Tàu</div>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">
+                    <div style="background:white;border-radius:12px;padding:10px;">
+                        <div style="font-size:10px;color:#999;">Nhận phòng</div>
+                        <div style="font-size:12px;font-weight:700;">T7, 14/02/2026</div>
+                    </div>
+                    <div style="background:white;border-radius:12px;padding:10px;">
+                        <div style="font-size:10px;color:#999;">Trả phòng</div>
+                        <div style="font-size:12px;font-weight:700;">T4, 18/02/2026</div>
+                    </div>
+                </div>
+                <div
+                    style="display:flex;justify-content:space-between;margin-top:14px;padding-top:14px;border-top:1px solid #e5e7eb;font-size:14px;">
+                    <span style="font-weight:700;">Tổng thanh toán</span>
+                    <span style="font-size:18px;font-weight:800;">16.000.000đ</span>
+                </div>
+            </div>
+
+            <!-- Next Steps -->
+            <div class="next-steps">
+                <h3 style="font-weight:700;margin-bottom:12px;">📋 Bước tiếp theo</h3>
+                <div class="next-step cyan">
+                    <div class="num">1</div>
+                    <p>Thanh toán cọc 8.000.000đ<small>Chuyển khoản trong vòng 15 phút</small></p>
+                </div>
+                <div class="next-step blue">
+                    <div class="num">2</div>
+                    <p>Nhận xác nhận qua Zalo<small>Chúng tôi sẽ liên hệ bạn trong 30 phút</small></p>
+                </div>
+                <div class="next-step green">
+                    <div class="num">3</div>
+                    <p>Check-in & tận hưởng<small>Nhận phòng từ 14:00, trả phòng trước 12:00</small></p>
+                </div>
+            </div>
+
+            <div class="confirm-actions">
+                <a class="btn-home" href="#">← Về trang chủ</a>
+                <a class="btn-zalo" href="#">💬 Chat Zalo</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================== -->
+    <!-- DESIGN NOTES                  -->
+    <!-- ============================== -->
+    <div style="max-width:1100px;margin:0 auto 60px;padding:0 24px;">
+        <h2 style="font-size:24px;font-weight:800;margin-bottom:20px;">📝 Ghi chú thiết kế cho nhóm</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
+            <div class="card" style="margin:0;">
+                <div
+                    style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#06b6d4,#3b82f6);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-bottom:10px;">
+                    1</div>
+                <h4 style="font-size:14px;font-weight:700;margin-bottom:4px;">3 Bước rõ ràng</h4>
+                <p style="font-size:12px;color:#777;line-height:1.6;">Step indicator ở trên cùng: Thông tin → Thanh toán
+                    → Xác nhận. Mỗi bước done = check xanh lá.</p>
+            </div>
+            <div class="card" style="margin:0;">
+                <div
+                    style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#06b6d4,#3b82f6);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-bottom:10px;">
+                    2</div>
+                <h4 style="font-size:14px;font-weight:700;margin-bottom:4px;">Countdown 15 phút</h4>
+                <p style="font-size:12px;color:#777;line-height:1.6;">Vòng tròn SVG animation đếm ngược. Dưới 5 phút
+                    chuyển màu đỏ. Tạo urgency cho khách.</p>
+            </div>
+            <div class="card" style="margin:0;">
+                <div
+                    style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#06b6d4,#3b82f6);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-bottom:10px;">
+                    3</div>
+                <h4 style="font-size:14px;font-weight:700;margin-bottom:4px;">3 Phương thức thanh toán</h4>
+                <p style="font-size:12px;color:#777;line-height:1.6;">VNPay (mặc định), chuyển khoản (hiện info tài
+                    khoản + nút copy), tiền mặt (thanh toán 100% khi đến).</p>
+            </div>
+            <div class="card" style="margin:0;">
+                <div
+                    style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#06b6d4,#3b82f6);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-bottom:10px;">
+                    4</div>
+                <h4 style="font-size:14px;font-weight:700;margin-bottom:4px;">Sidebar sticky giá</h4>
+                <p style="font-size:12px;color:#777;line-height:1.6;">Bên phải: timeline nhận/trả phòng, bảng giá, cam
+                    kết. Sticky khi cuộn. Giống trang detail.</p>
+            </div>
+            <div class="card" style="margin:0;">
+                <div
+                    style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#06b6d4,#3b82f6);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-bottom:10px;">
+                    5</div>
+                <h4 style="font-size:14px;font-weight:700;margin-bottom:4px;">Xác nhận đẹp</h4>
+                <p style="font-size:12px;color:#777;line-height:1.6;">Màn hình success: icon lớn bounce, mã đặt phòng
+                    nổi bật, tóm tắt booking, 3 bước tiếp theo, nút Zalo.</p>
+            </div>
+            <div class="card" style="margin:0;">
+                <div
+                    style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#06b6d4,#3b82f6);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-bottom:10px;">
+                    6</div>
+                <h4 style="font-size:14px;font-weight:700;margin-bottom:4px;">Trust signals</h4>
+                <p style="font-size:12px;color:#777;line-height:1.6;">🔒 SSL badge, 🛡️ cam kết giá, ✓ hủy miễn phí —
+                    tạo niềm tin cho khách. Loading animation khi xử lý.</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

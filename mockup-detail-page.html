@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minh Phát Villa - Mockup Trang Chi Tiết</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #f8fafb;
+            color: #1a1a2e;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #e8ecf0;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .header-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            color: #111;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .header-actions button {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 50px;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 13px;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .header-actions button:hover {
+            background: #f0f0f0;
+        }
+
+        /* ===== TITLE ===== */
+        .title-section {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 28px 24px 16px;
+        }
+
+        .title-badges {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .badge-type {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            color: white;
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .badge-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+        }
+
+        .badge-rating .star {
+            color: #f59e0b;
+        }
+
+        .badge-rating strong {
+            font-weight: 700;
+        }
+
+        .badge-rating span {
+            color: #999;
+        }
+
+        .title-name {
+            font-size: 36px;
+            font-weight: 800;
+            color: #111;
+            margin-bottom: 6px;
+            line-height: 1.2;
+        }
+
+        .title-location {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #888;
+            font-size: 14px;
+        }
+
+        .title-location svg {
+            color: #06b6d4;
+        }
+
+        /* ===== MAIN GRID ===== */
+        .main-grid {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px 60px;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 32px;
+        }
+
+        /* ===== GALLERY ===== */
+        .gallery-main {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            aspect-ratio: 16/9;
+            background: #e2e8f0;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .gallery-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+            font-size: 18px;
+            color: #333;
+            transition: all 0.2s;
+        }
+
+        .gallery-nav:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .gallery-nav.prev {
+            left: 16px;
+        }
+
+        .gallery-nav.next {
+            right: 16px;
+        }
+
+        .gallery-counter {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .gallery-autoplay {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 11px;
+        }
+
+        .gallery-autoplay .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4ade80;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        /* Thumbnails */
+        .thumbnails {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            overflow-x: auto;
+        }
+
+        .thumb {
+            flex-shrink: 0;
+            width: 120px;
+            height: 80px;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumb.active {
+            outline: 4px solid #06b6d4;
+            outline-offset: 3px;
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(6, 182, 212, 0.25);
+        }
+
+        .thumb:not(.active) {
+            opacity: 0.55;
+        }
+
+        .thumb:not(.active):hover {
+            opacity: 0.9;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            border: 1px solid #f0f0f0;
+            margin-top: 24px;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 16px;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px 16px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            border: 1px solid #f0f0f0;
+        }
+
+        .stat-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: #111;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #999;
+            margin-top: 2px;
+        }
+
+        /* Amenities */
+        .amenities-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .amenity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .amenity.active {
+            background: #ecfeff;
+            color: #0e7490;
+            border: 1px solid #a5f3fc;
+        }
+
+        .amenity.inactive {
+            background: #f5f5f5;
+            color: #bbb;
+            text-decoration: line-through;
+        }
+
+        .amenity-icon {
+            font-size: 18px;
+        }
+
+        /* Policies */
+        .policy-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .policy-icon {
+            color: #06b6d4;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: sticky;
+            top: 80px;
+        }
+
+        .booking-card {
+            background: white;
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f0f0f0;
+        }
+
+        .price-main {
+            font-size: 30px;
+            font-weight: 800;
+            color: #111;
+        }
+
+        .price-main span {
+            color: #999;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .price-weekend {
+            font-size: 13px;
+            color: #999;
+            margin-top: 4px;
+            margin-bottom: 20px;
+        }
+
+        .price-weekend strong {
+            color: #f97316;
+        }
+
+        /* Calendar */
+        .cal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .cal-header h4 {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .cal-nav {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cal-nav:hover {
+            background: #f0f0f0;
+        }
+
+        .cal-selecting {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .cal-selecting span {
+            background: #ecfeff;
+            color: #0e7490;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 50px;
+        }
+
+        .cal-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-bottom: 4px;
+        }
+
+        .cal-day-name {
+            text-align: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: #bbb;
+            padding: 4px;
+        }
+
+        .cal-day-name.weekend {
+            color: #f87171;
+        }
+
+        .cal-day {
+            text-align: center;
+            padding: 8px 4px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.15s;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        .cal-day.disabled {
+            color: #ddd;
+            cursor: not-allowed;
+        }
+
+        .cal-day.today {
+            background: #f0f0f0;
+            font-weight: 800;
+        }
+
+        .cal-day.check-in {
+            background: #06b6d4;
+            color: white;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.35);
+        }
+
+        .cal-day.check-out {
+            background: #3b82f6;
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+        }
+
+        .cal-day.in-range {
+            background: #ecfeff;
+            color: #0e7490;
+        }
+
+        .cal-day.weekend-day {
+            color: #ef4444;
+        }
+
+        .cal-day:hover:not(.disabled):not(.check-in):not(.check-out) {
+            background: #f0fdfa;
+        }
+
+        .cal-legend {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 12px;
+            font-size: 11px;
+            color: #999;
+        }
+
+        .cal-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .cal-legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        /* Date Summary */
+        .date-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .date-box {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 12px;
+        }
+
+        .date-box label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            color: #bbb;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .date-box .value {
+            font-size: 13px;
+            font-weight: 700;
+            color: #111;
+        }
+
+        /* Guest */
+        .guest-section {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .guest-section label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            color: #bbb;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .guest-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .guest-row span {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .guest-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .guest-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            background: white;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+
+        .guest-btn:hover {
+            border-color: #06b6d4;
+            background: #ecfeff;
+        }
+
+        .guest-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        /* Price Breakdown */
+        .price-breakdown {
+            border-top: 1px solid #f0f0f0;
+            padding-top: 16px;
+            margin-bottom: 20px;
+        }
+
+        .price-line {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            padding: 4px 0;
+            color: #666;
+        }
+
+        .price-line.deposit span:last-child {
+            color: #06b6d4;
+            font-weight: 700;
+        }
+
+        .price-line.total {
+            border-top: 1px solid #f0f0f0;
+            margin-top: 8px;
+            padding-top: 12px;
+        }
+
+        .price-line.total span:first-child {
+            font-weight: 700;
+            color: #111;
+        }
+
+        .price-line.total span:last-child {
+            font-size: 20px;
+            font-weight: 800;
+            color: #111;
+        }
+
+        /* CTA Button */
+        .cta-btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #f43f5e, #ec4899);
+            color: white;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(244, 63, 94, 0.3);
+            transition: all 0.2s;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(244, 63, 94, 0.4);
+        }
+
+        .cta-note {
+            text-align: center;
+            font-size: 12px;
+            color: #bbb;
+            margin-top: 12px;
+        }
+
+        /* Contact Card */
+        .contact-card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            border: 1px solid #f0f0f0;
+            margin-top: 16px;
+        }
+
+        .contact-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.15s;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .contact-phone {
+            background: #f0fdf4;
+            color: #166534;
+        }
+
+        .contact-phone:hover {
+            background: #dcfce7;
+        }
+
+        .contact-zalo {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .contact-zalo:hover {
+            background: #dbeafe;
+        }
+
+        /* Annotation markers */
+        .annotation {
+            position: absolute;
+            background: #f43f5e;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.4);
+        }
+
+        /* === DESIGN NOTES PANEL === */
+        .design-notes {
+            max-width: 1280px;
+            margin: 0 auto 60px;
+            padding: 0 24px;
+        }
+
+        .design-notes h2 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            color: #111;
+        }
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .note-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .note-card .num {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .note-card h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #111;
+        }
+
+        .note-card p {
+            font-size: 13px;
+            color: #777;
+            line-height: 1.6;
+        }
+
+        /* Page title banner */
+        .page-banner {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            color: white;
+            text-align: center;
+            padding: 40px 24px;
+        }
+
+        .page-banner h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .page-banner p {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        .page-banner .tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== BANNER ===== -->
+    <div class="page-banner">
+        <h1>📐 MOCKUP — Trang Chi Tiết Villa</h1>
+        <p>Bản thiết kế UI cho nhóm thảo luận & chốt trên Figma</p>
+        <span class="tag">Minh Phát Villa & Homestay • Desktop 1440px</span>
+    </div>
+
+    <!-- ===== HEADER ===== -->
+    <div class="header">
+        <div class="header-inner">
+            <a class="back-btn" href="#">
+                ← Quay lại
+            </a>
+            <div class="header-actions">
+                <button>↗️ Chia sẻ</button>
+                <button>🤍 Lưu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TITLE ===== -->
+    <div class="title-section">
+        <div class="title-badges">
+            <span class="badge-type">VILLA</span>
+            <div class="badge-rating">
+                <span class="star">⭐</span>
+                <strong>5.0</strong>
+                <span>(128 đánh giá)</span>
+            </div>
+        </div>
+        <h1 class="title-name">Villa Ocean View</h1>
+        <div class="title-location">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+            </svg>
+            123 Trần Phú, Phường 5, TP. Vũng Tàu
+        </div>
+    </div>
+
+    <!-- ===== MAIN GRID ===== -->
+    <div class="main-grid">
+        <!-- LEFT COLUMN -->
+        <div>
+            <!-- Gallery -->
+            <div class="gallery-main" style="position: relative;">
+                <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=900&auto=format&fit=crop"
+                    alt="Villa">
+                <button class="gallery-nav prev">‹</button>
+                <button class="gallery-nav next">›</button>
+                <div class="gallery-counter">1 / 6</div>
+                <div class="gallery-autoplay">
+                    <div class="dot"></div>
+                    Tự động chạy
+                </div>
+            </div>
+
+            <!-- Thumbnails -->
+            <div class="thumbnails">
+                <div class="thumb active">
+                    <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=200&auto=format&fit=crop"
+                        alt="">
+                </div>
+                <div class="thumb">
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=200&auto=format&fit=crop"
+                        alt="">
+                </div>
+                <div class="thumb">
+                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=200&auto=format&fit=crop"
+                        alt="">
+                </div>
+                <div class="thumb">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=200&auto=format&fit=crop"
+                        alt="">
+                </div>
+                <div class="thumb">
+                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=200&auto=format&fit=crop"
+                        alt="">
+                </div>
+                <div class="thumb">
+                    <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=200&auto=format&fit=crop"
+                        alt="">
+                </div>
+            </div>
+
+            <!-- Description Card -->
+            <div class="card">
+                <h2 class="card-title">📋 Giới thiệu</h2>
+                <p>
+                    Villa Ocean View tọa lạc tại vị trí đắc địa ngay Bãi Sau Vũng Tàu, mang đến tầm nhìn biển 180 độ
+                    tuyệt đẹp. Với thiết kế hiện đại kết hợp phong cách nhiệt đới, villa sở hữu hồ bơi tràn bờ riêng,
+                    khu BBQ ngoài trời, phòng khách rộng rãi và 5 phòng ngủ sang trọng. Đây là lựa chọn lý tưởng cho các
+                    buổi tiệc, họp mặt gia đình hoặc nhóm bạn.
+                </p>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <span class="stat-icon" style="color: #06b6d4;">🛏️</span>
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Phòng ngủ</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon" style="color: #3b82f6;">🚿</span>
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Phòng tắm</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon" style="color: #22c55e;">👥</span>
+                    <div class="stat-value">15</div>
+                    <div class="stat-label">Khách tối đa</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon" style="color: #f59e0b;">⭐</span>
+                    <div class="stat-value">5.0</div>
+                    <div class="stat-label">128 đánh giá</div>
+                </div>
+            </div>
+
+            <!-- Amenities -->
+            <div class="card">
+                <h2 class="card-title">🏠 Tiện nghi</h2>
+                <div class="amenities-grid">
+                    <div class="amenity active"><span class="amenity-icon">🏊</span> Hồ bơi</div>
+                    <div class="amenity active"><span class="amenity-icon">🔥</span> BBQ</div>
+                    <div class="amenity active"><span class="amenity-icon">📶</span> Wifi miễn phí</div>
+                    <div class="amenity active"><span class="amenity-icon">🅿️</span> Chỗ đậu xe</div>
+                    <div class="amenity active"><span class="amenity-icon">🍳</span> Bếp nấu ăn</div>
+                    <div class="amenity active"><span class="amenity-icon">❄️</span> Máy lạnh</div>
+                    <div class="amenity active"><span class="amenity-icon">🎤</span> Karaoke</div>
+                    <div class="amenity active"><span class="amenity-icon">🌴</span> Sân vườn</div>
+                </div>
+            </div>
+
+            <!-- Policies -->
+            <div class="card">
+                <h2 class="card-title">📜 Chính sách</h2>
+                <div class="policy-item">
+                    <span class="policy-icon">🛡️</span>
+                    Nhận phòng từ 14:00
+                </div>
+                <div class="policy-item">
+                    <span class="policy-icon">🛡️</span>
+                    Trả phòng trước 12:00
+                </div>
+                <div class="policy-item">
+                    <span class="policy-icon">🛡️</span>
+                    Không hút thuốc trong nhà
+                </div>
+                <div class="policy-item">
+                    <span class="policy-icon">🛡️</span>
+                    Cọc 50% khi đặt
+                </div>
+                <div class="policy-item">
+                    <span class="policy-icon">🛡️</span>
+                    Đổi ngày miễn phí trước 10 ngày
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: SIDEBAR -->
+        <div class="sidebar">
+            <div class="booking-card">
+                <!-- Price -->
+                <div class="price-main">4.000.000đ <span>/đêm</span></div>
+                <div class="price-weekend">Cuối tuần: <strong>6.000.000đ</strong>/đêm</div>
+
+                <!-- Calendar -->
+                <div class="cal-header">
+                    <button class="cal-nav">‹</button>
+                    <h4>Tháng 2, 2026</h4>
+                    <button class="cal-nav">›</button>
+                </div>
+                <div class="cal-selecting">
+                    <span>Chọn ngày nhận phòng</span>
+                </div>
+                <div class="cal-days">
+                    <div class="cal-day-name">T2</div>
+                    <div class="cal-day-name">T3</div>
+                    <div class="cal-day-name">T4</div>
+                    <div class="cal-day-name">T5</div>
+                    <div class="cal-day-name">T6</div>
+                    <div class="cal-day-name weekend">T7</div>
+                    <div class="cal-day-name weekend">CN</div>
+                </div>
+                <div class="cal-days">
+                    <!-- Row 1 -->
+                    <div class="cal-day"></div>
+                    <div class="cal-day"></div>
+                    <div class="cal-day"></div>
+                    <div class="cal-day"></div>
+                    <div class="cal-day"></div>
+                    <div class="cal-day"></div>
+                    <div class="cal-day weekend-day">1</div>
+                    <!-- Row 2 -->
+                    <div class="cal-day">2</div>
+                    <div class="cal-day">3</div>
+                    <div class="cal-day">4</div>
+                    <div class="cal-day">5</div>
+                    <div class="cal-day">6</div>
+                    <div class="cal-day weekend-day">7</div>
+                    <div class="cal-day weekend-day">8</div>
+                    <!-- Row 3 -->
+                    <div class="cal-day">9</div>
+                    <div class="cal-day">10</div>
+                    <div class="cal-day">11</div>
+                    <div class="cal-day">12</div>
+                    <div class="cal-day">13</div>
+                    <div class="cal-day check-in weekend-day">14</div>
+                    <div class="cal-day in-range weekend-day">15</div>
+                    <!-- Row 4 -->
+                    <div class="cal-day in-range">16</div>
+                    <div class="cal-day in-range">17</div>
+                    <div class="cal-day check-out">18</div>
+                    <div class="cal-day">19</div>
+                    <div class="cal-day">20</div>
+                    <div class="cal-day weekend-day">21</div>
+                    <div class="cal-day weekend-day">22</div>
+                    <!-- Row 5 -->
+                    <div class="cal-day">23</div>
+                    <div class="cal-day">24</div>
+                    <div class="cal-day">25</div>
+                    <div class="cal-day">26</div>
+                    <div class="cal-day">27</div>
+                    <div class="cal-day weekend-day">28</div>
+                    <div class="cal-day"></div>
+                </div>
+                <div class="cal-legend">
+                    <div class="cal-legend-item">
+                        <div class="cal-legend-dot" style="background:#06b6d4;"></div> Nhận
+                    </div>
+                    <div class="cal-legend-item">
+                        <div class="cal-legend-dot" style="background:#3b82f6;"></div> Trả
+                    </div>
+                    <div class="cal-legend-item">
+                        <div class="cal-legend-dot" style="background:#ecfeff;"></div> Lưu trú
+                    </div>
+                    <div class="cal-legend-item">
+                        <span style="color:#ef4444;font-weight:700;font-size:12px;">T7</span> Cuối tuần
+                    </div>
+                </div>
+
+                <!-- Date Summary -->
+                <div class="date-summary">
+                    <div class="date-box">
+                        <label>Nhận phòng</label>
+                        <div class="value">T7, 14/02</div>
+                    </div>
+                    <div class="date-box">
+                        <label>Trả phòng</label>
+                        <div class="value">T4, 18/02</div>
+                    </div>
+                </div>
+
+                <!-- Guest Counter -->
+                <div class="guest-section">
+                    <label>Số khách</label>
+                    <div class="guest-row">
+                        <span>Tối đa 15 người</span>
+                        <div class="guest-controls">
+                            <button class="guest-btn">−</button>
+                            <span class="guest-value">6</span>
+                            <button class="guest-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price Breakdown -->
+                <div class="price-breakdown">
+                    <div class="price-line">
+                        <span>4.000.000đ × 4 đêm</span>
+                        <span>16.000.000đ</span>
+                    </div>
+                    <div class="price-line deposit">
+                        <span>Cọc 50%</span>
+                        <span>8.000.000đ</span>
+                    </div>
+                    <div class="price-line">
+                        <span>Trả khi đến</span>
+                        <span>8.000.000đ</span>
+                    </div>
+                    <div class="price-line total">
+                        <span>Tổng cộng</span>
+                        <span>16.000.000đ</span>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <button class="cta-btn">Đặt ngay — Cọc 8.000.000đ</button>
+                <p class="cta-note">Chưa bị trừ tiền. Bạn sẽ thanh toán cọc 50% qua VNPay.</p>
+            </div>
+
+            <!-- Contact Card -->
+            <div class="contact-card">
+                <h3>📞 Liên hệ đặt phòng</h3>
+                <a class="contact-item contact-phone" href="#">
+                    📱 0333.160.365
+                </a>
+                <a class="contact-item contact-zalo" href="#">
+                    💬 Chat Zalo
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== DESIGN NOTES ===== -->
+    <div class="design-notes">
+        <h2>📝 Ghi chú thiết kế cho nhóm</h2>
+        <div class="notes-grid">
+            <div class="note-card">
+                <div class="num">1</div>
+                <h4>🖼️ Gallery ảnh</h4>
+                <p>Ảnh lớn chạy AUTO mỗi 4 giây. Thumbnail nhỏ phía dưới, bấm chọn ảnh nào thì ảnh đó lên to. Có mũi tên
+                    trái/phải khi hover.</p>
+            </div>
+            <div class="note-card">
+                <div class="num">2</div>
+                <h4>📅 Lịch đặt phòng</h4>
+                <p>Lịch tháng, chọn ngày nhận trước → ngày trả sau. Highlight range giữa 2 ngày. Ngày cuối tuần (T7, CN)
+                    hiển thị đỏ. Không cho chọn ngày quá khứ.</p>
+            </div>
+            <div class="note-card">
+                <div class="num">3</div>
+                <h4>💰 Tính tiền tự động</h4>
+                <p>Chọn xong ngày → tự tính: ngày × giá = tổng. Hiện cọc 50%, còn lại. Giá khác nhau ngày thường vs cuối
+                    tuần (chưa implement).</p>
+            </div>
+            <div class="note-card">
+                <div class="num">4</div>
+                <h4>📌 Sidebar Sticky</h4>
+                <p>Panel đặt phòng bên phải luôn dính cố định khi cuộn trang. Người dùng đọc thông tin bên trái, bấm
+                    "Đặt ngay" bất kỳ lúc nào.</p>
+            </div>
+            <div class="note-card">
+                <div class="num">5</div>
+                <h4>🏠 Tiện nghi + Chính sách</h4>
+                <p>Grid tiện nghi: có = nền xanh, không có = xám gạch ngang. Chính sách: mỗi mục 1 dòng, icon shield bên
+                    trái.</p>
+            </div>
+            <div class="note-card">
+                <div class="num">6</div>
+                <h4>📱 Responsive</h4>
+                <p>Trên mobile: 1 cột dọc, sidebar ẩn → hiện bottom bar "Đặt ngay" cố định dưới. Gallery full-width. Cần
+                    thiết kế riêng cho mobile trên Figma.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Color Palette -->
+    <div style="max-width:1280px;margin:0 auto 60px;padding:0 24px;">
+        <h2 style="font-size:28px;font-weight:800;margin-bottom:24px;">🎨 Bảng màu</h2>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;">
+            <div style="text-align:center;">
+                <div
+                    style="width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,#06b6d4,#3b82f6);margin-bottom:8px;">
+                </div>
+                <p style="font-size:12px;font-weight:600;color:#666;">Primary<br>#06b6d4</p>
+            </div>
+            <div style="text-align:center;">
+                <div
+                    style="width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,#f43f5e,#ec4899);margin-bottom:8px;">
+                </div>
+                <p style="font-size:12px;font-weight:600;color:#666;">CTA Button<br>#f43f5e</p>
+            </div>
+            <div style="text-align:center;">
+                <div style="width:80px;height:80px;border-radius:20px;background:#111;margin-bottom:8px;"></div>
+                <p style="font-size:12px;font-weight:600;color:#666;">Text Dark<br>#111111</p>
+            </div>
+            <div style="text-align:center;">
+                <div style="width:80px;height:80px;border-radius:20px;background:#666;margin-bottom:8px;"></div>
+                <p style="font-size:12px;font-weight:600;color:#666;">Text Body<br>#666666</p>
+            </div>
+            <div style="text-align:center;">
+                <div
+                    style="width:80px;height:80px;border-radius:20px;background:#f8fafc;border:1px solid #e2e8f0;margin-bottom:8px;">
+                </div>
+                <p style="font-size:12px;font-weight:600;color:#666;">Background<br>#f8fafc</p>
+            </div>
+            <div style="text-align:center;">
+                <div
+                    style="width:80px;height:80px;border-radius:20px;background:#ecfeff;border:1px solid #a5f3fc;margin-bottom:8px;">
+                </div>
+                <p style="font-size:12px;font-weight:600;color:#666;">Accent Light<br>#ecfeff</p>
+            </div>
+            <div style="text-align:center;">
+                <div style="width:80px;height:80px;border-radius:20px;background:#f97316;margin-bottom:8px;"></div>
+                <p style="font-size:12px;font-weight:600;color:#666;">Weekend<br>#f97316</p>
+            </div>
+            <div style="text-align:center;">
+                <div style="width:80px;height:80px;border-radius:20px;background:#f59e0b;margin-bottom:8px;"></div>
+                <p style="font-size:12px;font-weight:600;color:#666;">Rating Star<br>#f59e0b</p>
+            </div>
+        </div>
+
+        <h3 style="margin-top:32px;margin-bottom:12px;font-size:18px;font-weight:700;">📏 Kích thước</h3>
+        <div style="display:flex;gap:24px;flex-wrap:wrap;font-size:14px;color:#666;">
+            <div><strong>Border Radius:</strong> 24px (cards), 16px (buttons), 50px (badges)</div>
+            <div><strong>Font:</strong> Outfit (Google Fonts)</div>
+            <div><strong>Max Width:</strong> 1280px</div>
+            <div><strong>Grid:</strong> 2/3 + 1/3 (sidebar 380px)</div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,25 +1,57 @@
 /**
- * This configuration is used to for the Sanity Studio that’s mounted on the `/app/studio/[[...index]]/page.tsx` route
+ * This configuration is used to for the Sanity Studio that's mounted on the `/app/studio/[[...tool]]/page.tsx` route
  */
 
-import { visionTool } from '@sanity/vision'
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 
-// Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
-import { apiVersion, dataset, projectId } from './src/sanity/env'
 import { schema } from './src/sanity/schema'
 
 export default defineConfig({
     basePath: '/studio',
-    projectId: projectId || 'your-project-id',
-    dataset: dataset || 'production',
-    // Add and edit the content schema in the './sanity/schema' folder
+    projectId: '1hjd2xbg',
+    dataset: 'production',
+    title: '🏠 Minh Phát Villa Admin',
     schema,
     plugins: [
-        structureTool(),
-        // Vision is a tool that lets you query your content with GROQ in the studio
-        // https://www.sanity.io/docs/the-vision-plugin
-        visionTool({ defaultApiVersion: apiVersion }),
+        structureTool({
+            structure: (S) =>
+                S.list()
+                    .title('📋 Quản Lý Nội Dung')
+                    .items([
+                        // Villa & Homestay
+                        S.listItem()
+                            .title('🏠 Căn Hộ / Villa')
+                            .child(
+                                S.documentTypeList('property')
+                                    .title('Danh Sách Căn')
+                            ),
+                        S.divider(),
+
+                        // Quản lý đặt phòng
+                        S.listItem()
+                            .title('📝 Đơn Đặt Phòng')
+                            .child(
+                                S.documentTypeList('booking')
+                                    .title('Tất Cả Đơn')
+                            ),
+
+                        // Lịch
+                        S.listItem()
+                            .title('📅 Lịch Phòng Trống')
+                            .child(
+                                S.documentTypeList('availability')
+                                    .title('Lịch Theo Ngày')
+                            ),
+
+                        // Giá
+                        S.listItem()
+                            .title('💰 Giá Theo Ngày')
+                            .child(
+                                S.documentTypeList('dailyPricing')
+                                    .title('Bảng Giá Đặc Biệt')
+                            ),
+                    ]),
+        }),
     ],
 })
