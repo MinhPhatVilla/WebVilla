@@ -387,7 +387,7 @@ function PropertyCard({ property: p, onView, onEdit, onDelete }: { property: Pro
                     <div>
                         {p.isContactForPrice ? (
                             <span className="text-sm font-bold text-amber-600">
-                                {p.contactPriceWeekday ? `~ ${p.contactPriceWeekday}` : "Liên hệ báo giá"}
+                                {p.contactPriceWeekday ? p.contactPriceWeekday : "Liên hệ báo giá"}
                             </span>
                         ) : (
                             <>
@@ -434,7 +434,7 @@ function PropertyRow({ property: p, onView, onEdit, onDelete }: { property: Prop
             <div className="text-right flex-shrink-0">
                 {p.isContactForPrice ? (
                     <p className="font-bold text-amber-600 text-sm mt-2">
-                        {p.contactPriceWeekday ? `~ ${p.contactPriceWeekday}` : "Liên hệ báo giá"}
+                        {p.contactPriceWeekday ? p.contactPriceWeekday : "Liên hệ báo giá"}
                     </p>
                 ) : (
                     <>

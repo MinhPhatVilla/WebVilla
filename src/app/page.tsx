@@ -7,7 +7,8 @@ import { useRouter } from "next/navigation";
 import { Property } from "@/types/property";
 import { usePropertyStore } from "@/lib/property-store";
 import { useAuth } from "@/lib/auth-context";
-import { MapPin, Star, Users, BedDouble, Waves, Flame, Phone, X, SlidersHorizontal, LogIn, UserCircle, LogOut, ChevronDown, Heart, Luggage, MessageSquare, Settings, Globe, HelpCircle, Home } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import { MapPin, Star, Users, BedDouble, Waves, Flame, Phone, X, SlidersHorizontal, LogIn, UserCircle, LogOut, ChevronDown, Heart, Luggage, MessageSquare, Settings, Globe, HelpCircle, Home, Building, Palmtree } from "lucide-react";
 import SearchBar from "@/components/SearchBar";
 
 // ========== FILTERS TYPE ==========
@@ -19,92 +20,111 @@ interface SearchFilters {
 }
 
 // ========== PROPERTY CARD ==========
-function PropertyCard({ property }: { property: Property }) {
+function PropertyCard({ property, isWeekend = false, isBooked = false }: { property: Property; isWeekend?: boolean, isBooked?: boolean }) {
+    const displayPrice = isWeekend && property.contactPriceWeekend
+        ? property.contactPriceWeekend
+        : property.contactPriceWeekday;
+
+    const displayNumericPrice = isWeekend && property.price.weekend
+        ? property.price.weekend
+        : property.price.weekday;
+
     return (
-        <Link href={`/${property.type}/${property.id}`} className="group">
-            <div className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-gray-200 hover:-translate-y-2">
-                {/* Image */}
-                <div className="relative h-64 overflow-hidden">
-                    <Image
-                        src={property.images[0]}
-                        alt={property.name}
-                        fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    {/* Price Badge */}
-                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
-                        {property.isContactForPrice ? (
-                            <span className="text-sm font-bold text-amber-600">
-                                {property.contactPriceWeekday ? `~ ${property.contactPriceWeekday}` : "Liên hệ Zalo"}
-                            </span>
-                        ) : (
-                            <>
-                                <span className="text-lg font-bold text-blue-900">
-                                    {property.price.weekday.toLocaleString('vi-VN')}đ
+        <div className={`relative block group ${isBooked ? "grayscale opacity-80" : ""}`}>
+            {/* Booked Overlay */}
+            {isBooked && (
+                <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/10 backdrop-blur-[1px] rounded-3xl pointer-events-none">
+                    <div className="bg-red-600/90 text-white font-extrabold text-2xl px-8 py-3 rounded-2xl shadow-2xl border-2 border-red-500/50 rotate-[15deg]">
+                        HẾT PHÒNG
+                    </div>
+                </div>
+            )}
+
+            <Link href={`/${property.type}/${property.id}`} className={isBooked ? "pointer-events-none" : ""}>
+                <div className={`bg-white rounded-3xl overflow-hidden shadow-lg transition-all duration-500 border border-gray-100 ${!isBooked && "hover:shadow-2xl hover:-translate-y-2 hover:border-gray-200"}`}>
+                    {/* Image */}
+                    <div className="relative h-64 overflow-hidden">
+                        <Image
+                            src={property.images[0]}
+                            alt={property.name}
+                            fill
+                            className="object-cover group-hover:scale-110 transition-transform duration-700"
+                        />
+                        {/* Price Badge */}
+                        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
+                            {property.isContactForPrice ? (
+                                <span className="text-sm font-bold text-amber-600">
+                                    {displayPrice ? displayPrice : "Liên hệ Zalo"}
                                 </span>
-                                <span className="text-xs text-gray-500">/đêm</span>
-                            </>
-                        )}
+                            ) : (
+                                <>
+                                    <span className="text-lg font-bold text-blue-900">
+                                        {displayNumericPrice.toLocaleString('vi-VN')}đ
+                                    </span>
+                                    <span className="text-xs text-gray-500">/{isWeekend ? "đêm t7" : "đêm"}</span>
+                                </>
+                            )}
+                        </div>
+                        {/* Type Badge */}
+                        <div className="absolute top-4 left-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold uppercase shadow-lg">
+                            {property.type}
+                        </div>
                     </div>
-                    {/* Type Badge */}
-                    <div className="absolute top-4 left-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold uppercase shadow-lg">
-                        {property.type}
+
+                    {/* Content */}
+                    <div className="p-6">
+                        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                            {property.name}
+                        </h3>
+
+                        <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+                            <MapPin size={14} className="text-blue-500" />
+                            <span>{property.location}</span>
+                        </div>
+
+                        <p className="text-gray-600 text-sm line-clamp-2 mb-4">
+                            {property.description}
+                        </p>
+
+                        {/* Attributes */}
+                        <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
+                            <div className="flex items-center gap-1">
+                                <BedDouble size={16} className="text-blue-500" />
+                                <span>{property.attributes.bedrooms} PN</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <Users size={16} className="text-green-500" />
+                                <span>{property.attributes.capacity} người</span>
+                            </div>
+                            {property.attributes.pool && (
+                                <div className="flex items-center gap-1">
+                                    <Waves size={16} className="text-cyan-500" />
+                                    <span>Hồ bơi</span>
+                                </div>
+                            )}
+                            {property.attributes.bbq && (
+                                <div className="flex items-center gap-1">
+                                    <Flame size={16} className="text-orange-500" />
+                                    <span>BBQ</span>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Rating & Reviews */}
+                        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                            <div className="flex items-center gap-1">
+                                <Star size={16} className="text-yellow-500 fill-yellow-500" />
+                                <span className="font-bold text-gray-900">{property.rating}</span>
+                                <span className="text-gray-400">({property.reviews} đánh giá)</span>
+                            </div>
+                            <button className="text-blue-600 font-semibold text-sm hover:underline">
+                                Xem chi tiết →
+                            </button>
+                        </div>
                     </div>
                 </div>
-
-                {/* Content */}
-                <div className="p-6">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                        {property.name}
-                    </h3>
-
-                    <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
-                        <MapPin size={14} className="text-blue-500" />
-                        <span>{property.location}</span>
-                    </div>
-
-                    <p className="text-gray-600 text-sm line-clamp-2 mb-4">
-                        {property.description}
-                    </p>
-
-                    {/* Attributes */}
-                    <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
-                        <div className="flex items-center gap-1">
-                            <BedDouble size={16} className="text-blue-500" />
-                            <span>{property.attributes.bedrooms} PN</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                            <Users size={16} className="text-green-500" />
-                            <span>{property.attributes.capacity} người</span>
-                        </div>
-                        {property.attributes.pool && (
-                            <div className="flex items-center gap-1">
-                                <Waves size={16} className="text-cyan-500" />
-                                <span>Hồ bơi</span>
-                            </div>
-                        )}
-                        {property.attributes.bbq && (
-                            <div className="flex items-center gap-1">
-                                <Flame size={16} className="text-orange-500" />
-                                <span>BBQ</span>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Rating & Reviews */}
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                        <div className="flex items-center gap-1">
-                            <Star size={16} className="text-yellow-500 fill-yellow-500" />
-                            <span className="font-bold text-gray-900">{property.rating}</span>
-                            <span className="text-gray-400">({property.reviews} đánh giá)</span>
-                        </div>
-                        <button className="text-blue-600 font-semibold text-sm hover:underline">
-                            Xem chi tiết →
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </Link>
+            </Link>
+        </div>
     );
 }
 
@@ -122,6 +142,8 @@ export default function HomePage() {
         guests: 1,
     });
     const [hasSearched, setHasSearched] = useState(false);
+    const [bookedPropertyIds, setBookedPropertyIds] = useState<Set<string>>(new Set());
+    const [isSearchingBookings, setIsSearchingBookings] = useState(false);
     const resultsRef = useRef<HTMLDivElement>(null);
 
     // ===== FILTER LOGIC =====
@@ -150,9 +172,61 @@ export default function HomePage() {
         return list;
     }, [activeTab, filters, allProperties, store]);
 
-    const handleSearch = (newFilters: SearchFilters) => {
+    const isWeekendSearch = useMemo(() => {
+        if (!filters.checkIn || !filters.checkOut) return false;
+        const start = new Date(filters.checkIn);
+        const end = new Date(filters.checkOut);
+        for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+            if (d.getDay() === 6) return true; // Saturday
+        }
+        return false;
+    }, [filters.checkIn, filters.checkOut]);
+
+    const handleSearch = async (newFilters: SearchFilters) => {
         setFilters(newFilters);
         setHasSearched(true);
+        setIsSearchingBookings(true);
+
+        const newBookedIds = new Set<string>();
+
+        if (newFilters.checkIn && newFilters.checkOut) {
+            try {
+                // Find overlapping bookings in DB
+                const { data, error } = await supabase
+                    .from('bookings')
+                    .select('property_id')
+                    .in('status', ['approved', 'pending'])
+                    .lt('check_in', newFilters.checkOut)
+                    .gt('check_out', newFilters.checkIn);
+
+                if (!error && data) {
+                    data.forEach(b => newBookedIds.add(b.property_id));
+                }
+
+                // Check custom prices closing
+                allProperties.forEach(p => {
+                    let hasClosed = false;
+                    let current = new Date(newFilters.checkIn);
+                    const end = new Date(newFilters.checkOut);
+                    while (current < end) {
+                        const stepStr = `${current.getFullYear()}-${String(current.getMonth() + 1).padStart(2, '0')}-${String(current.getDate()).padStart(2, '0')}`;
+                        if (p.customPrices && p.customPrices[stepStr] === -1) {
+                            hasClosed = true;
+                            break;
+                        }
+                        current.setDate(current.getDate() + 1);
+                    }
+                    if (hasClosed) {
+                        newBookedIds.add(p.id);
+                    }
+                });
+            } catch (err) {
+                console.error("Error loading overlapping bookings", err);
+            }
+        }
+
+        setIsSearchingBookings(false);
+        setBookedPropertyIds(newBookedIds);
 
         // Auto switch tab if location matches
         if (newFilters.location) {
@@ -167,6 +241,7 @@ export default function HomePage() {
 
     const clearFilters = () => {
         setFilters({ location: "", checkIn: "", checkOut: "", guests: 1 });
+        setBookedPropertyIds(new Set());
         setHasSearched(false);
     };
 
@@ -203,21 +278,21 @@ export default function HomePage() {
                             </button>
                             <button
                                 onClick={() => setActiveTab('villa')}
-                                className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${activeTab === 'villa'
+                                className={`px-4 py-2 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${activeTab === 'villa'
                                     ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg'
                                     : 'text-gray-600 hover:text-gray-900'
                                     }`}
                             >
-                                🏠 Villa
+                                <Building size={14} className="text-orange-500 group-hover:text-white" /> Villa
                             </button>
                             <button
                                 onClick={() => setActiveTab('homestay')}
-                                className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${activeTab === 'homestay'
+                                className={`px-4 py-2 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${activeTab === 'homestay'
                                     ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg'
                                     : 'text-gray-600 hover:text-gray-900'
                                     }`}
                             >
-                                🏡 Homestay
+                                <Home size={14} className="text-green-600 group-hover:text-white" /> Homestay
                             </button>
                         </div>
 
@@ -407,7 +482,7 @@ export default function HomePage() {
                 {filteredProperties.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {filteredProperties.map((property) => (
-                            <PropertyCard key={property.id} property={property} />
+                            <PropertyCard key={property.id} property={property} isWeekend={isWeekendSearch} isBooked={bookedPropertyIds.has(property.id)} />
                         ))}
                     </div>
                 ) : (

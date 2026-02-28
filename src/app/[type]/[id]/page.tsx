@@ -3,9 +3,10 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Property } from "@/types/property";
 import { usePropertyStore } from "@/lib/property-store";
+import { useAuth } from "@/lib/auth-context";
 import {
     ChevronLeft, ChevronRight, MapPin, Star, Users, BedDouble, Bed,
     Waves, Flame, Wifi, Target, UtensilsCrossed, AirVent, Mic2,
@@ -352,6 +353,8 @@ function AmenityBadge({ icon: Icon, label, active }: { icon: any; label: string;
 // ========== MAIN DETAIL PAGE ==========
 export default function PropertyDetailPage() {
     const params = useParams();
+    const router = useRouter();
+    const { user } = useAuth();
     const propertyId = params.id as string;
     const store = usePropertyStore();
     const property = store.getPropertyById(propertyId);
@@ -391,6 +394,12 @@ export default function PropertyDetailPage() {
     };
 
     const handleToggleSave = () => {
+        if (!user) {
+            alert("Vui lòng đăng nhập để lưu căn hộ!");
+            router.push(`/login?redirect=${encodeURIComponent(window.location.pathname)}`);
+            return;
+        }
+
         const savedList = JSON.parse(localStorage.getItem('webvilla_wishlist') || '[]');
         if (isSaved) {
             const newList = savedList.filter((id: string) => id !== propertyId);
@@ -690,12 +699,19 @@ export default function PropertyDetailPage() {
 
                                     {/* Book Button */}
                                     {nights > 0 ? (
-                                        <Link
-                                            href={`/checkout?property=${property.id}&checkIn=${checkIn}&checkOut=${checkOut}&guests=${guests}`}
+                                        <button
+                                            onClick={() => {
+                                                if (!user) {
+                                                    // Lưu URL hiện tại với cả query search nếu có
+                                                    router.push(`/login?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`);
+                                                } else {
+                                                    router.push(`/checkout?property=${property.id}&checkIn=${checkIn}&checkOut=${checkOut}&guests=${guests}`);
+                                                }
+                                            }}
                                             className="block w-full bg-gradient-to-r from-rose-500 to-pink-600 text-white py-4 rounded-2xl font-bold text-lg text-center hover:from-rose-600 hover:to-pink-700 transition-all shadow-lg hover:shadow-xl active:scale-[0.98]"
                                         >
-                                            Đặt ngay — Cọc {formatPrice(deposit)}đ
-                                        </Link>
+                                            {user ? `Đặt ngay — Cọc ${formatPrice(deposit)}đ` : `Đăng nhập để đặt phòng`}
+                                        </button>
                                     ) : (
                                         <button
                                             disabled

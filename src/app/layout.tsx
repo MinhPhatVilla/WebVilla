@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Outfit } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import FloatingSocialButtons from "@/components/FloatingSocialButtons";
 import { ClientProviders } from "./providers";
 
-const outfit = Outfit({ subsets: ["latin"] });
+const outfit = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
     title: "Minh Phát Villa Homestay Vũng Tàu",

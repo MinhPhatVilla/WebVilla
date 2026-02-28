@@ -550,13 +550,18 @@ function CheckoutContent() {
                         </div>
                         <div>
                             <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1 block">Số điện thoại *</label>
-                            <input
-                                type="tel"
-                                value={guestPhone}
-                                onChange={(e) => setGuestPhone(e.target.value)}
-                                placeholder="0901234567"
-                                className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent placeholder-gray-400"
-                            />
+                            <div className="flex">
+                                <select className="px-2 py-3 rounded-l-xl border border-r-0 border-gray-200 bg-gray-100 text-gray-700 font-bold text-xs focus:outline-none">
+                                    <option value="+84">🇻🇳 +84</option>
+                                </select>
+                                <input
+                                    type="tel"
+                                    value={guestPhone}
+                                    onChange={(e) => setGuestPhone(e.target.value)}
+                                    placeholder="901 234 567"
+                                    className="w-full px-4 py-3 rounded-r-xl bg-gray-50 border border-gray-200 text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent placeholder-gray-400"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
