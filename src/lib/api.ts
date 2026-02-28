@@ -1,5 +1,5 @@
 import { client } from '@/sanity/lib/client';
-import { Property } from './mock-data';
+import { Property } from '@/types/property';
 
 // ============================================
 // 📦 API FUNCTIONS - Kết nối Sanity CMS
