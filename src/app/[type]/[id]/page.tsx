@@ -4,13 +4,13 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Property } from "@/lib/mock-data";
+import { Property } from "@/types/property";
 import { usePropertyStore } from "@/lib/property-store";
 import {
     ChevronLeft, ChevronRight, MapPin, Star, Users, BedDouble, Bed,
-    Waves, Flame, Wifi, Car, UtensilsCrossed, AirVent, Mic2,
-    TreePine, Bath, ArrowLeft, Share2, Heart, Phone, MessageCircle,
-    Calendar, Shield, Clock, ChevronDown, ChevronUp, Minus, Plus, Search
+    Waves, Flame, Wifi, Target, UtensilsCrossed, AirVent, Mic2,
+    Gamepad2, Bath, ArrowLeft, Share2, Heart, Phone, MessageCircle,
+    Calendar, Shield, Clock, ChevronDown, ChevronUp, Minus, Plus, Search, Dribbble
 } from "lucide-react";
 
 // ========== IMAGE GALLERY COMPONENT ==========
@@ -116,15 +116,16 @@ function ImageGallery({ images, name }: { images: string[]; name: string }) {
 
 // ========== MINI CALENDAR FOR DETAIL PAGE ==========
 function BookingCalendar({
-    checkIn, setCheckIn, checkOut, setCheckOut
+    checkIn, setCheckIn, checkOut, setCheckOut, customPrices
 }: {
     checkIn: string; setCheckIn: (d: string) => void;
     checkOut: string; setCheckOut: (d: string) => void;
+    customPrices?: Record<string, number>;
 }) {
     const today = new Date();
     const [currentMonth, setCurrentMonth] = useState(today.getMonth());
     const [currentYear, setCurrentYear] = useState(today.getFullYear());
-    const [selectingCheckOut, setSelectingCheckOut] = useState(false);
+    const isSelectingCheckOut = Boolean(checkIn && !checkOut);
 
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
     const firstDay = new Date(currentYear, currentMonth, 1).getDay();
@@ -144,12 +145,45 @@ function BookingCalendar({
 
     const isDisabled = (day: number) => {
         const date = new Date(currentYear, currentMonth, day);
+        const dateStr = formatDateStr(day);
         const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
         if (date < todayStart) return true;
-        if (selectingCheckOut && checkIn) {
+
+        const isClosed = customPrices && customPrices[dateStr] === -1;
+
+        if (isSelectingCheckOut) {
             const min = new Date(checkIn);
-            if (date <= min) return true;
+            if (date <= min) {
+                // Return true only if it is closed (so it can't be a NEW check-in)
+                if (isClosed) return true;
+                return false;
+            }
+
+            let hasClosedNight = false;
+            let current = new Date(checkIn);
+            const target = new Date(date);
+            while (current < target) {
+                const stepStr = `${current.getFullYear()}-${String(current.getMonth() + 1).padStart(2, '0')}-${String(current.getDate()).padStart(2, '0')}`;
+                if (customPrices && customPrices[stepStr] === -1) {
+                    hasClosedNight = true;
+                    break;
+                }
+                current.setDate(current.getDate() + 1);
+            }
+
+            if (!hasClosedNight) {
+                // Valid checkout date!
+                return false;
+            } else {
+                // Invalid checkout, but could it be a NEW check-in?
+                if (isClosed) return true;
+                return false;
+            }
+        } else {
+            if (isClosed) return true;
         }
+
         return false;
     };
 
@@ -166,13 +200,35 @@ function BookingCalendar({
 
     const handleSelect = (day: number) => {
         const dateStr = formatDateStr(day);
-        if (!selectingCheckOut) {
+
+        if (isSelectingCheckOut) {
+            if (dateStr <= checkIn) {
+                setCheckIn(dateStr);
+                setCheckOut("");
+            } else {
+                let hasClosedNight = false;
+                let current = new Date(checkIn);
+                const target = new Date(dateStr);
+                while (current < target) {
+                    const stepStr = `${current.getFullYear()}-${String(current.getMonth() + 1).padStart(2, '0')}-${String(current.getDate()).padStart(2, '0')}`;
+                    if (customPrices && customPrices[stepStr] === -1) {
+                        hasClosedNight = true;
+                        break;
+                    }
+                    current.setDate(current.getDate() + 1);
+                }
+
+                if (!hasClosedNight) {
+                    setCheckOut(dateStr);
+                } else {
+                    // Invalid range => treat as new check in
+                    setCheckIn(dateStr);
+                    setCheckOut("");
+                }
+            }
+        } else {
             setCheckIn(dateStr);
             setCheckOut("");
-            setSelectingCheckOut(true);
-        } else {
-            setCheckOut(dateStr);
-            setSelectingCheckOut(false);
         }
     };
 
@@ -208,8 +264,8 @@ function BookingCalendar({
 
             {/* Selecting indicator */}
             <div className="text-center mb-3">
-                <span className={`text-xs font-bold px-3 py-1 rounded-full ${selectingCheckOut ? "bg-blue-100 text-blue-700" : "bg-cyan-100 text-cyan-700"}`}>
-                    {selectingCheckOut ? "Chọn ngày trả phòng" : "Chọn ngày nhận phòng"}
+                <span className={`text-xs font-bold px-3 py-1 rounded-full ${isSelectingCheckOut ? "bg-blue-100 text-blue-700" : "bg-cyan-100 text-cyan-700"}`}>
+                    {isSelectingCheckOut ? "Chọn ngày trả phòng" : "Chọn ngày nhận phòng"}
                 </span>
             </div>
 
@@ -232,15 +288,20 @@ function BookingCalendar({
                     const inRange = isInRange(day);
                     const weekend = isWeekend(day);
 
+                    const isClosed = customPrices && customPrices[d] === -1;
+
                     return (
                         <button key={day} disabled={disabled} onClick={() => handleSelect(day)}
                             className={`h-10 w-full rounded-full text-sm font-semibold transition-all
-                                ${disabled ? "text-gray-300 cursor-not-allowed"
-                                    : isCheckIn ? "bg-cyan-500 text-white shadow-lg"
-                                        : isCheckOut ? "bg-blue-500 text-white shadow-lg"
-                                            : inRange ? "bg-cyan-100 text-cyan-800"
-                                                : weekend ? "text-red-500 hover:bg-red-50"
-                                                    : "text-gray-700 hover:bg-cyan-50"}`}
+                                ${isClosed && !isCheckOut
+                                    ? `text-white bg-rose-500/80 font-bold line-through ${disabled ? 'cursor-not-allowed' : 'hover:bg-rose-600'}`
+                                    : disabled
+                                        ? "text-gray-300 cursor-not-allowed"
+                                        : isCheckIn ? "bg-cyan-500 text-white shadow-lg"
+                                            : isCheckOut ? "bg-blue-500 text-white shadow-lg"
+                                                : inRange ? "bg-cyan-100 text-cyan-800"
+                                                    : weekend ? "text-red-500 hover:bg-red-50"
+                                                        : "text-gray-700 hover:bg-cyan-50"}`}
                         >
                             {day}
                         </button>
@@ -249,7 +310,7 @@ function BookingCalendar({
             </div>
 
             {/* Legend */}
-            <div className="flex items-center justify-center gap-4 mt-4 text-xs text-gray-500">
+            <div className="flex flex-wrap justify-center gap-4 mt-4 text-xs text-gray-500">
                 <div className="flex items-center gap-1">
                     <div className="w-3 h-3 rounded-full bg-cyan-500"></div>
                     <span>Nhận</span>
@@ -265,6 +326,10 @@ function BookingCalendar({
                 <div className="flex items-center gap-1">
                     <span className="text-red-500 font-bold">T7</span>
                     <span>Cuối tuần</span>
+                </div>
+                <div className="flex items-center gap-1">
+                    <span className="w-4 h-4 rounded-full bg-rose-500/80 text-white flex items-center justify-center line-through text-[8px] font-bold">15</span>
+                    <span>Đã kín lịch</span>
                 </div>
             </div>
         </div>
@@ -472,11 +537,12 @@ export default function PropertyDetailPage() {
                                 <AmenityBadge icon={Waves} label="Hồ bơi" active={property.attributes.pool} />
                                 <AmenityBadge icon={Flame} label="BBQ" active={property.attributes.bbq} />
                                 <AmenityBadge icon={Wifi} label="Wifi miễn phí" active={property.attributes.wifi} />
-                                <AmenityBadge icon={Car} label="Chỗ đậu xe" active={property.attributes.parking} />
+                                <AmenityBadge icon={Target} label="Bida" active={property.attributes.billiards} />
                                 <AmenityBadge icon={UtensilsCrossed} label="Bếp nấu ăn" active={property.attributes.kitchen} />
                                 <AmenityBadge icon={AirVent} label="Máy lạnh" active={property.attributes.aircon} />
                                 <AmenityBadge icon={Mic2} label="Karaoke" active={property.attributes.karaoke} />
-                                <AmenityBadge icon={TreePine} label="Sân vườn" active={property.attributes.garden} />
+                                <AmenityBadge icon={Gamepad2} label="Máy game trẻ em" active={property.attributes.arcade} />
+                                <AmenityBadge icon={Dribbble} label="Bi lắc" active={property.attributes.foosball} />
                             </div>
                         </div>
 
@@ -551,6 +617,7 @@ export default function PropertyDetailPage() {
                                             setCheckIn={setCheckIn}
                                             checkOut={checkOut}
                                             setCheckOut={setCheckOut}
+                                            customPrices={property.customPrices}
                                         />
                                     </div>
 

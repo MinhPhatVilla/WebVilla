@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useCallback, useMemo, useEffect } from "react";
-import { Property } from "./mock-data";
+import { Property } from "@/types/property";
 import { supabase } from "./supabase";
 
 // ── Helper: convert DB row → Property ──
@@ -27,13 +27,15 @@ function rowToProperty(row: Record<string, unknown>): Property {
             pool: row.pool as boolean,
             bbq: row.bbq as boolean,
             wifi: (row.wifi as boolean) || false,
-            parking: (row.parking as boolean) || false,
+            billiards: (row.billiards as boolean) || false,
             kitchen: (row.kitchen as boolean) || false,
             aircon: (row.aircon as boolean) || false,
             karaoke: (row.karaoke as boolean) || false,
-            garden: (row.garden as boolean) || false,
+            arcade: (row.arcade as boolean) || false,
+            foosball: (row.foosball as boolean) || false,
         },
         images: (row.images as string[]) || [],
+        customPrices: (row.custom_prices as Record<string, number>) || undefined,
         videoUrl: (row.video_url as string) || "",
         location: (row.location as string) || "",
         address: (row.address as string) || "",
@@ -65,13 +67,15 @@ function propertyToRow(p: Partial<Property>): Record<string, unknown> {
         row.pool = p.attributes.pool;
         row.bbq = p.attributes.bbq;
         row.wifi = p.attributes.wifi;
-        row.parking = p.attributes.parking;
+        row.billiards = p.attributes.billiards;
         row.kitchen = p.attributes.kitchen;
         row.aircon = p.attributes.aircon;
         row.karaoke = p.attributes.karaoke;
-        row.garden = p.attributes.garden;
+        row.arcade = p.attributes.arcade;
+        row.foosball = p.attributes.foosball;
     }
     if (p.images !== undefined) row.images = p.images;
+    if (p.customPrices !== undefined) row.custom_prices = p.customPrices;
     if (p.videoUrl !== undefined) row.video_url = p.videoUrl;
     if (p.location !== undefined) row.location = p.location;
     if (p.address !== undefined) row.address = p.address;

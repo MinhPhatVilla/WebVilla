@@ -1,13 +1,35 @@
 # 🏠 MINH PHÁT VILLA - Website Đặt Phòng Villa & Homestay
 
-> **Phiên bản:** 0.3.4  
+> **Phiên bản:** 0.3.5  
 > **Ngày cập nhật:** 28/02/2026  
 > **Ngôn ngữ giao diện:** Tiếng Việt  
 > **Trạng thái:** Đang phát triển
 
 ---
 
-## 🌟 Mới Nhất: Định Toán "Cuối Tuần", Cấn Trừ Cọc & Bot Telegram (v0.3.4)
+## 🌟 Mới Nhất: Cập nhật Tiện Ích chuẩn Villa & Tối ưu Lịch Booking Tự Do (v0.3.5)
+
+**Tính năng đã hoàn thành:**
+- **Cập nhật Tiện ích chuẩn gu Vũng Tàu (Amenities Update):**
+  - Gỡ bỏ tiện ích "Bãi đậu xe" và "Sân vườn" không còn phù hợp.
+  - Bổ sung 3 siêu tiện ích giải trí: **Bida (Billiards)**, **Máy game trẻ em (Arcade)**, và **Bi lắc (Foosball)**.
+  - Đồng bộ toàn phần từ Cơ sở dữ liệu, Interface Types, Mock Data đến UI Khách hàng và UI Admin (thêm, sửa nơi ở).
+- **Trải nghiệm Lịch Đặt Phòng Tự Do (Free-flow Booking Calendar):**
+  - Xoá bỏ vòng lặp "ép buộc" chọn Ngày trả phòng. Khách hàng nay có luồng thao tác tự do, có thể click lại vào ngày khác/ngày trước đó để tự động reset Ngày nhận phòng.
+  - Khắc phục **Bug nghiêm trọng:** Cho phép chọn Ngày Trả phòng (Check-out) trùng vào Ngày Đóng lịch (Closed/Đã kín). Hệ thống giờ đây thông minh nhận diện: Khách có thể rời đi vào buổi sáng của ngày bị kín đêm.
+
+**Files đã tạo mới / chỉnh sửa:**
+- `database/01_create_properties_table.sql` (Alter schemas).
+- `src/types/property.ts`, `src/lib/property-store.tsx`, `src/lib/mock-data.ts` (Sửa đổi property Attributes & Mocks).
+- `src/app/admin/properties/AddPropertyModal.tsx`, `src/app/admin/properties/page.tsx` (Đổi Icon và Checkbox quản lý khu vực admin).
+- `src/app/[type]/[id]/page.tsx` (Thay thế Icon khách xem, cấu trúc lại thuật toán `isDisabled` và `handleSelect` linh hoạt).
+
+**Ghi chú quan trọng cho lần sau:**
+- UI đang rất tốt. Chờ phản hồi thực tế nghiệm thu từ người dùng về bộ lịch mới. Có thể tiếp tục làm module Doanh thu, hoặc quản lý hình ảnh nâng cao, xoá file mockup HTML.
+
+---
+
+## 🌟 Lịch sử: Định Toán "Cuối Tuần", Cấn Trừ Cọc & Bot Telegram (v0.3.4)
 
 **Tính năng đã hoàn thành:**
 - **Tính năng "Liên hệ báo giá" (Contact For Price):**

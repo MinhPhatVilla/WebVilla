@@ -28,14 +28,16 @@ CREATE TABLE IF NOT EXISTS public.properties (
     pool BOOLEAN DEFAULT false,
     bbq BOOLEAN DEFAULT false,
     wifi BOOLEAN DEFAULT false,
-    parking BOOLEAN DEFAULT false,
+    billiards BOOLEAN DEFAULT false,
     kitchen BOOLEAN DEFAULT false,
     aircon BOOLEAN DEFAULT false,
     karaoke BOOLEAN DEFAULT false,
-    garden BOOLEAN DEFAULT false,
+    arcade BOOLEAN DEFAULT false,
+    foosball BOOLEAN DEFAULT false,
     
     -- Media
     images TEXT[] DEFAULT '{}',
+    custom_prices JSONB,
     video_url TEXT DEFAULT '',
     
     -- Vị trí

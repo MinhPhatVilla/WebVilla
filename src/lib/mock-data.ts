@@ -1,38 +1,4 @@
-export interface Property {
-    id: string;
-    name: string;
-    type: 'villa' | 'homestay';
-    description: string;
-    longDescription?: string;
-    isContactForPrice?: boolean;
-    contactPriceWeekday?: string;
-    contactPriceWeekend?: string;
-    price: {
-        weekday: number;
-        weekend: number;
-    };
-    attributes: {
-        bedrooms: number;
-        beds?: number;
-        bathrooms?: number;
-        capacity: number;
-        pool: boolean;
-        bbq: boolean;
-        wifi?: boolean;
-        parking?: boolean;
-        kitchen?: boolean;
-        aircon?: boolean;
-        karaoke?: boolean;
-        garden?: boolean;
-    };
-    images: string[];
-    videoUrl: string;
-    location: string;
-    address?: string;
-    rating: number;
-    reviews: number;
-    policies?: string[];
-}
+import { Property } from "@/types/property";
 
 // Mock data cho nhiều căn Villa
 export const mockVillas: Property[] = [
@@ -43,7 +9,7 @@ export const mockVillas: Property[] = [
         description: "Biệt thự view biển tuyệt đẹp với hồ bơi tràn bờ, không gian sang trọng và tiện nghi đầy đủ.",
         longDescription: "Villa Ocean View tọa lạc tại vị trí đắc địa ngay Bãi Sau Vũng Tàu, mang đến tầm nhìn biển 180 độ tuyệt đẹp. Với thiết kế hiện đại kết hợp phong cách nhiệt đới, villa sở hữu hồ bơi tràn bờ riêng, khu BBQ ngoài trời, phòng khách rộng rãi và 5 phòng ngủ sang trọng. Đây là lựa chọn lý tưởng cho các buổi tiệc, họp mặt gia đình hoặc nhóm bạn.",
         price: { weekday: 4000000, weekend: 6000000 },
-        attributes: { bedrooms: 5, bathrooms: 4, capacity: 15, pool: true, bbq: true, wifi: true, parking: true, kitchen: true, aircon: true, karaoke: true, garden: true },
+        attributes: { bedrooms: 5, bathrooms: 4, capacity: 15, pool: true, bbq: true, wifi: true, billiards: true, kitchen: true, aircon: true, arcade: true, foosball: true },
         images: [
             "https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=800&auto=format&fit=crop",
             "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop",

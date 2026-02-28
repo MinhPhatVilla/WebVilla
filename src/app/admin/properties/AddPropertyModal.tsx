@@ -6,7 +6,7 @@ import {
     X, ChevronLeft, ChevronRight, Calendar, Plus, Minus,
     Upload, MapPin, BedDouble, Bed, Users, Bath,
     Wifi, Car, UtensilsCrossed, Flame, Music, Waves, Snowflake, TreePine,
-    Check, DollarSign, Image as ImageIcon, Tag, Trash2, Star
+    Check, DollarSign, Image as ImageIcon, Tag, Trash2, Star, Gamepad2, Dribbble, Target
 } from "lucide-react";
 
 // ── Calendar Helpers ──
@@ -33,18 +33,19 @@ const amenityOptions = [
     { key: "pool", icon: <Waves size={16} />, label: "Hồ bơi" },
     { key: "bbq", icon: <Flame size={16} />, label: "BBQ" },
     { key: "wifi", icon: <Wifi size={16} />, label: "WiFi" },
-    { key: "parking", icon: <Car size={16} />, label: "Bãi đỗ xe" },
+    { key: "billiards", icon: <Target size={16} />, label: "Bida" },
     { key: "kitchen", icon: <UtensilsCrossed size={16} />, label: "Bếp" },
     { key: "aircon", icon: <Snowflake size={16} />, label: "Máy lạnh" },
     { key: "karaoke", icon: <Music size={16} />, label: "Karaoke" },
-    { key: "garden", icon: <TreePine size={16} />, label: "Sân vườn" },
+    { key: "arcade", icon: <Gamepad2 size={16} />, label: "Máy game trẻ em" },
+    { key: "foosball", icon: <Dribbble size={16} />, label: "Bi lắc" },
 ];
 
 // ── Steps ──
 type Step = 1 | 2 | 3;
 const STEP_LABELS = ["Thông tin cơ bản", "Tiện nghi & Giá", "Lịch giá theo ngày"];
 
-import { Property } from "@/lib/mock-data";
+import { Property } from "@/types/property";
 
 interface AddPropertyModalProps {
     onClose: () => void;
@@ -87,11 +88,12 @@ export default function AddPropertyModal({ onClose, onSubmit, editMode = false, 
         if (p.attributes.pool) a.push("pool");
         if (p.attributes.bbq) a.push("bbq");
         if (p.attributes.wifi) a.push("wifi");
-        if (p.attributes.parking) a.push("parking");
+        if (p.attributes.billiards) a.push("billiards");
         if (p.attributes.kitchen) a.push("kitchen");
         if (p.attributes.aircon) a.push("aircon");
         if (p.attributes.karaoke) a.push("karaoke");
-        if (p.attributes.garden) a.push("garden");
+        if (p.attributes.arcade) a.push("arcade");
+        if (p.attributes.foosball) a.push("foosball");
         return a;
     };
 
@@ -125,7 +127,7 @@ export default function AddPropertyModal({ onClose, onSubmit, editMode = false, 
     const now = new Date();
     const [viewMonth, setViewMonth] = useState(now.getMonth());
     const [viewYear, setViewYear] = useState(now.getFullYear());
-    const [customPrices, setCustomPrices] = useState<Record<string, number>>({});
+    const [customPrices, setCustomPrices] = useState<Record<string, number>>(initialData?.customPrices || {});
     const [selectedDates, setSelectedDates] = useState<string[]>([]);
     const [bulkPrice, setBulkPrice] = useState("");
     const [isSelecting, setIsSelecting] = useState(false);
@@ -219,6 +221,16 @@ export default function AddPropertyModal({ onClose, onSubmit, editMode = false, 
         if (!price || selectedDates.length === 0) return;
         const newPrices = { ...customPrices };
         selectedDates.forEach(d => { newPrices[d] = price; });
+        setCustomPrices(newPrices);
+        setSelectedDates([]);
+        setBulkPrice("");
+    };
+
+    // Đóng lịch
+    const applyCloseDate = () => {
+        if (selectedDates.length === 0) return;
+        const newPrices = { ...customPrices };
+        selectedDates.forEach(d => { newPrices[d] = -1; });
         setCustomPrices(newPrices);
         setSelectedDates([]);
         setBulkPrice("");
@@ -775,25 +787,32 @@ export default function AddPropertyModal({ onClose, onSubmit, editMode = false, 
                                                         ? "text-gray-300 cursor-not-allowed"
                                                         : isSelected
                                                             ? "bg-cyan-500 text-white ring-2 ring-cyan-300 shadow-sm"
-                                                            : customPrice
-                                                                ? "bg-amber-100 text-amber-800 hover:bg-amber-200"
-                                                                : isToday
-                                                                    ? "ring-2 ring-cyan-400 bg-white hover:bg-cyan-50"
-                                                                    : weekend
-                                                                        ? "bg-rose-50 text-rose-600 hover:bg-rose-100"
-                                                                        : "bg-white text-gray-700 hover:bg-gray-100"
+                                                            : customPrice === -1
+                                                                ? "bg-red-50 text-red-500 hover:bg-red-100 line-through"
+                                                                : customPrice
+                                                                    ? "bg-amber-100 text-amber-800 hover:bg-amber-200"
+                                                                    : isToday
+                                                                        ? "ring-2 ring-cyan-400 bg-white hover:bg-cyan-50"
+                                                                        : weekend
+                                                                            ? "bg-rose-50 text-rose-600 hover:bg-rose-100"
+                                                                            : "bg-white text-gray-700 hover:bg-gray-100"
                                                         }`}
                                                 >
                                                     <span className="text-sm font-bold block">{day}</span>
-                                                    <span className={`text-[9px] font-medium block leading-tight ${isSelected ? "text-cyan-100" : isPast ? "text-gray-300" : customPrice ? "text-amber-600 font-bold" : "text-gray-400"
+                                                    <span className={`text-[9px] font-medium block leading-tight ${isSelected ? "text-cyan-100" : isPast ? "text-gray-300" : customPrice === -1 ? "text-red-500 font-bold" : customPrice ? "text-amber-600 font-bold" : "text-gray-400"
                                                         }`}>
-                                                        {isPast ? "" : customPrice
-                                                            ? `${(customPrice / 1000000).toFixed(1)}tr`
-                                                            : `${(basePrice / 1000000).toFixed(1)}tr`
+                                                        {isPast ? "" : customPrice === -1
+                                                            ? "Đã đóng"
+                                                            : customPrice
+                                                                ? `${(customPrice / 1000000).toFixed(1)}tr`
+                                                                : `${(basePrice / 1000000).toFixed(1)}tr`
                                                         }
                                                     </span>
-                                                    {customPrice && !isSelected && (
+                                                    {customPrice && customPrice !== -1 && !isSelected && (
                                                         <div className="absolute top-0.5 right-0.5 w-1.5 h-1.5 rounded-full bg-amber-500" />
+                                                    )}
+                                                    {customPrice === -1 && !isSelected && (
+                                                        <div className="absolute top-0.5 right-0.5 w-1.5 h-1.5 rounded-full bg-red-500" />
                                                     )}
                                                 </button>
                                             );
@@ -838,6 +857,13 @@ export default function AddPropertyModal({ onClose, onSubmit, editMode = false, 
                                             >
                                                 Áp dụng
                                             </button>
+                                            <button
+                                                onClick={applyCloseDate}
+                                                className="px-6 py-3 rounded-xl bg-gradient-to-r from-red-500 to-rose-600 text-white font-bold text-sm hover:shadow-lg hover:shadow-red-200 transition-all font-medium"
+                                                title="Khóa không cho khách đặt vào những ngày này"
+                                            >
+                                                Đóng lịch
+                                            </button>
                                         </div>
                                     </div>
                                 )}
@@ -862,7 +888,7 @@ export default function AddPropertyModal({ onClose, onSubmit, editMode = false, 
                                                                     {weekend && <span className="text-rose-400 ml-1">(CK)</span>}
                                                                 </span>
                                                                 <span className="text-xs font-extrabold text-amber-700 ml-2">
-                                                                    {fmtPrice(price)}đ
+                                                                    {price === -1 ? <span className="text-red-500 line-through">Đã đóng</span> : `${fmtPrice(price)}đ`}
                                                                 </span>
                                                             </div>
                                                             <button
@@ -886,6 +912,7 @@ export default function AddPropertyModal({ onClose, onSubmit, editMode = false, 
                                 <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-white border border-gray-200" /> Giá thường</span>
                                 <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-rose-50 border border-rose-200" /> Cuối tuần</span>
                                 <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-amber-100 border border-amber-300" /> Giá tùy chỉnh</span>
+                                <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-red-100 border border-red-300" /> Đóng lịch</span>
                                 <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-cyan-500" /> Đang chọn</span>
                             </div>
                         </div>

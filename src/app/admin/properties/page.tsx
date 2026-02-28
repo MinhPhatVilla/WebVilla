@@ -5,9 +5,10 @@ import Image from "next/image";
 import {
     Plus, Search, Filter, Edit2, Trash2, Eye, MoreHorizontal,
     Star, MapPin, Users, BedDouble, ChevronDown, ChevronLeft, ChevronRight, X, Check,
-    Wifi, Car, UtensilsCrossed, Flame, Music, Waves, Snowflake, TreePine, Calendar
+    Wifi, Car, UtensilsCrossed, Flame, Music, Waves, Snowflake, TreePine, Calendar,
+    Gamepad2, Dribbble, Target
 } from "lucide-react";
-import { Property } from "@/lib/mock-data";
+import { Property } from "@/types/property";
 import { usePropertyStore } from "@/lib/property-store";
 import { supabase } from "@/lib/supabase";
 import AddPropertyModal, { ImageFile } from "./AddPropertyModal";
@@ -32,11 +33,12 @@ const amenityIcons: Record<string, { icon: React.ReactNode; label: string }> = {
     pool: { icon: <Waves size={14} />, label: "Hồ bơi" },
     bbq: { icon: <Flame size={14} />, label: "BBQ" },
     wifi: { icon: <Wifi size={14} />, label: "WiFi" },
-    parking: { icon: <Car size={14} />, label: "Bãi đỗ" },
+    billiards: { icon: <Target size={14} />, label: "Bida" },
     kitchen: { icon: <UtensilsCrossed size={14} />, label: "Bếp" },
     aircon: { icon: <Snowflake size={14} />, label: "Máy lạnh" },
     karaoke: { icon: <Music size={14} />, label: "Karaoke" },
-    garden: { icon: <TreePine size={14} />, label: "Sân vườn" },
+    arcade: { icon: <Gamepad2 size={14} />, label: "Máy game trẻ em" },
+    foosball: { icon: <Dribbble size={14} />, label: "Bi lắc" },
 };
 
 export default function PropertiesPage() {
@@ -234,6 +236,7 @@ export default function PropertiesPage() {
                             isContactForPrice: data.isContactForPrice,
                             contactPriceWeekday: data.contactPriceWeekday,
                             contactPriceWeekend: data.contactPriceWeekend,
+                            customPrices: data.customPrices,
                             price: { weekday: data.priceWeekday, weekend: data.priceWeekend },
                             attributes: {
                                 bedrooms: data.bedrooms,
@@ -243,11 +246,12 @@ export default function PropertiesPage() {
                                 pool: data.amenities.includes("pool"),
                                 bbq: data.amenities.includes("bbq"),
                                 wifi: data.amenities.includes("wifi"),
-                                parking: data.amenities.includes("parking"),
+                                billiards: data.amenities.includes("billiards"),
                                 kitchen: data.amenities.includes("kitchen"),
                                 aircon: data.amenities.includes("aircon"),
                                 karaoke: data.amenities.includes("karaoke"),
-                                garden: data.amenities.includes("garden"),
+                                arcade: data.amenities.includes("arcade"),
+                                foosball: data.amenities.includes("foosball"),
                             },
                             images: uploadedImageUrls.length > 0 ? uploadedImageUrls : [
                                 "https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=800&auto=format&fit=crop"
@@ -284,6 +288,7 @@ export default function PropertiesPage() {
                                 isContactForPrice: data.isContactForPrice,
                                 contactPriceWeekday: data.contactPriceWeekday,
                                 contactPriceWeekend: data.contactPriceWeekend,
+                                customPrices: data.customPrices,
                                 price: { weekday: data.priceWeekday, weekend: data.priceWeekend },
                                 attributes: {
                                     bedrooms: data.bedrooms,
@@ -293,11 +298,12 @@ export default function PropertiesPage() {
                                     pool: data.amenities.includes("pool"),
                                     bbq: data.amenities.includes("bbq"),
                                     wifi: data.amenities.includes("wifi"),
-                                    parking: data.amenities.includes("parking"),
+                                    billiards: data.amenities.includes("billiards"),
                                     kitchen: data.amenities.includes("kitchen"),
                                     aircon: data.amenities.includes("aircon"),
                                     karaoke: data.amenities.includes("karaoke"),
-                                    garden: data.amenities.includes("garden"),
+                                    arcade: data.amenities.includes("arcade"),
+                                    foosball: data.amenities.includes("foosball"),
                                 },
                                 images: uploadedImageUrls.length > 0 ? uploadedImageUrls : showEditModal.images,
                                 location: data.location,
