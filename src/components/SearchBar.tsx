@@ -246,12 +246,11 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
     return (
         <div ref={searchRef} className="relative w-full max-w-4xl mx-auto">
             {/* Main Search Bar */}
-            <div className={`flex items-center bg-white rounded-full shadow-lg border-2 transition-all duration-300 ${activeField ? "border-cyan-400 shadow-2xl shadow-cyan-100" : "border-gray-100 hover:shadow-xl"
+            <div className={`flex flex-col md:flex-row md:items-center bg-white rounded-3xl md:rounded-full shadow-lg border-2 transition-all duration-300 ${activeField ? "border-cyan-400 shadow-2xl shadow-cyan-100" : "border-gray-100 hover:shadow-xl"
                 }`}>
 
-                {/* Location Field */}
                 <div
-                    className={`flex-1 px-5 py-4 cursor-pointer rounded-l-full transition-all ${activeField === "location" ? "bg-cyan-50" : "hover:bg-gray-50"
+                    className={`flex-1 px-5 py-4 cursor-pointer rounded-t-3xl md:rounded-none md:rounded-l-full transition-all ${activeField === "location" ? "bg-cyan-50" : "hover:bg-gray-50"
                         }`}
                     onClick={() => setActiveField(activeField === "location" ? null : "location")}
                 >
@@ -275,7 +274,8 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
                 </div>
 
                 {/* Divider */}
-                <div className="w-px h-10 bg-gray-200"></div>
+                <div className="hidden md:block w-px h-10 bg-gray-200"></div>
+                <div className="block md:hidden h-px w-full bg-gray-100"></div>
 
                 {/* Check-in Field */}
                 <div
@@ -295,7 +295,8 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
                 </div>
 
                 {/* Divider */}
-                <div className="w-px h-10 bg-gray-200"></div>
+                <div className="hidden md:block w-px h-10 bg-gray-200"></div>
+                <div className="block md:hidden h-px w-full bg-gray-100"></div>
 
                 {/* Check-out Field */}
                 <div
@@ -315,7 +316,8 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
                 </div>
 
                 {/* Divider */}
-                <div className="w-px h-10 bg-gray-200"></div>
+                <div className="hidden md:block w-px h-10 bg-gray-200"></div>
+                <div className="block md:hidden h-px w-full bg-gray-100"></div>
 
                 {/* Guests Field */}
                 <div
@@ -335,12 +337,13 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
                 </div>
 
                 {/* Search Button */}
-                <div className="pr-2">
+                <div className="p-3 md:pr-2 md:p-0">
                     <button
                         onClick={handleSearch}
-                        className="bg-gradient-to-r from-rose-500 to-pink-600 text-white p-4 rounded-full hover:from-rose-600 hover:to-pink-700 transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+                        className="w-full md:w-auto flex justify-center items-center gap-2 bg-gradient-to-r from-rose-500 to-pink-600 text-white p-4 rounded-full hover:from-rose-600 hover:to-pink-700 transition-all shadow-lg hover:shadow-xl active:scale-95"
                     >
                         <Search size={20} />
+                        <span className="md:hidden font-bold">Tìm kiếm</span>
                     </button>
                 </div>
             </div>
@@ -356,7 +359,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
 
             {/* ========== DROPDOWNS ========== */}
             {activeField && (
-                <div className="absolute top-full left-0 right-0 mt-4 z-50 flex justify-start">
+                <div className="absolute top-full left-0 right-0 mt-2 md:mt-4 z-50 flex justify-center md:justify-start">
 
                     {/* Location Dropdown */}
                     {activeField === "location" && (

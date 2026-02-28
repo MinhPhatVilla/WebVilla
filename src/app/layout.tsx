@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import FloatingSocialButtons from "@/components/FloatingSocialButtons";
@@ -15,6 +15,13 @@ export const metadata: Metadata = {
         description: "Trải nghiệm kỳ nghỉ sang trọng với hồ bơi riêng, view biển tuyệt đẹp",
         type: "website",
     },
+};
+
+export const viewport: Viewport = {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
 };
 
 export default function RootLayout({

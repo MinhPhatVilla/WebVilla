@@ -191,7 +191,7 @@ export default function HomePage() {
                         </Link>
 
                         {/* Navigation Tabs */}
-                        <div className="flex bg-gray-100 rounded-full p-1">
+                        <div className="flex bg-gray-100 rounded-full p-1 overflow-x-auto scrollbar-hide max-w-[60%] sm:max-w-none">
                             <button
                                 onClick={() => setActiveTab('all')}
                                 className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${activeTab === 'all'
