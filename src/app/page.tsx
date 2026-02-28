@@ -4,7 +4,7 @@ import { useState, useMemo, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Property } from "@/lib/mock-data";
+import { Property } from "@/types/property";
 import { usePropertyStore } from "@/lib/property-store";
 import { useAuth } from "@/lib/auth-context";
 import { MapPin, Star, Users, BedDouble, Waves, Flame, Phone, X, SlidersHorizontal, LogIn, UserCircle, LogOut, ChevronDown, Heart, Luggage, MessageSquare, Settings, Globe, HelpCircle, Home } from "lucide-react";

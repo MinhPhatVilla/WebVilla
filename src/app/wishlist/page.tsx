@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { usePropertyStore } from "@/lib/property-store";
 import { useAuth } from "@/lib/auth-context";
-import { Property } from "@/lib/mock-data";
+import { Property } from "@/types/property";
 import { ArrowLeft, MapPin, Heart, BedDouble, Users, Waves, Flame, Star, Loader2, Home } from "lucide-react";
 
 // ========== PROPERTY CARD ==========
