@@ -359,155 +359,197 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
 
             {/* ========== DROPDOWNS ========== */}
             {activeField && (
-                <div className="absolute top-full left-0 right-0 mt-2 md:mt-4 z-50 flex justify-center md:justify-start">
+                <>
+                    {/* Mobile Overlay Background */}
+                    <div
+                        className="md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[90] animate-in fade-in"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveField(null);
+                        }}
+                    />
 
-                    {/* Location Dropdown */}
-                    {activeField === "location" && (
-                        <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-6 animate-fadeIn w-80">
-                            <p className="text-xs font-bold text-gray-400 mb-4 uppercase tracking-widest">Chọn khu vực</p>
-                            <div className="space-y-2">
-                                {locations.map((loc) => (
-                                    <button
-                                        key={loc.name}
-                                        onClick={() => { setLocation(loc.name); setActiveField("checkin"); }}
-                                        className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all ${location === loc.name
-                                            ? "bg-cyan-50 border-2 border-cyan-400 shadow-sm"
-                                            : "hover:bg-gray-50 border-2 border-transparent"
-                                            }`}
-                                    >
-                                        <span className="text-3xl">{loc.icon}</span>
-                                        <div className="text-left">
-                                            <p className="font-bold text-gray-900">{loc.name}</p>
-                                            <p className="text-xs text-gray-500">{loc.desc}</p>
-                                        </div>
-                                        {location === loc.name && (
-                                            <div className="ml-auto w-6 h-6 bg-cyan-500 rounded-full flex items-center justify-center">
-                                                <span className="text-white text-xs">✓</span>
-                                            </div>
-                                        )}
+                    {/* Dropdown Container */}
+                    <div className="fixed bottom-0 left-0 right-0 z-[100] md:absolute md:bottom-auto md:top-full md:mt-4 md:z-50 md:flex md:justify-start">
+
+                        {/* Location Dropdown */}
+                        {activeField === "location" && (
+                            <div className="bg-white rounded-t-[2rem] md:rounded-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.1)] md:shadow-2xl border-t md:border border-gray-100 p-6 md:p-6 w-full md:w-80 animate-in slide-in-from-bottom-full md:slide-in-from-top-2 max-h-[85vh] overflow-y-auto">
+                                <div className="flex items-center justify-between mb-4">
+                                    <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Chọn khu vực</p>
+                                    <button onClick={(e) => { e.stopPropagation(); setActiveField(null); }} className="md:hidden w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200">
+                                        <X size={16} />
                                     </button>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Check-in Calendar */}
-                    {activeField === "checkin" && (
-                        <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-6 animate-fadeIn w-[340px] mx-auto">
-                            <div className="flex items-center gap-2 mb-4">
-                                <div className="w-2 h-2 rounded-full bg-cyan-500"></div>
-                                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Chọn ngày nhận phòng</p>
-                            </div>
-                            <MiniCalendar
-                                selectedDate={checkIn}
-                                highlightStart={checkIn}
-                                highlightEnd={checkOut}
-                                onSelect={(date) => {
-                                    setCheckIn(date);
-                                    if (checkOut && date >= checkOut) setCheckOut("");
-                                    setActiveField("checkout");
-                                }}
-                            />
-                            {checkIn && (
-                                <div className="mt-4 pt-4 border-t border-gray-100 text-center">
-                                    <p className="text-sm text-gray-500">
-                                        Nhận phòng: <span className="font-bold text-cyan-600">{getDayOfWeek(checkIn)}, {formatDate(checkIn)}</span>
-                                    </p>
                                 </div>
-                            )}
-                        </div>
-                    )}
-
-                    {/* Check-out Calendar */}
-                    {activeField === "checkout" && (
-                        <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-6 animate-fadeIn w-[340px] mx-auto">
-                            <div className="flex items-center gap-2 mb-4">
-                                <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Chọn ngày trả phòng</p>
+                                <div className="space-y-2">
+                                    {locations.map((loc) => (
+                                        <button
+                                            key={loc.name}
+                                            onClick={() => { setLocation(loc.name); setActiveField("checkin"); }}
+                                            className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all ${location === loc.name
+                                                ? "bg-cyan-50 border-2 border-cyan-400 shadow-sm"
+                                                : "hover:bg-gray-50 border-2 border-transparent"
+                                                }`}
+                                        >
+                                            <span className="text-3xl">{loc.icon}</span>
+                                            <div className="text-left">
+                                                <p className="font-bold text-gray-900">{loc.name}</p>
+                                                <p className="text-xs text-gray-500">{loc.desc}</p>
+                                            </div>
+                                            {location === loc.name && (
+                                                <div className="ml-auto w-6 h-6 bg-cyan-500 rounded-full flex items-center justify-center">
+                                                    <span className="text-white text-xs">✓</span>
+                                                </div>
+                                            )}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
-                            <MiniCalendar
-                                selectedDate={checkOut}
-                                minDate={checkIn}
-                                highlightStart={checkIn}
-                                highlightEnd={checkOut}
-                                onSelect={(date) => {
-                                    setCheckOut(date);
-                                    setActiveField("guests");
-                                }}
-                            />
-                            {checkIn && (
-                                <div className="mt-4 pt-4 border-t border-gray-100">
-                                    <div className="flex items-center justify-between text-sm">
-                                        <span className="text-gray-500">Nhận phòng:</span>
-                                        <span className="font-bold text-cyan-600">{getDayOfWeek(checkIn)}, {formatDate(checkIn)}</span>
+                        )}
+
+                        {/* Check-in Calendar */}
+                        {activeField === "checkin" && (
+                            <div className="bg-white rounded-t-[2rem] md:rounded-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.1)] md:shadow-2xl border-t md:border border-gray-100 p-6 md:p-6 w-full md:w-[340px] md:mx-auto animate-in slide-in-from-bottom-full md:slide-in-from-top-2 max-h-[85vh] overflow-y-auto">
+                                <div className="flex items-center justify-between mb-4">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2 h-2 rounded-full bg-cyan-500"></div>
+                                        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Chọn ngày nhận phòng</p>
                                     </div>
-                                    {checkOut && (
-                                        <>
-                                            <div className="flex items-center justify-between text-sm mt-1">
-                                                <span className="text-gray-500">Trả phòng:</span>
-                                                <span className="font-bold text-blue-600">{getDayOfWeek(checkOut)}, {formatDate(checkOut)}</span>
-                                            </div>
-                                            <div className="flex items-center justify-between text-sm mt-2 pt-2 border-t border-gray-100">
-                                                <span className="text-gray-500">Tổng:</span>
-                                                <span className="font-bold text-gray-900 text-base">{nights} đêm</span>
-                                            </div>
-                                        </>
-                                    )}
-                                </div>
-                            )}
-                        </div>
-                    )}
-
-                    {/* Guests Counter */}
-                    {activeField === "guests" && (
-                        <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-6 animate-fadeIn w-80 ml-auto">
-                            <p className="text-xs font-bold text-gray-400 mb-5 uppercase tracking-widest">Số lượng khách</p>
-
-                            {/* Adults */}
-                            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl mb-3">
-                                <div>
-                                    <p className="font-bold text-gray-900">Người lớn</p>
-                                    <p className="text-xs text-gray-500">Từ 13 tuổi trở lên</p>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <button
-                                        onClick={() => setGuests(Math.max(1, guests - 1))}
-                                        disabled={guests <= 1}
-                                        className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-cyan-500 hover:bg-cyan-50 transition-all disabled:opacity-30 disabled:cursor-not-allowed active:scale-90"
-                                    >
-                                        <Minus size={16} />
-                                    </button>
-                                    <span className="text-2xl font-bold text-gray-900 w-8 text-center">{guests}</span>
-                                    <button
-                                        onClick={() => setGuests(Math.min(30, guests + 1))}
-                                        disabled={guests >= 30}
-                                        className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-cyan-500 hover:bg-cyan-50 transition-all disabled:opacity-30 disabled:cursor-not-allowed active:scale-90"
-                                    >
-                                        <Plus size={16} />
+                                    <button onClick={(e) => { e.stopPropagation(); setActiveField(null); }} className="md:hidden w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200">
+                                        <X size={16} />
                                     </button>
                                 </div>
+                                <MiniCalendar
+                                    selectedDate={checkIn}
+                                    highlightStart={checkIn}
+                                    highlightEnd={checkOut}
+                                    onSelect={(date) => {
+                                        setCheckIn(date);
+                                        if (checkOut && date >= checkOut) setCheckOut("");
+                                        setActiveField("checkout");
+                                    }}
+                                />
+                                {checkIn && (
+                                    <div className="mt-4 pt-4 border-t border-gray-100 text-center">
+                                        <p className="text-sm text-gray-500">
+                                            Nhận phòng: <span className="font-bold text-cyan-600">{getDayOfWeek(checkIn)}, {formatDate(checkIn)}</span>
+                                        </p>
+                                    </div>
+                                )}
                             </div>
+                        )}
 
-                            {/* Quick Select */}
-                            <div className="flex gap-2 mt-4">
-                                {[2, 4, 6, 8, 10].map((num) => (
-                                    <button
-                                        key={num}
-                                        onClick={() => setGuests(num)}
-                                        className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${guests === num
-                                            ? "bg-cyan-500 text-white shadow-md"
-                                            : "bg-gray-100 text-gray-600 hover:bg-cyan-50 hover:text-cyan-700"
-                                            }`}
-                                    >
-                                        {num}
+                        {/* Check-out Calendar */}
+                        {activeField === "checkout" && (
+                            <div className="bg-white rounded-t-[2rem] md:rounded-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.1)] md:shadow-2xl border-t md:border border-gray-100 p-6 md:p-6 w-full md:w-[340px] md:mx-auto animate-in slide-in-from-bottom-full md:slide-in-from-top-2 max-h-[85vh] overflow-y-auto">
+                                <div className="flex items-center justify-between mb-4">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                                        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Chọn ngày trả phòng</p>
+                                    </div>
+                                    <button onClick={(e) => { e.stopPropagation(); setActiveField(null); }} className="md:hidden w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200">
+                                        <X size={16} />
                                     </button>
-                                ))}
+                                </div>
+                                <MiniCalendar
+                                    selectedDate={checkOut}
+                                    minDate={checkIn}
+                                    highlightStart={checkIn}
+                                    highlightEnd={checkOut}
+                                    onSelect={(date) => {
+                                        setCheckOut(date);
+                                        setActiveField("guests");
+                                    }}
+                                />
+                                {checkIn && (
+                                    <div className="mt-4 pt-4 border-t border-gray-100">
+                                        <div className="flex items-center justify-between text-sm">
+                                            <span className="text-gray-500">Nhận phòng:</span>
+                                            <span className="font-bold text-cyan-600">{getDayOfWeek(checkIn)}, {formatDate(checkIn)}</span>
+                                        </div>
+                                        {checkOut && (
+                                            <>
+                                                <div className="flex items-center justify-between text-sm mt-1">
+                                                    <span className="text-gray-500">Trả phòng:</span>
+                                                    <span className="font-bold text-blue-600">{getDayOfWeek(checkOut)}, {formatDate(checkOut)}</span>
+                                                </div>
+                                                <div className="flex items-center justify-between text-sm mt-2 pt-2 border-t border-gray-100">
+                                                    <span className="text-gray-500">Tổng:</span>
+                                                    <span className="font-bold text-gray-900 text-base">{nights} đêm</span>
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
+                                )}
                             </div>
+                        )}
 
-                            <p className="text-xs text-gray-400 mt-3 text-center">Tối đa 30 khách</p>
-                        </div>
-                    )}
-                </div>
+                        {/* Guests Counter */}
+                        {activeField === "guests" && (
+                            <div className="bg-white rounded-t-[2rem] md:rounded-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.1)] md:shadow-2xl border-t md:border border-gray-100 p-6 md:p-6 w-full md:w-80 md:ml-auto animate-in slide-in-from-bottom-full md:slide-in-from-top-2 max-h-[85vh] overflow-y-auto">
+                                <div className="flex items-center justify-between mb-5">
+                                    <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Số lượng khách</p>
+                                    <button onClick={(e) => { e.stopPropagation(); setActiveField(null); }} className="md:hidden w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200">
+                                        <X size={16} />
+                                    </button>
+                                </div>
+
+                                {/* Adults */}
+                                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl mb-3">
+                                    <div>
+                                        <p className="font-bold text-gray-900">Người lớn</p>
+                                        <p className="text-xs text-gray-500">Từ 13 tuổi trở lên</p>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <button
+                                            onClick={() => setGuests(Math.max(1, guests - 1))}
+                                            disabled={guests <= 1}
+                                            className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-cyan-500 hover:bg-cyan-50 transition-all disabled:opacity-30 disabled:cursor-not-allowed active:scale-90"
+                                        >
+                                            <Minus size={16} />
+                                        </button>
+                                        <span className="text-2xl font-bold text-gray-900 w-8 text-center">{guests}</span>
+                                        <button
+                                            onClick={() => setGuests(Math.min(30, guests + 1))}
+                                            disabled={guests >= 30}
+                                            className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-cyan-500 hover:bg-cyan-50 transition-all disabled:opacity-30 disabled:cursor-not-allowed active:scale-90"
+                                        >
+                                            <Plus size={16} />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Quick Select */}
+                                <div className="flex gap-2 mt-4">
+                                    {[2, 4, 6, 8, 10].map((num) => (
+                                        <button
+                                            key={num}
+                                            onClick={() => setGuests(num)}
+                                            className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${guests === num
+                                                ? "bg-cyan-500 text-white shadow-md"
+                                                : "bg-gray-100 text-gray-600 hover:bg-cyan-50 hover:text-cyan-700"
+                                                }`}
+                                        >
+                                            {num}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                <p className="text-xs text-gray-400 mt-3 text-center">Tối đa 30 khách</p>
+                            </div>
+                        )}
+                        {activeField && (
+                            <div className="p-4 md:hidden border-t border-gray-100 bg-white">
+                                <button
+                                    onClick={handleSearch}
+                                    className="w-full bg-gradient-to-r from-rose-500 to-pink-600 text-white p-3 rounded-full font-bold shadow-lg shadow-rose-200"
+                                >
+                                    Tìm kiếm ({nights > 0 ? `${nights} đêm, ` : ""}{guests} khách)
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </>
             )}
         </div>
     );
