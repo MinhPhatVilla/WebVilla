@@ -403,8 +403,8 @@ export default function HomePage() {
             </div>
 
             {/* Search Bar - Sticky on Desktop only */}
-            <div className="md:sticky md:top-16 z-40 bg-gradient-to-b from-cyan-50/95 md:to-cyan-50/80 backdrop-blur-md py-4 px-4 border-b border-cyan-100/50">
-                <div className="max-w-4xl mx-auto">
+            <div className="md:sticky md:top-16 z-40 bg-gradient-to-b from-cyan-50/95 md:to-cyan-50/80 md:backdrop-blur-md py-4 px-4 border-b border-cyan-100/50">
+                <div className="max-w-4xl mx-auto block">
                     <SearchBar onSearch={handleSearch} />
                 </div>
             </div>
