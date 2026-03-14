@@ -1,13 +1,80 @@
 # 🏠 MINH PHÁT VILLA - Website Đặt Phòng Villa & Homestay
 
-> **Phiên bản:** 0.3.5  
-> **Ngày cập nhật:** 28/02/2026  
+> **Phiên bản:** 0.4.0  
+> **Ngày cập nhật:** 14/03/2026  
 > **Ngôn ngữ giao diện:** Tiếng Việt  
 > **Trạng thái:** Đang phát triển
 
 ---
 
-## 🌟 Mới Nhất: Cập nhật Tiện Ích chuẩn Villa & Tối ưu Lịch Booking Tự Do (v0.3.5)
+## 🌟 Mới Nhất: Tối Ưu Mobile UI Toàn Diện — SearchBar Fullscreen, Avatar Header & 7 Tính Năng Nâng Cấp (v0.4.0)
+
+**Tính năng đã hoàn thành:**
+
+### 🔍 SearchBar Mobile — Fullscreen Modal (Kiểu Airbnb/Traveloka)
+- **Trang chủ Mobile:** Thanh tìm kiếm 4 ô lớn được thu gọn thành 1 nút nhỏ xinh (Search Pill) hiển thị: `🔍 Địa điểm bất kỳ • Thời gian • 1 khách`.
+- **Khi bấm vào:** Bung ra 1 màn hình Fullscreen Modal chiếm toàn bộ 100% màn hình điện thoại gồm:
+  - Header "Tìm kiếm" + nút đóng (X) + nút Xóa bộ lọc.
+  - 4 ô (Địa điểm, Nhận phòng, Trả phòng, Khách) dạng card bo tròn.
+  - Bảng chọn (Lịch, Danh sách địa điểm, Số khách) được cuộn tự do bên trong modal, không bị cắt hay chèn lên nhau.
+  - Nút **"Tìm kiếm"** to đùng, cố định (sticky) ở đáy màn hình, luôn sẵn sàng để bấm.
+- **Desktop:** Giữ nguyên giao diện thanh ngang inline truyền thống — không bị ảnh hưởng gì.
+
+### 👤 Avatar Header cho Mobile
+- Thay thế 2 nút chữ "Đăng nhập / Đăng ký" bằng **1 Icon Avatar tròn nhỏ** (hình người) nằm góc trên bên phải cạnh Logo.
+- Bấm vào → xổ ra **Dropdown Menu** thông minh:
+  - **Chưa đăng nhập:** Đăng nhập | Đăng ký.
+  - **Đã đăng nhập:** Tin nhắn | Đơn booking | Hồ sơ | Đăng xuất (hiển thị chữ cái đầu tên + gradient xanh).
+- Hoạt động cả trên Desktop lẫn Mobile.
+
+### 📱 Floating Social Buttons — Tối Ưu Mobile
+- **Thu nhỏ size** 3 bong bóng (Phone, Facebook, Zalo) xuống **44px** trên tất cả trang Mobile.
+- **Ẩn hoàn toàn** các nút này trên trang `/login` và `/register` để tránh đè lên form đăng ký/đăng nhập.
+
+### 🔤 Đổi Font Chữ → Montserrat
+- Thay thế font Outfit bằng **Montserrat** (Google Fonts) trên toàn bộ hệ thống.
+
+### 🏠 Phân Biệt Icon Villa & Homestay
+- Icon hiển thị trên thẻ (Card) của Villa và Homestay đã được **thay bằng 2 icon khác nhau** cho dễ nhận diện.
+
+### 💰 Hiển Thị Giá Cuối Tuần Động (Dynamic Weekend Price)
+- Khi bộ lọc tìm kiếm dính vào **Thứ 7**, giá trên Card trang chủ tự động chuyển sang hiển thị **giá Cuối Tuần** thay vì giá Ngày thường.
+
+### 🚫 Bỏ Dấu ~ Trên Giá
+- Loại bỏ dấu tilde (`~`) khỏi giá hiển thị trên PropertyCard và trang Admin cho gọn gàng hơn.
+
+### 📞 Mã Vùng Quốc Gia (+84)
+- Thêm dropdown chọn mã vùng quốc gia (`+84 Việt Nam`) vào ô nhập số điện thoại trên trang Checkout.
+
+### 🔒 Bắt Buộc Đăng Nhập Để Đặt Phòng
+- Khách chưa đăng nhập bấm "Đặt phòng" → Redirect sang trang Login → Sau khi login xong tự quay lại trang Booking.
+
+### 🏨 Hiển Thị "HẾT PHÒNG" Thay Vì Ẩn
+- Khi tìm kiếm trúng ngày đã có booking, thẻ căn đó **không bị xoá khỏi danh sách** mà sẽ **làm mờ + hiện chữ "HẾT PHÒNG"** giúp khách vẫn thấy thông tin tham khảo.
+
+### 🐛 Bugs Đã Fix
+- **CSS Stacking Context:** `backdrop-blur` trên container SearchBar tạo ra "lồng CSS" khiến Modal Fullscreen bị giam bên trong div nhỏ trên Mobile → Đã tháo `backdrop-blur` khỏi Mobile (chỉ giữ `md:backdrop-blur-md` cho Desktop).
+- **Dropdown không hiển thị đủ trên Mobile:** Các bảng chọn Địa điểm, Lịch bị cắt cụt trên điện thoại → Đã chuyển sang Bottom Sheet / Fullscreen Modal.
+- **Floating Buttons đè lên form Login/Register:** 3 nút Zalo/Facebook/Phone che phủ nút đăng ký trên Mobile → Ẩn hoàn toàn trên 2 trang này.
+
+**Files đã chỉnh sửa:**
+| File | Thay đổi |
+|---|---|
+| `src/components/SearchBar.tsx` | Viết lại hoàn toàn: Compact Trigger (Mobile), Fullscreen Modal, Sticky Footer Button, Desktop inline giữ nguyên |
+| `src/app/page.tsx` | Header Avatar thống nhất Mobile+Desktop, logic `isBooked` (HẾT PHÒNG), dynamic weekend price, bỏ `backdrop-blur` trên Mobile |
+| `src/components/FloatingSocialButtons.tsx` | Thu nhỏ 44px trên Mobile, ẩn trên `/login` và `/register` |
+| `src/app/checkout/page.tsx` | Thêm dropdown mã vùng +84 cho SĐT |
+| `src/app/layout.tsx` | Đổi font sang Montserrat |
+
+**Ghi chú quan trọng cho lần sau:**
+- SearchBar **Desktop giữ nguyên hoàn toàn**, chỉ Mobile mới dùng Fullscreen Modal.
+- Trên Desktop, khi bấm dropdown vẫn có **lớp overlay đen mờ** (backdrop-blur) che phủ nền. Trên Mobile không dùng overlay riêng mà dùng Fullscreen Modal.
+- Các animation `animate-in`, `slide-in-from-bottom`, `fade-in` được sử dụng — cần đảm bảo Tailwind plugin `tailwindcss-animate` đã cài.
+- Cần test kỹ trên nhiều loại điện thoại (iPhone SE, iPhone 14, Samsung Galaxy) để đảm bảo `100dvh` hoạt động đúng.
+
+---
+
+## 🌟 Lịch sử: Cập nhật Tiện Ích chuẩn Villa & Tối ưu Lịch Booking Tự Do (v0.3.5)
 
 **Tính năng đã hoàn thành:**
 - **Cập nhật Tiện ích chuẩn gu Vũng Tàu (Amenities Update):**
@@ -125,7 +192,7 @@
 | **Framework** | Next.js (App Router) | 14.1.0 |
 | **UI Library** | React | ^18 |
 | **Styling** | Tailwind CSS | ^3.3.0 |
-| **Font** | Outfit (Google Fonts) | — |
+| **Font** | Montserrat (Google Fonts) | — |
 | **Icons** | Lucide React | ^0.300.0 |
 
 ### Backend & Database
@@ -438,6 +505,11 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=       # Anon key (RLS protected)
 - [x] **🆕 Trang Hồ sơ cá nhân** (`/profile`) — Xem/sửa tên, SĐT, avatar hero card
 - [x] **🆕 Trang Chuyến đi** (`/trips`) — Danh sách booking, filter, search
 - [x] **🆕 Trang Tin nhắn** (`/messages`) — Chat UI kiểu Messenger
+- [x] **🆕 SearchBar Mobile Fullscreen Modal** (kiểu Airbnb) — Compact Trigger + Modal toàn màn hình
+- [x] **🆕 Avatar Header Mobile** — Icon Avatar + Dropdown Menu cho tất cả trạng thái
+- [x] **🆕 Floating Buttons tối ưu** — Thu nhỏ 44px Mobile, ẩn trên Login/Register
+- [x] **🆕 Bắt buộc đăng nhập để đặt phòng** — Redirect Login → quay lại Booking
+- [x] **🆕 Hiển thị HẾT PHÒNG** — Làm mờ card + badge thay vì ẩn
 - [ ] Đánh giá / Review từ khách hàng
 - [ ] Bản đồ Google Maps tương tác trên trang chi tiết
 - [ ] Responsive mobile menu (hamburger)
@@ -503,7 +575,8 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=       # Anon key (RLS protected)
 
 | Ngày | Nội dung thay đổi |
 |---|---|
-| **27/02/2026** | 🆕 **[Session 4]** Hoàn thiện tính năng Dời lịch trình 1 lần & Xác nhận Thanh toán thủ công qua Admin |
+| **14/03/2026** | 🆕 **[Session 6]** Tối ưu Mobile UI toàn diện: SearchBar Fullscreen Modal, Avatar Header, Floating Buttons thu nhỏ, bắt buộc đăng nhập đặt phòng, font Montserrat, dynamic weekend price, logic HẾT PHÒNG, mã vùng +84, fix CSS stacking context bug |
+| **28/02/2026** | 🆕 **[Session 5]** Cập nhật Tiện Ích chuẩn Villa (Bida, Arcade, Foosball) & Tối ưu Lịch Booking Tự Do |
 | **26/02/2026 (tối)** | 🆕 **[Session 3]** Xây dựng tính năng hồ sơ khách hàng — Xem chi tiết bên dưới |
 | **26/02/2026 (chiều)** | 🆕 **[Session 2]** Xây dựng hệ thống xác thực hoàn chỉnh — Xem chi tiết bên dưới |
 | **26/02/2026 (sáng)** | Kết nối đầy đủ 7 trang (Admin Dashboard, Properties CRUD, Bookings, Users, Trang chủ, Chi tiết, Checkout) với Supabase. Tạo 8 file SQL migration + các hàm thống kê admin |
@@ -620,18 +693,20 @@ npm run dev
 
 ### ⚠️ Việc Cần Làm Tiếp (Next Session)
 
-1. **Bảo vệ trang Checkout** — Redirect user chưa đăng nhập về `/login`
+1. **Test Mobile trên nhiều thiết bị** — Kiểm tra SearchBar Fullscreen Modal hoạt động đúng trên iPhone SE, iPhone 14, Samsung Galaxy, v.v.
 2. **Trang Quên mật khẩu** (`/forgot-password`) — Gửi email reset password
-3. **Trang Hồ sơ cá nhân** (`/profile`) — Xem/sửa thông tin user
-4. **OTP length** — Supabase gửi 8 số, Dashboard không cho đổi thành 6 trên Free Plan. Hiện tại code chấp nhận mọi độ dài (≥ 6 số). Nếu muốn chính xác 6 số, cần upgrade Supabase hoặc dùng API `PATCH /v1/projects/{id}/config/auth` với `mailer_otp_length: 6`.
-5. **Mobile responsive** — Header cần hamburger menu cho mobile (nút Đăng nhập/Đăng ký bị ẩn trên mobile)
+3. **Quản lý hình ảnh nâng cao** — Upload ảnh qua Supabase Storage thay vì URL
+4. **Module Doanh thu** — Thống kê doanh thu theo ngày/tháng cho Admin
+5. **Responsive chi tiết** — Rà soát toàn bộ trang chi tiết property `/[type]/[id]` trên Mobile
+6. **Xoá mockup HTML** — Dọn dẹp các file HTML prototype không còn cần
 
 ### 🔧 Lưu ý kỹ thuật
 
-1. **Dual Data Source**: Supabase (chính) + Sanity CMS (nội dung rich) — chưa đồng bộ hoàn toàn
-2. **Mock Data vẫn tồn tại**: `mock-data.ts` chứa interface `Property` và dữ liệu mẫu
-3. **Admin Auth giả lập**: Dùng mật khẩu cố định cấu hình trong `layout.tsx`
-4. **Thanh toán chưa tự động**: Chỉ tạo QR, chưa có webhook xác nhận
-5. **Supabase Project ID**: `your-supabase-project-id`
-6. **Gmail account**: `your-email@gmail.com` (dùng cho SMTP)
+1. **SearchBar Architecture**: Mobile dùng `isMobileModalOpen` state → hiện Fullscreen Modal (`fixed inset-0 z-[100] h-[100dvh]`). Desktop dùng inline dropdown truyền thống (`md:block`). Hai luồng hoàn toàn tách biệt.
+2. **CSS Stacking Context Trap**: Không được dùng `backdrop-blur`, `transform`, `filter`, hoặc `will-change` trên container cha của SearchBar trên Mobile — sẽ phá vỡ `position: fixed` của Modal bên trong.
+3. **Dual Data Source**: Supabase (chính) + Sanity CMS (nội dung rich) — chưa đồng bộ hoàn toàn
+4. **Mock Data vẫn tồn tại**: `mock-data.ts` chứa interface `Property` và dữ liệu mẫu
+5. **Admin Auth giả lập**: Dùng mật khẩu cố định cấu hình trong `layout.tsx`
+6. **Thanh toán chưa tự động**: Chỉ tạo QR, chưa có webhook xác nhận
 7. **Auth Context** wraps toàn app → mọi component đều access được user/profile qua `useAuth()`
+8. **Font hiện tại**: Montserrat (Google Fonts) — đã thay thế Outfit từ v0.4.0

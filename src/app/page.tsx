@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -145,6 +145,16 @@ export default function HomePage() {
     const [bookedPropertyIds, setBookedPropertyIds] = useState<Set<string>>(new Set());
     const [isSearchingBookings, setIsSearchingBookings] = useState(false);
     const resultsRef = useRef<HTMLDivElement>(null);
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    // 🔍 Theo dõi scroll để thu nhỏ SearchBar
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 80);
+        };
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     // ===== FILTER LOGIC =====
     const allProperties = store.properties;
@@ -402,10 +412,39 @@ export default function HomePage() {
                 </header>
             </div>
 
-            {/* Search Bar - Sticky on Desktop only */}
-            <div className="md:sticky md:top-16 z-40 bg-gradient-to-b from-cyan-50/95 md:to-cyan-50/80 md:backdrop-blur-md py-4 px-4 border-b border-cyan-100/50">
-                <div className="max-w-4xl mx-auto block">
-                    <SearchBar onSearch={handleSearch} />
+            {/* Search Bar - Sticky on Desktop only + Thu nhỏ khi scroll */}
+            <div className={`md:sticky md:top-16 z-40 bg-gradient-to-b from-cyan-50/95 md:to-cyan-50/80 md:backdrop-blur-md px-4 border-b border-cyan-100/50 transition-all duration-300 ${isScrolled ? 'py-2' : 'py-4'}`}>
+                <div className={`max-w-4xl mx-auto block transition-transform duration-300 ${isScrolled ? 'scale-[0.92] origin-center' : 'scale-100'}`}>
+                    <SearchBar onSearch={handleSearch} isCompact={isScrolled} />
+                </div>
+            </div>
+
+            {/* 🎵 TikTok Banner — Tăng uy tín với khách hàng */}
+            <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
+                <div className="max-w-7xl mx-auto px-4 py-3 sm:py-4">
+                    <a
+                        href="https://www.tiktok.com/@villavungtaureview?lang=vi-VN"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-3 sm:gap-4 group"
+                    >
+                        {/* Logo TikTok SVG */}
+                        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[#25F4EE] via-[#FE2C55] to-[#000] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
+                            <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V9.34a8.16 8.16 0 004.76 1.52V7.46a4.85 4.85 0 01-1-.77z"/>
+                            </svg>
+                        </div>
+                        <div className="text-center sm:text-left">
+                            <p className="text-white font-bold text-sm sm:text-base group-hover:text-[#FE2C55] transition-colors">
+                                📺 Xem review Villa thực tế trên TikTok
+                            </p>
+                            <p className="text-gray-400 text-xs sm:text-sm">@villavungtaureview — Video thực tế, đánh giá chân thật 🎬</p>
+                        </div>
+                        <div className="hidden sm:flex items-center gap-1 bg-[#FE2C55] text-white px-4 py-2 rounded-full text-sm font-bold group-hover:bg-[#ff4b6e] transition-all shadow-lg">
+                            Theo dõi ngay
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
+                        </div>
+                    </a>
                 </div>
             </div>
 
@@ -540,10 +579,12 @@ export default function HomePage() {
                             <h4 className="font-bold mb-4">Theo dõi chúng tôi</h4>
                             <div className="flex gap-4">
                                 <a href="https://www.facebook.com/MINHPHATVILLA" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer">
-                                    <span className="text-sm font-bold">f</span>
+                                    <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                                 </a>
-                                <a href="https://www.tiktok.com/@minhphatvilla" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-black rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer">
-                                    <span className="text-sm font-bold">TK</span>
+                                <a href="https://www.tiktok.com/@villavungtaureview?lang=vi-VN" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-black rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer relative overflow-hidden">
+                                    <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V9.34a8.16 8.16 0 004.76 1.52V7.46a4.85 4.85 0 01-1-.77z"/>
+                                    </svg>
                                 </a>
                                 <a href="https://zalo.me/0333160365" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer">
                                     <span className="text-sm font-bold">Z</span>

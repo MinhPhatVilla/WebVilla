@@ -66,8 +66,14 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variable files
+# ⚠️ QUAN TRỌNG: KHÔNG BAO GIỜ push các file này lên Git!
+# Chứa: Supabase service_role key, Telegram token, các secret keys khác
 .env
 .env.*
+.env.local
+.env.development
+.env.production
+.env.staging
 !.env.example
 
 # parcel-bundler cache (https://parceljs.org/)

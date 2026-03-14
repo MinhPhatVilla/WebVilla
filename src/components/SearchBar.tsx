@@ -10,6 +10,7 @@ interface SearchBarProps {
         checkOut: string;
         guests: number;
     }) => void;
+    isCompact?: boolean;
 }
 
 // ========== MINI CALENDAR COMPONENT ==========
@@ -189,7 +190,7 @@ function MiniCalendar({
 }
 
 // ========== MAIN SEARCH BAR ==========
-export default function SearchBar({ onSearch }: SearchBarProps) {
+export default function SearchBar({ onSearch, isCompact = false }: SearchBarProps) {
     const [activeField, setActiveField] = useState<string | null>(null);
     const [location, setLocation] = useState("");
     const [checkIn, setCheckIn] = useState("");
@@ -202,9 +203,9 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
         { name: "Vũng Tàu", icon: "🏖️", desc: "Tất cả khu vực Vũng Tàu" },
         { name: "Bãi Sau", icon: "🌊", desc: "Bãi biển dài, sóng đẹp" },
         { name: "Bãi Trước", icon: "🌅", desc: "Hoàng hôn tuyệt đẹp" },
-        { name: "Thùy Vân", icon: "🌴", desc: "Con đường ven biển thơ mộng" },
-        { name: "Trung tâm", icon: "🏙️", desc: "Tiện lợi, gần chợ và quán ăn" },
-        { name: "Núi Nhỏ", icon: "⛰️", desc: "View núi yên tĩnh, thư giãn" },
+        { name: "Long Cung", icon: "🏝️", desc: "Bãi biển hoang sơ, yên bình" },
+        { name: "Bãi Dứa", icon: "🌴", desc: "Bãi biển nhỏ xinh, nước trong" },
+        { name: "Bãi Dâu", icon: "🍓", desc: "Bãi tắm thơ mộng, view đẹp" },
     ];
 
     // Calculate number of nights
@@ -313,14 +314,14 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
 
                     {/* Location Field */}
                     <div
-                        className={`flex-1 px-4 py-4 md:px-5 md:py-4 cursor-pointer rounded-t-3xl md:rounded-none md:rounded-l-full transition-all ${activeField === "location" ? "bg-cyan-50" : "hover:bg-gray-50"
+                        className={`flex-1 cursor-pointer rounded-t-3xl md:rounded-none md:rounded-l-full transition-all ${isCompact ? 'px-3 py-2 md:px-4 md:py-2' : 'px-4 py-4 md:px-5 md:py-4'} ${activeField === "location" ? "bg-cyan-50" : "hover:bg-gray-50"
                             }`}
                         onClick={() => setActiveField(activeField === "location" ? null : "location")}
                     >
                         <div className="flex items-center gap-3">
                             <MapPin size={20} className="text-cyan-500 flex-shrink-0" />
                             <div className="text-left min-w-0">
-                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Địa điểm</p>
+                                <p className={`font-bold text-gray-400 uppercase tracking-widest ${isCompact ? 'text-[8px]' : 'text-[10px]'}`}>Địa điểm</p>
                                 <p className={`text-sm font-semibold truncate ${location ? "text-gray-900" : "text-gray-400"}`}>
                                     {location || "Chọn khu vực"}
                                 </p>
@@ -342,14 +343,14 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
 
                     {/* Check-in Field */}
                     <div
-                        className={`flex-1 px-4 py-3 md:px-5 md:py-4 cursor-pointer transition-all ${activeField === "checkin" ? "bg-cyan-50" : "hover:bg-gray-50"
+                        className={`flex-1 cursor-pointer transition-all ${isCompact ? 'px-3 py-2 md:px-4 md:py-2' : 'px-4 py-3 md:px-5 md:py-4'} ${activeField === "checkin" ? "bg-cyan-50" : "hover:bg-gray-50"
                             }`}
                         onClick={() => setActiveField(activeField === "checkin" ? null : "checkin")}
                     >
                         <div className="flex items-center gap-3">
                             <Calendar size={20} className="text-cyan-500 flex-shrink-0" />
                             <div className="text-left min-w-0">
-                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Nhận phòng</p>
+                                <p className={`font-bold text-gray-400 uppercase tracking-widest ${isCompact ? 'text-[8px]' : 'text-[10px]'}`}>Nhận phòng</p>
                                 <p className={`text-sm font-semibold truncate ${checkIn ? "text-gray-900" : "text-gray-400"}`}>
                                     {checkIn ? `${getDayOfWeek(checkIn)}, ${formatDate(checkIn)}` : "Chọn ngày"}
                                 </p>
@@ -363,14 +364,14 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
 
                     {/* Check-out Field */}
                     <div
-                        className={`flex-1 px-4 py-3 md:px-5 md:py-4 cursor-pointer transition-all ${activeField === "checkout" ? "bg-cyan-50" : "hover:bg-gray-50"
+                        className={`flex-1 cursor-pointer transition-all ${isCompact ? 'px-3 py-2 md:px-4 md:py-2' : 'px-4 py-3 md:px-5 md:py-4'} ${activeField === "checkout" ? "bg-cyan-50" : "hover:bg-gray-50"
                             }`}
                         onClick={() => setActiveField(activeField === "checkout" ? null : "checkout")}
                     >
                         <div className="flex items-center gap-3">
                             <Calendar size={20} className="text-cyan-500 flex-shrink-0" />
                             <div className="text-left min-w-0">
-                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Trả phòng</p>
+                                <p className={`font-bold text-gray-400 uppercase tracking-widest ${isCompact ? 'text-[8px]' : 'text-[10px]'}`}>Trả phòng</p>
                                 <p className={`text-sm font-semibold truncate ${checkOut ? "text-gray-900" : "text-gray-400"}`}>
                                     {checkOut ? `${getDayOfWeek(checkOut)}, ${formatDate(checkOut)}` : "Chọn ngày"}
                                 </p>
@@ -384,14 +385,14 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
 
                     {/* Guests Field */}
                     <div
-                        className={`flex-1 px-4 py-3 md:px-5 md:py-4 cursor-pointer transition-all ${activeField === "guests" ? "bg-cyan-50" : "hover:bg-gray-50"
+                        className={`flex-1 cursor-pointer transition-all ${isCompact ? 'px-3 py-2 md:px-4 md:py-2' : 'px-4 py-3 md:px-5 md:py-4'} ${activeField === "guests" ? "bg-cyan-50" : "hover:bg-gray-50"
                             }`}
                         onClick={() => setActiveField(activeField === "guests" ? null : "guests")}
                     >
                         <div className="flex items-center gap-3">
                             <Users size={20} className="text-cyan-500 flex-shrink-0" />
                             <div className="text-left min-w-0">
-                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Khách</p>
+                                <p className={`font-bold text-gray-400 uppercase tracking-widest ${isCompact ? 'text-[8px]' : 'text-[10px]'}`}>Khách</p>
                                 <p className={`text-sm font-semibold truncate ${guests > 1 ? "text-gray-900" : "text-gray-400"}`}>
                                     {guests > 1 ? `${guests} khách` : "Số khách"}
                                 </p>
@@ -403,9 +404,9 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
                     <div className="hidden md:block flex-shrink-0 p-2 pr-2">
                         <button
                             onClick={handleSearch}
-                            className="w-auto flex justify-center items-center gap-2 bg-gradient-to-r from-rose-500 to-pink-600 text-white p-4 rounded-full hover:from-rose-600 hover:to-pink-700 transition-all shadow-lg hover:shadow-xl active:scale-95"
+                            className={`w-auto flex justify-center items-center gap-2 bg-gradient-to-r from-rose-500 to-pink-600 text-white rounded-full hover:from-rose-600 hover:to-pink-700 transition-all shadow-lg hover:shadow-xl active:scale-95 ${isCompact ? 'p-3' : 'p-4'}`}
                         >
-                            <Search size={20} />
+                            <Search size={isCompact ? 18 : 20} />
                             <span className="hidden font-bold">Tìm kiếm</span>
                         </button>
                     </div>

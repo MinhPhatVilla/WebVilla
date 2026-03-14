@@ -35,25 +35,90 @@ const navItems = [
     { href: "/admin/users", icon: Users, label: "Người dùng", badge: null },
 ];
 
-// ── Login Screen ──
+// ── Login Screen ── (Supabase Auth + Admin Role Check)
 function LoginScreen({ onLogin }: { onLogin: () => void }) {
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState(false);
+    const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const [checking, setChecking] = useState(true);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    // 🔍 Kiểm tra session hiện tại khi vào trang
+    useEffect(() => {
+        const checkSession = async () => {
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    const { data: userData } = await supabase
+                        .from('users')
+                        .select('role')
+                        .eq('auth_id', session.user.id)
+                        .single();
+
+                    if (userData?.role === 'admin') {
+                        onLogin();
+                        return;
+                    }
+                }
+            } catch (err) {
+                console.error("Error checking session:", err);
+            }
+            setChecking(false);
+        };
+        checkSession();
+    }, [onLogin]);
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        setTimeout(() => {
-            const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "admin123";
-            if (password === adminPassword) {
-                onLogin();
-            } else {
-                setError(true);
-                setLoading(false);
+        setError("");
+
+        try {
+            // 🔐 Đăng nhập qua Supabase Auth
+            const { data, error: authError } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
+
+            if (authError) {
+                throw new Error(
+                    authError.message === 'Invalid login credentials'
+                        ? 'Email hoặc mật khẩu không đúng'
+                        : authError.message
+                );
             }
-        }, 800);
+
+            // 🔍 Kiểm tra quyền admin trong bảng users
+            const { data: userData, error: userError } = await supabase
+                .from('users')
+                .select('role')
+                .eq('auth_id', data.user!.id)
+                .single();
+
+            if (userError || !userData || userData.role !== 'admin') {
+                // Đăng xuất nếu không phải admin
+                await supabase.auth.signOut();
+                throw new Error('Tài khoản này không có quyền quản trị viên');
+            }
+
+            onLogin();
+        } catch (err: any) {
+            setError(err.message || 'Đã xảy ra lỗi');
+            setLoading(false);
+        }
     };
+
+    // ⏳ Đang kiểm tra session
+    if (checking) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="w-12 h-12 border-3 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                    <p className="text-slate-400 text-sm">Đang kiểm tra phiên đăng nhập...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
@@ -77,36 +142,63 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
 
                 {/* Form */}
                 <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10">
-                    <form onSubmit={handleSubmit} className="space-y-5">
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        {/* 🔒 Badge bảo mật */}
+                        <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-xl px-4 py-2.5 mb-2">
+                            <svg className="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                            <span className="text-emerald-400 text-xs font-medium">Xác thực bảo mật qua Supabase Auth</span>
+                        </div>
+
                         <div>
-                            <label className="block text-sm font-bold text-slate-300 mb-2">Mật khẩu quản trị</label>
+                            <label className="block text-sm font-bold text-slate-300 mb-2">Email quản trị</label>
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => { setEmail(e.target.value); setError(""); }}
+                                placeholder="admin@minhphatvilla.com"
+                                className="w-full px-5 py-4 rounded-2xl bg-white/10 text-white placeholder-slate-500 font-medium border-2 border-transparent focus:border-cyan-400 transition-all focus:outline-none"
+                                autoFocus
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-bold text-slate-300 mb-2">Mật khẩu</label>
                             <input
                                 type="password"
                                 value={password}
-                                onChange={(e) => { setPassword(e.target.value); setError(false); }}
+                                onChange={(e) => { setPassword(e.target.value); setError(""); }}
                                 placeholder="Nhập mật khẩu..."
-                                className={`w-full px-5 py-4 rounded-2xl bg-white/10 text-white placeholder-slate-500 font-medium border-2 transition-all focus:outline-none ${error ? "border-red-500 shake" : "border-transparent focus:border-cyan-400"
+                                className={`w-full px-5 py-4 rounded-2xl bg-white/10 text-white placeholder-slate-500 font-medium border-2 transition-all focus:outline-none ${error ? "border-red-500" : "border-transparent focus:border-cyan-400"
                                     }`}
-                                autoFocus
                             />
-                            {error && (
-                                <p className="text-red-400 text-sm mt-2 flex items-center gap-1">
-                                    ⚠️ Sai mật khẩu, vui lòng thử lại
-                                </p>
-                            )}
                         </div>
+                        {error && (
+                            <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3">
+                                <p className="text-red-400 text-sm flex items-center gap-2">
+                                    ⚠️ {error}
+                                </p>
+                            </div>
+                        )}
                         <button
                             type="submit"
-                            disabled={loading}
+                            disabled={loading || !email || !password}
                             className="w-full py-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-lg
                                 hover:shadow-xl hover:shadow-cyan-500/30 active:scale-[0.98] transition-all disabled:opacity-60 flex items-center justify-center gap-2"
                         >
                             {loading ? (
                                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                            ) : "Đăng nhập"}
+                            ) : "Đăng nhập Admin"}
                         </button>
                     </form>
 
+                    {/* Hướng dẫn */}
+                    <div className="mt-6 pt-5 border-t border-white/10">
+                        <p className="text-slate-500 text-xs text-center leading-relaxed">
+                            Sử dụng tài khoản đã đăng ký trên website có quyền <span className="text-cyan-400 font-semibold">admin</span>.
+                            <br />Nếu chưa có tài khoản, vui lòng đăng ký tại trang chủ trước.
+                        </p>
+                    </div>
                 </div>
 
                 {/* Back to site */}
@@ -410,7 +502,10 @@ function TopBar({ onLogout }: { onLogout: () => void }) {
                         <p className="text-xs text-gray-400">Quản trị viên</p>
                     </div>
                     <button
-                        onClick={onLogout}
+                        onClick={async () => {
+                            await supabase.auth.signOut();
+                            onLogout();
+                        }}
                         className="w-9 h-9 rounded-xl hover:bg-red-50 flex items-center justify-center transition-colors group"
                         title="Đăng xuất"
                     >
