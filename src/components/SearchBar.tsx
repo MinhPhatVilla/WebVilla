@@ -428,7 +428,7 @@ export default function SearchBar({ onSearch, isCompact = false }: SearchBarProp
                         {/* Desktop Overlay — render via Portal to escape stacking context */}
                         {typeof document !== 'undefined' && createPortal(
                             <div
-                                className="hidden md:block fixed inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in"
+                                className="hidden md:block fixed inset-0 bg-black/30 animate-in fade-in"
                                 style={{ zIndex: 9998 }}
                                 onClick={(e) => {
                                     e.stopPropagation();
