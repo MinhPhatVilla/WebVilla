@@ -266,9 +266,7 @@ export default function HomePage() {
                     <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
                         {/* Logo */}
                         <Link href="/" className="flex items-center gap-3">
-                            <div className="w-11 h-11 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 border-3 border-cyan-700 flex items-center justify-center shadow-lg">
-                                <span className="text-white font-bold text-sm">MP</span>
-                            </div>
+                            <Image src="/logo.png" alt="Minh Phát Villa" width={44} height={44} className="rounded-full shadow-lg" />
                             <div className="hidden sm:block">
                                 <h1 className="text-lg font-bold text-gray-900 leading-tight">Minh Phát</h1>
                                 <p className="text-[10px] text-cyan-600 font-medium">Villa & Homestay Vũng Tàu</p>
@@ -435,14 +433,26 @@ export default function HomePage() {
                             </svg>
                         </div>
                         <div className="text-center sm:text-left flex-1 min-w-0">
-                            <p className="text-white font-bold text-sm sm:text-base group-hover:text-[#FE2C55] transition-colors">
+                            {/* Mobile: text mới */}
+                            <p className="sm:hidden text-white font-bold text-sm group-hover:text-[#FE2C55] transition-colors">
                                 Minh Phát Villa — Thật từ video đến trải nghiệm
                             </p>
-                            <p className="text-gray-400 text-xs sm:text-sm">@villavungtaureview — Xem ngay trên TikTok 🎬</p>
+                            <p className="sm:hidden text-gray-400 text-xs">@villavungtaureview — Xem ngay trên TikTok 🎬</p>
+                            {/* Desktop: text cũ */}
+                            <p className="hidden sm:block text-white font-bold text-base group-hover:text-[#FE2C55] transition-colors">
+                                📺 Xem review Villa thực tế trên TikTok
+                            </p>
+                            <p className="hidden sm:block text-gray-400 text-sm">@villavungtaureview — Video thực tế, đánh giá chân thật 🎬</p>
                         </div>
-                        <div className="flex items-center gap-1 bg-[#FE2C55] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold group-hover:bg-[#ff4b6e] transition-all shadow-lg flex-shrink-0">
+                        {/* Mobile: nút nhỏ gọn */}
+                        <div className="sm:hidden flex items-center gap-1 bg-[#FE2C55] text-white px-3 py-1.5 rounded-full text-xs font-bold group-hover:bg-[#ff4b6e] transition-all shadow-lg flex-shrink-0">
+                            Theo dõi
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
+                        </div>
+                        {/* Desktop: nút đầy đủ (giống cũ) */}
+                        <div className="hidden sm:flex items-center gap-1 bg-[#FE2C55] text-white px-4 py-2 rounded-full text-sm font-bold group-hover:bg-[#ff4b6e] transition-all shadow-lg">
                             Theo dõi ngay
-                            <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
                         </div>
                     </a>
                 </div>
@@ -557,9 +567,7 @@ export default function HomePage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div>
                             <div className="flex items-center gap-3 mb-4">
-                                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 border-2 border-cyan-300 flex items-center justify-center">
-                                    <span className="text-white font-bold">MP</span>
-                                </div>
+                                <Image src="/logo.png" alt="Minh Phát Villa" width={48} height={48} className="rounded-full" />
                                 <div>
                                     <h4 className="font-bold">Minh Phát Villa</h4>
                                     <p className="text-sm text-gray-400">EST. 2026</p>

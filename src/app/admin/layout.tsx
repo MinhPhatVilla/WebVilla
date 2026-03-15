@@ -2,6 +2,7 @@
 
 import { useState, useEffect, createContext, useContext, ReactNode, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
     LayoutDashboard, Building2, CalendarCheck, Users,
@@ -133,9 +134,7 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
             <div className="relative z-10 w-full max-w-md">
                 {/* Logo */}
                 <div className="text-center mb-8">
-                    <div className="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center shadow-2xl shadow-cyan-500/30 mb-4">
-                        <span className="text-white font-extrabold text-2xl">MP</span>
-                    </div>
+                    <Image src="/logo.png" alt="Minh Phát Villa" width={80} height={80} className="rounded-full mx-auto shadow-2xl mb-4" />
                     <h1 className="text-3xl font-extrabold text-white mb-1">Admin Panel</h1>
                     <p className="text-slate-400">Minh Phát Villa & Homestay</p>
                 </div>
@@ -227,9 +226,7 @@ function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean; setCollapsed
             {/* Logo */}
             <div className="h-16 flex items-center justify-between px-4 border-b border-slate-800">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center flex-shrink-0">
-                        <span className="text-white font-extrabold text-sm">MP</span>
-                    </div>
+                    <Image src="/logo.png" alt="Minh Phát Villa" width={40} height={40} className="rounded-full flex-shrink-0" />
                     {!collapsed && <span className="text-white font-bold text-lg whitespace-nowrap">Admin</span>}
                 </div>
                 <button

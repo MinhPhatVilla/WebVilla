@@ -247,9 +247,7 @@ function CheckoutContent() {
                 {/* Header */}
                 <header className="bg-white/90 backdrop-blur-md border-b border-gray-100 h-14 flex items-center px-4">
                     <div className="max-w-lg mx-auto w-full flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center">
-                            <span className="text-white font-bold text-xs">MP</span>
-                        </div>
+                        <Image src="/logo.png" alt="Minh Phát Villa" width={36} height={36} className="rounded-full" />
                         <span className="font-bold text-gray-900">Minh Phát Villa</span>
                     </div>
                 </header>
@@ -365,9 +363,7 @@ function CheckoutContent() {
                         <span className="font-semibold text-sm">Quay lại</span>
                     </Link>
                     <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center">
-                            <span className="text-white font-bold text-[10px]">MP</span>
-                        </div>
+                        <Image src="/logo.png" alt="Minh Phát Villa" width={32} height={32} className="rounded-full" />
                         <span className="font-bold text-gray-900 text-sm">Thanh toán đặt phòng</span>
                     </div>
                     <Shield size={16} className="text-green-500" />

@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
     Mail, Lock, User, Phone, Eye, EyeOff,
@@ -145,9 +146,7 @@ export default function RegisterPage() {
             <div className="relative w-full max-w-md">
                 {/* Logo */}
                 <div className="text-center mb-8">
-                    <div className="w-16 h-16 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl shadow-cyan-500/30">
-                        <span className="text-white font-extrabold text-xl">MP</span>
-                    </div>
+                        <Image src="/logo.png" alt="Minh Phát Villa" width={64} height={64} className="rounded-full mx-auto mb-4 shadow-xl" />
                     <h1 className="text-2xl font-extrabold text-white">
                         {step === "form" ? "Tạo tài khoản mới" : "Xác thực Email"}
                     </h1>

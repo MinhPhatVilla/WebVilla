@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useAuth } from "@/lib/auth-context";
 import {
     ArrowLeft, MessageSquare,
@@ -56,9 +57,7 @@ export default function MessagesPage() {
                         Trung tâm hỗ trợ
                     </h1>
                     <Link href="/" className="flex items-center gap-2">
-                        <div className="w-10 h-10 rounded-full bg-[#0068FF] flex items-center justify-center shadow-md border-[2px] border-white">
-                            <span className="text-white font-extrabold text-sm tracking-wider">MP</span>
-                        </div>
+                        <Image src="/logo.png" alt="Minh Phát Villa" width={40} height={40} className="rounded-full shadow-md" />
                     </Link>
                 </div>
             </header>
@@ -73,9 +72,7 @@ export default function MessagesPage() {
                         {/* Avatar nổi */}
                         <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 z-10">
                             <div className="w-28 h-28 rounded-full bg-white p-2 shadow-2xl">
-                                <div className="w-full h-full rounded-full bg-[#00B2FF] flex items-center justify-center border-4 border-white/50">
-                                    <span className="text-white font-black text-[40px] tracking-tight drop-shadow-sm">MP</span>
-                                </div>
+                                <Image src="/logo.png" alt="Minh Phát Villa" width={96} height={96} className="rounded-full" />
                             </div>
                         </div>
                     </div>

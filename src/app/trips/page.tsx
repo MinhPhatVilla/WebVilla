@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/lib/supabase";
 import {
@@ -279,9 +280,7 @@ export default function TripsPage() {
                         <span className="font-semibold text-sm">Quay lại</span>
                     </button>
                     <Link href="/" className="flex items-center gap-2">
-                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center">
-                            <span className="text-white font-bold text-xs">MP</span>
-                        </div>
+                        <Image src="/logo.png" alt="Minh Phát Villa" width={36} height={36} className="rounded-full" />
                         <span className="hidden sm:block text-sm font-bold text-gray-900">Minh Phát Villa</span>
                     </Link>
                 </div>

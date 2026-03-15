@@ -15,6 +15,10 @@ export const metadata: Metadata = {
         description: "Trải nghiệm kỳ nghỉ sang trọng với hồ bơi riêng, view biển tuyệt đẹp",
         type: "website",
     },
+    icons: {
+        icon: "/logo.png",
+        apple: "/logo.png",
+    },
 };
 
 export const viewport: Viewport = {
