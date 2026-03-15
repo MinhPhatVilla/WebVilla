@@ -65,6 +65,7 @@ const nextConfig = {
                             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
                             "font-src 'self' https://fonts.gstatic.com data:",
                             "img-src 'self' https://cdn.sanity.io https://images.unsplash.com https://yxicgoshfmhjtkwcaeym.supabase.co https://*.supabase.co data: blob:",
+                            "media-src 'self' https://yxicgoshfmhjtkwcaeym.supabase.co https://*.supabase.co blob:",
                             "connect-src 'self' https://yxicgoshfmhjtkwcaeym.supabase.co https://*.supabase.co wss://*.supabase.co https://cdn.sanity.io https://api.telegram.org https://my.dev.sepay.vn https://qr.sepay.vn",
                             "frame-src 'self'",
                             "object-src 'none'",

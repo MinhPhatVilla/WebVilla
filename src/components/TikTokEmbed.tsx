@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX, Play } from "lucide-react";
 
 interface VideoPhoneFrameProps {
-    videoUrl: string;         // Direct .mp4 URL from Supabase Storage
-    tiktokUrl?: string;       // Optional TikTok link
+    videoUrl: string;
+    tiktokUrl?: string;
     propertyName?: string;
     compact?: boolean;
 }
@@ -15,35 +15,41 @@ export default function VideoPhoneFrame({ videoUrl, tiktokUrl, propertyName, com
     const [isMuted, setIsMuted] = useState(true);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
+    const [hasError, setHasError] = useState(false);
+    const [hasStarted, setHasStarted] = useState(false);
 
     useEffect(() => {
         setIsMounted(true);
     }, []);
 
-    useEffect(() => {
-        if (videoRef.current) {
-            videoRef.current.play().catch(() => {
-                // Autoplay blocked by browser — need user interaction
-            });
-        }
-    }, [isMounted, videoUrl]);
+    const handlePlay = () => {
+        if (!videoRef.current) return;
+        setHasStarted(true);
+        videoRef.current.muted = isMuted;
+        videoRef.current.play().then(() => {
+            setIsPlaying(true);
+        }).catch(() => {
+            // Still blocked — show error
+            setHasError(true);
+        });
+    };
 
     const toggleMute = () => {
         if (videoRef.current) {
-            videoRef.current.muted = !isMuted;
-            setIsMuted(!isMuted);
+            const newMuted = !isMuted;
+            videoRef.current.muted = newMuted;
+            setIsMuted(newMuted);
         }
     };
 
     const togglePlay = () => {
-        if (videoRef.current) {
-            if (videoRef.current.paused) {
-                videoRef.current.play();
-                setIsPlaying(true);
-            } else {
-                videoRef.current.pause();
-                setIsPlaying(false);
-            }
+        if (!videoRef.current) return;
+        if (videoRef.current.paused) {
+            videoRef.current.play().catch(() => {});
+            setIsPlaying(true);
+        } else {
+            videoRef.current.pause();
+            setIsPlaying(false);
         }
     };
 
@@ -51,7 +57,7 @@ export default function VideoPhoneFrame({ videoUrl, tiktokUrl, propertyName, com
         return (
             <div className={`mx-auto ${compact ? "max-w-[280px]" : "max-w-[320px]"}`}>
                 <div className="bg-gray-900 rounded-[3rem] border-[6px] border-gray-800 aspect-[9/19] flex items-center justify-center">
-                    <div className="text-gray-600 text-center px-4">
+                    <div className="text-gray-500 text-center px-4">
                         <div className="text-3xl mb-2">📱</div>
                         <p className="text-sm">Chưa có video</p>
                     </div>
@@ -70,30 +76,57 @@ export default function VideoPhoneFrame({ videoUrl, tiktokUrl, propertyName, com
                     <div className="w-3 h-3 rounded-full bg-gray-800 ring-1 ring-gray-700" />
                 </div>
 
-                {/* Video */}
+                {/* Video element */}
                 <video
                     ref={videoRef}
                     src={videoUrl}
-                    className="w-full h-full object-cover cursor-pointer"
-                    autoPlay
+                    className="w-full h-full object-cover"
                     muted={isMuted}
                     loop
                     playsInline
-                    onClick={togglePlay}
+                    preload="metadata"
                     onPlay={() => setIsPlaying(true)}
                     onPause={() => setIsPlaying(false)}
+                    onError={() => setHasError(true)}
+                    onCanPlay={() => setHasError(false)}
                 />
 
-                {/* Pause overlay */}
-                {!isPlaying && (
+                {/* Error state */}
+                {hasError && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-900 z-20 text-center p-4">
+                        <div className="text-3xl mb-2">⚠️</div>
+                        <p className="text-white text-xs font-bold mb-1">Không load được video</p>
+                        <p className="text-gray-400 text-[10px]">Kiểm tra lại file video</p>
+                        {tiktokUrl && (
+                            <a href={tiktokUrl} target="_blank" rel="noopener noreferrer"
+                                className="mt-3 text-[#FE2C55] text-xs font-bold underline">
+                                Xem trên TikTok ↗
+                            </a>
+                        )}
+                    </div>
+                )}
+
+                {/* Big Play button overlay — shown before first play */}
+                {!hasStarted && !hasError && (
+                    <div
+                        className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 z-20 cursor-pointer group"
+                        onClick={handlePlay}
+                    >
+                        <div className="w-20 h-20 rounded-full bg-white/90 flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
+                            <Play className="w-9 h-9 text-gray-900 ml-1" fill="currentColor" />
+                        </div>
+                        <p className="text-white text-xs mt-3 font-bold opacity-80">Nhấn để xem video</p>
+                    </div>
+                )}
+
+                {/* Pause overlay — shown after started but paused */}
+                {hasStarted && !isPlaying && !hasError && (
                     <div
                         className="absolute inset-0 flex items-center justify-center bg-black/30 z-10 cursor-pointer"
                         onClick={togglePlay}
                     >
                         <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
-                            <svg className="w-8 h-8 text-gray-900 ml-1" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8 5v14l11-7z" />
-                            </svg>
+                            <Play className="w-8 h-8 text-gray-900 ml-1" fill="currentColor" />
                         </div>
                     </div>
                 )}
@@ -118,15 +151,17 @@ export default function VideoPhoneFrame({ videoUrl, tiktokUrl, propertyName, com
                     </div>
                 </div>
 
-                {/* Sound toggle */}
-                <button
-                    onClick={toggleMute}
-                    className="absolute top-12 right-3 z-30 p-2.5 bg-black/50 backdrop-blur-sm rounded-full text-white hover:bg-black/70 transition-all active:scale-90"
-                >
-                    {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-                </button>
+                {/* Sound toggle — only show when playing */}
+                {hasStarted && (
+                    <button
+                        onClick={toggleMute}
+                        className="absolute top-12 right-3 z-30 p-2.5 bg-black/50 backdrop-blur-sm rounded-full text-white hover:bg-black/70 transition-all active:scale-90"
+                    >
+                        {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                    </button>
+                )}
 
-                {/* Home indicator (bottom bar) */}
+                {/* Home indicator */}
                 <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-28 h-1 bg-white/40 rounded-full z-30" />
             </div>
 
