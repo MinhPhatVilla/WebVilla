@@ -37,6 +37,7 @@ function rowToProperty(row: Record<string, unknown>): Property {
         images: (row.images as string[]) || [],
         customPrices: (row.custom_prices as Record<string, number>) || undefined,
         videoUrl: (row.video_url as string) || "",
+        tiktokUrl: (row.tiktok_url as string) || "",
         location: (row.location as string) || "",
         address: (row.address as string) || "",
         rating: Number(row.rating) || 5.0,
@@ -77,6 +78,7 @@ function propertyToRow(p: Partial<Property>): Record<string, unknown> {
     if (p.images !== undefined) row.images = p.images;
     if (p.customPrices !== undefined) row.custom_prices = p.customPrices;
     if (p.videoUrl !== undefined) row.video_url = p.videoUrl;
+    if (p.tiktokUrl !== undefined) row.tiktok_url = p.tiktokUrl;
     if (p.location !== undefined) row.location = p.location;
     if (p.address !== undefined) row.address = p.address;
     if (p.rating !== undefined) row.rating = p.rating;

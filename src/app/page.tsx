@@ -422,7 +422,7 @@ export default function HomePage() {
             </div>
 
             {/* Search Bar - Sticky on Desktop only + Thu nhỏ khi scroll */}
-            <div className={`relative md:sticky md:top-16 bg-gradient-to-b from-cyan-50/95 md:to-cyan-50/80 md:backdrop-blur-md px-4 border-b border-cyan-100/50 transition-all duration-300 ${isScrolled ? 'py-2' : 'py-4'}`} style={{ zIndex: 10000 }}>
+            <div className={`relative z-40 md:sticky md:top-16 bg-gradient-to-b from-cyan-50/95 md:to-cyan-50/80 md:backdrop-blur-md px-4 border-b border-cyan-100/50 transition-all duration-300 ${isScrolled ? 'py-2' : 'py-4'}`}>
                 <div className={`max-w-4xl mx-auto block transition-transform duration-300 ${isScrolled ? 'scale-[0.92] origin-center' : 'scale-100'}`}>
                     <SearchBar onSearch={handleSearch} isCompact={isScrolled} />
                 </div>
@@ -512,7 +512,7 @@ export default function HomePage() {
 
             {/* ===== TIKTOK VIDEO RANDOM SECTION ===== */}
             {(() => {
-                const videosAvailable = allProperties.filter(p => p.videoUrl && p.videoUrl.trim() && p.videoUrl.includes('tiktok'));
+                const videosAvailable = allProperties.filter(p => p.videoUrl && p.videoUrl.trim());
                 if (videosAvailable.length === 0) return null;
                 // Deterministic random based on time (changes every page load)
                 const randomIdx = Math.floor(Date.now() / 60000) % videosAvailable.length;
@@ -560,7 +560,7 @@ export default function HomePage() {
                                 
                                 {/* TikTok Video Embed */}
                                 <div className="flex justify-center">
-                                    <TikTokEmbed url={randomProp.videoUrl} propertyName={randomProp.name} compact />
+                                    <TikTokEmbed videoUrl={randomProp.videoUrl} tiktokUrl={randomProp.tiktokUrl} propertyName={randomProp.name} compact />
                                 </div>
                             </div>
                         </div>

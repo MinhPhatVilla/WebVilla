@@ -66,6 +66,8 @@ export interface PropertyFormData {
     address: string;
     description: string;
     tiktokUrl: string;
+    videoFile: File | null;
+    existingVideoUrl: string;
     bedrooms: number;
     beds: number;
     bathrooms: number;
@@ -74,7 +76,7 @@ export interface PropertyFormData {
     priceWeekday: number;
     priceWeekend: number;
     imageFiles: ImageFile[];
-    customPrices: Record<string, number>; // dateKey -> price
+    customPrices: Record<string, number>;
     isContactForPrice: boolean;
     contactPriceWeekday?: string;
     contactPriceWeekend?: string;
@@ -104,7 +106,10 @@ export default function AddPropertyModal({ onClose, onSubmit, editMode = false, 
     const [location, setLocation] = useState(initialData?.location || "");
     const [address, setAddress] = useState(initialData?.address || "");
     const [description, setDescription] = useState(initialData?.description || "");
-    const [tiktokUrl, setTiktokUrl] = useState(initialData?.videoUrl || "");
+    const [tiktokUrl, setTiktokUrl] = useState(initialData?.tiktokUrl || "");
+    const [videoFile, setVideoFile] = useState<File | null>(null);
+    const [videoPreview, setVideoPreview] = useState(initialData?.videoUrl || "");
+    const videoInputRef = useRef<HTMLInputElement>(null);
     const [bedrooms, setBedrooms] = useState(initialData?.attributes.bedrooms || 3);
     const [beds, setBeds] = useState(initialData?.attributes.beds || 3);
     const [bathrooms, setBathrooms] = useState(initialData?.attributes.bathrooms || 2);
@@ -299,6 +304,7 @@ export default function AddPropertyModal({ onClose, onSubmit, editMode = false, 
     const handleSubmit = () => {
         onSubmit({
             name, type, location, address, description, tiktokUrl,
+            videoFile, existingVideoUrl: videoPreview,
             bedrooms, beds, bathrooms, capacity, amenities,
             priceWeekday, priceWeekend, imageFiles,
             customPrices, isContactForPrice,
@@ -415,20 +421,80 @@ export default function AddPropertyModal({ onClose, onSubmit, editMode = false, 
                                 />
                             </div>
 
-                            {/* TikTok Video URL */}
+                            {/* Video Upload */}
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-2">
-                                    <svg className="inline w-4 h-4 mr-1 mb-0.5 text-[#FE2C55]" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 0 0-.79-.05A6.34 6.34 0 0 0 3.15 15a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.87a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.01-.3z"/></svg>
-                                    Link TikTok Video
+                                    📹 Video Review (tải từ TikTok)
                                 </label>
+                                
+                                {videoPreview || videoFile ? (
+                                    <div className="relative bg-gray-900 rounded-2xl overflow-hidden">
+                                        <video
+                                            src={videoFile ? URL.createObjectURL(videoFile) : videoPreview}
+                                            className="w-full max-h-[200px] object-contain"
+                                            controls
+                                            muted
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => { setVideoFile(null); setVideoPreview(""); }}
+                                            className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full hover:bg-red-600 transition-colors shadow-lg"
+                                        >
+                                            <X size={14} />
+                                        </button>
+                                        <p className="text-xs text-gray-400 text-center py-2">
+                                            {videoFile ? `${videoFile.name} (${(videoFile.size / 1048576).toFixed(1)}MB)` : "Video hiện tại"}
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div
+                                        onClick={() => videoInputRef.current?.click()}
+                                        onDragOver={e => { e.preventDefault(); }}
+                                        onDrop={e => {
+                                            e.preventDefault();
+                                            const file = e.dataTransfer.files[0];
+                                            if (file && file.type.startsWith('video/')) {
+                                                if (file.size > 50 * 1048576) {
+                                                    alert('Video tối đa 50MB!');
+                                                    return;
+                                                }
+                                                setVideoFile(file);
+                                            }
+                                        }}
+                                        className="border-2 border-dashed border-gray-300 rounded-2xl p-6 text-center cursor-pointer hover:border-cyan-400 hover:bg-cyan-50/30 transition-all group"
+                                    >
+                                        <div className="text-3xl mb-2">📱</div>
+                                        <p className="text-sm font-bold text-gray-700 group-hover:text-cyan-600">Kéo thả video vào đây</p>
+                                        <p className="text-xs text-gray-400 mt-1">hoặc bấm để chọn file • MP4, MOV, WEBM • Tối đa 50MB</p>
+                                    </div>
+                                )}
                                 <input
-                                    type="url"
-                                    value={tiktokUrl}
-                                    onChange={e => setTiktokUrl(e.target.value)}
-                                    placeholder="https://www.tiktok.com/@user/video/1234567890"
-                                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-pink-400 focus:ring-2 focus:ring-pink-100 outline-none text-sm font-medium transition-all"
+                                    ref={videoInputRef}
+                                    type="file"
+                                    accept="video/mp4,video/mov,video/webm,video/quicktime"
+                                    className="hidden"
+                                    onChange={e => {
+                                        const file = e.target.files?.[0];
+                                        if (file) {
+                                            if (file.size > 50 * 1048576) {
+                                                alert('Video tối đa 50MB!');
+                                                return;
+                                            }
+                                            setVideoFile(file);
+                                        }
+                                    }}
                                 />
-                                <p className="text-xs text-gray-400 mt-1">Paste link video TikTok review của căn này (nếu có)</p>
+
+                                {/* TikTok link (optional) */}
+                                <div className="mt-3">
+                                    <input
+                                        type="url"
+                                        value={tiktokUrl}
+                                        onChange={e => setTiktokUrl(e.target.value)}
+                                        placeholder="Link TikTok gốc (tuỳ chọn)"
+                                        className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:border-pink-400 focus:ring-1 focus:ring-pink-100 outline-none text-xs font-medium transition-all"
+                                    />
+                                </div>
                             </div>
 
                             {/* Attributes */}

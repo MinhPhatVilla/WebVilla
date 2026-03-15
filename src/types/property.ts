@@ -29,6 +29,7 @@ export interface Property {
     images: string[];
     customPrices?: Record<string, number>;
     videoUrl: string;
+    tiktokUrl?: string;
     location: string;
     address?: string;
     rating: number;

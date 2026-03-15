@@ -28,6 +28,22 @@ async function uploadImageFiles(files: ImageFile[]): Promise<string[]> {
     }));
 }
 
+async function uploadVideoFile(file: File | null, existingUrl: string, tiktokUrl: string): Promise<string> {
+    // If new video file uploaded
+    if (file && file.size > 0) {
+        const ext = file.name.split('.').pop() || 'mp4';
+        const fname = `videos/${Date.now()}-${Math.random().toString(36).substring(7)}.${ext}`;
+        const { error } = await supabase.storage.from('properties').upload(fname, file);
+        if (!error) {
+            return supabase.storage.from('properties').getPublicUrl(fname).data.publicUrl;
+        }
+    }
+    // If existing video URL (from previous upload)
+    if (existingUrl) return existingUrl;
+    // Fallback to TikTok URL
+    return tiktokUrl || "";
+}
+
 // ── Icons for amenities ──
 const amenityIcons: Record<string, { icon: React.ReactNode; label: string }> = {
     pool: { icon: <Waves size={14} />, label: "Hồ bơi" },
@@ -229,6 +245,7 @@ export default function PropertiesPage() {
                     onClose={() => setShowAddModal(false)}
                     onSubmit={async (data) => {
                         const uploadedImageUrls = await uploadImageFiles(data.imageFiles);
+                        const videoUrl = await uploadVideoFile(data.videoFile, data.existingVideoUrl, data.tiktokUrl);
                         const newProperty: Property = {
                             id: "",
                             name: data.name,
@@ -257,7 +274,8 @@ export default function PropertiesPage() {
                             images: uploadedImageUrls.length > 0 ? uploadedImageUrls : [
                                 "https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=800&auto=format&fit=crop"
                             ],
-                            videoUrl: data.tiktokUrl || "",
+                            videoUrl: videoUrl,
+                            tiktokUrl: data.tiktokUrl || "",
                             location: data.location,
                             address: data.address,
                             rating: 5.0,
@@ -281,6 +299,7 @@ export default function PropertiesPage() {
                     onClose={() => setShowEditModal(null)}
                     onSubmit={async (data) => {
                         const uploadedImageUrls = await uploadImageFiles(data.imageFiles);
+                        const videoUrl = await uploadVideoFile(data.videoFile, data.existingVideoUrl, data.tiktokUrl);
                         try {
                             await store.updateProperty(showEditModal.id, {
                                 name: data.name,
@@ -307,7 +326,8 @@ export default function PropertiesPage() {
                                     foosball: data.amenities.includes("foosball"),
                                 },
                                 images: uploadedImageUrls.length > 0 ? uploadedImageUrls : showEditModal.images,
-                                videoUrl: data.tiktokUrl,
+                                videoUrl: videoUrl,
+                                tiktokUrl: data.tiktokUrl || "",
                                 location: data.location,
                                 address: data.address,
                             });

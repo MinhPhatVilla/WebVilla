@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useMemo } from "react";
+import { createPortal } from "react-dom";
 import { MapPin, Calendar, Users, Search, X, Minus, Plus, ChevronLeft, ChevronRight, SlidersHorizontal } from "lucide-react";
 
 interface SearchBarProps {
@@ -424,20 +425,23 @@ export default function SearchBar({ onSearch, isCompact = false }: SearchBarProp
                 {/* ========== DROPDOWNS ========== */}
                 {activeField && (
                     <>
-                        {/* Desktop Overlay Background — fixed phủ toàn page */}
-                        <div
-                            className="hidden md:block fixed inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in"
-                            style={{ zIndex: 9998 }}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                setActiveField(null);
-                            }}
-                        />
+                        {/* Desktop Overlay — render via Portal to escape stacking context */}
+                        {typeof document !== 'undefined' && createPortal(
+                            <div
+                                className="hidden md:block fixed inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in"
+                                style={{ zIndex: 9998 }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setActiveField(null);
+                                }}
+                            />,
+                            document.body
+                        )}
 
                         {/* Dropdown Container */}
                         <div className={`
-                        md:absolute md:bottom-auto md:top-full md:mt-4 md:flex md:justify-start
-                        ${isMobileModalOpen ? "relative flex-1 overflow-y-auto px-4 pb-28 md:static" : "fixed bottom-0 left-0 right-0"}
+                        md:fixed md:left-1/2 md:-translate-x-1/2 md:top-40 md:flex md:justify-center
+                        ${isMobileModalOpen ? "relative flex-1 overflow-y-auto px-4 pb-28" : "fixed bottom-0 left-0 right-0 md:bottom-auto"}
                     `}
                         style={{ zIndex: 9999 }}
                     >
