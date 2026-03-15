@@ -11,7 +11,8 @@ import {
     ChevronLeft, ChevronRight, MapPin, Star, Users, BedDouble, Bed,
     Waves, Flame, Wifi, Target, UtensilsCrossed, AirVent, Mic2,
     Gamepad2, Bath, ArrowLeft, Share2, Heart, Phone, MessageCircle,
-    Calendar, Shield, Clock, ChevronDown, ChevronUp, Minus, Plus, Search, Dribbble
+    Calendar, Shield, Clock, ChevronDown, ChevronUp, Minus, Plus, Search, Dribbble,
+    Ship, LifeBuoy, Volume2, Music
 } from "lucide-react";
 
 // ========== IMAGE GALLERY COMPONENT ==========
@@ -552,23 +553,82 @@ export default function PropertyDetailPage() {
                                 <AmenityBadge icon={Mic2} label="Karaoke" active={property.attributes.karaoke} />
                                 <AmenityBadge icon={Gamepad2} label="Máy game trẻ em" active={property.attributes.arcade} />
                                 <AmenityBadge icon={Dribbble} label="Bi lắc" active={property.attributes.foosball} />
+                                <AmenityBadge icon={Ship} label="Thuyền Súp" active={true} />
+                                <AmenityBadge icon={LifeBuoy} label="Phao bơi" active={true} />
                             </div>
                         </div>
 
                         {/* Policies */}
-                        {property.policies && (
-                            <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
-                                <h2 className="text-2xl font-bold text-gray-900 mb-6">📜 Chính sách</h2>
-                                <div className="space-y-3">
+                        <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
+                            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                                <Clock size={24} className="text-blue-500" />
+                                Chính sách
+                            </h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {/* Nhận phòng */}
+                                <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-2xl">
+                                    <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <Clock size={18} className="text-blue-600" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-blue-500 uppercase tracking-wide">Nhận phòng</p>
+                                        <p className="text-lg font-extrabold text-gray-900">14:00</p>
+                                    </div>
+                                </div>
+                                {/* Trả phòng */}
+                                <div className="flex items-start gap-3 p-4 bg-orange-50 rounded-2xl">
+                                    <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <Clock size={18} className="text-orange-600" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-orange-500 uppercase tracking-wide">Trả phòng</p>
+                                        <p className="text-lg font-extrabold text-gray-900">12:00</p>
+                                    </div>
+                                </div>
+                                {/* Đổi lịch */}
+                                <div className="flex items-start gap-3 p-4 bg-green-50 rounded-2xl">
+                                    <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <Calendar size={18} className="text-green-600" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-green-500 uppercase tracking-wide">Đổi lịch</p>
+                                        <p className="text-sm font-bold text-gray-900">Miễn phí 1 lần <span className="text-gray-500 font-normal">(trước 10 ngày)</span></p>
+                                    </div>
+                                </div>
+                                {/* Âm thanh */}
+                                <div className="flex items-start gap-3 p-4 bg-red-50 rounded-2xl">
+                                    <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <Volume2 size={18} className="text-red-600" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-red-500 uppercase tracking-wide">Âm thanh</p>
+                                        <p className="text-sm font-bold text-gray-900">Không mang loa kéo</p>
+                                    </div>
+                                </div>
+                                {/* Giới nghiêm */}
+                                <div className="md:col-span-2 flex items-start gap-3 p-4 bg-purple-50 rounded-2xl">
+                                    <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <Music size={18} className="text-purple-600" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-purple-500 uppercase tracking-wide">Giờ giới nghiêm</p>
+                                        <p className="text-sm font-bold text-gray-900">Không hát hò quá <span className="text-purple-600 text-lg">22:00</span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Custom policies from database */}
+                            {property.policies && property.policies.length > 0 && (
+                                <div className="mt-4 pt-4 border-t border-gray-100 space-y-2">
                                     {property.policies.map((policy, idx) => (
-                                        <div key={idx} className="flex items-center gap-3 text-gray-600">
-                                            <Shield size={16} className="text-cyan-500 flex-shrink-0" />
+                                        <div key={idx} className="flex items-center gap-3 text-gray-600 text-sm">
+                                            <Shield size={14} className="text-cyan-500 flex-shrink-0" />
                                             <span>{policy}</span>
                                         </div>
                                     ))}
                                 </div>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
 
                     {/* Right: Booking Panel */}

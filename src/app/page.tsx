@@ -434,15 +434,15 @@ export default function HomePage() {
                                 <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V9.34a8.16 8.16 0 004.76 1.52V7.46a4.85 4.85 0 01-1-.77z"/>
                             </svg>
                         </div>
-                        <div className="text-center sm:text-left">
+                        <div className="text-center sm:text-left flex-1 min-w-0">
                             <p className="text-white font-bold text-sm sm:text-base group-hover:text-[#FE2C55] transition-colors">
-                                📺 Xem review Villa thực tế trên TikTok
+                                Minh Phát Villa — Thật từ video đến trải nghiệm
                             </p>
-                            <p className="text-gray-400 text-xs sm:text-sm">@villavungtaureview — Video thực tế, đánh giá chân thật 🎬</p>
+                            <p className="text-gray-400 text-xs sm:text-sm">@villavungtaureview — Xem ngay trên TikTok 🎬</p>
                         </div>
-                        <div className="hidden sm:flex items-center gap-1 bg-[#FE2C55] text-white px-4 py-2 rounded-full text-sm font-bold group-hover:bg-[#ff4b6e] transition-all shadow-lg">
+                        <div className="flex items-center gap-1 bg-[#FE2C55] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold group-hover:bg-[#ff4b6e] transition-all shadow-lg flex-shrink-0">
                             Theo dõi ngay
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
+                            <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
                         </div>
                     </a>
                 </div>

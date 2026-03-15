@@ -347,11 +347,15 @@ export default function RegisterPage() {
                     </div>
                 )}
 
-                {/* Footer */}
-                <p className="text-center text-xs text-slate-500 mt-6">
-                    Bằng việc đăng ký, bạn đồng ý với{" "}
-                    <span className="text-slate-400">Điều khoản dịch vụ</span> của Minh Phát Villa
-                </p>
+                {/* Footer — Branding */}
+                <div className="text-center mt-6 space-y-1">
+                    <p className="text-sm font-bold text-white/80 flex items-center justify-center gap-2">
+                        🇻🇳 <span>Minh Phát Villa</span> 🇻🇳
+                    </p>
+                    <p className="text-xs text-slate-400 italic">
+                        Thật từ video đến trải nghiệm
+                    </p>
+                </div>
             </div>
         </main>
     );
