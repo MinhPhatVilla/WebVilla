@@ -1,7 +1,7 @@
 export interface Property {
     id: string;
     name: string;
-    type: 'villa' | 'homestay';
+    type: 'villa' | 'homestay' | 'nha-pho';
     description: string;
     longDescription?: string;
     isContactForPrice?: boolean;

@@ -16,7 +16,7 @@ interface Booking {
     guestPhone: string;
     guestEmail: string;
     propertyName: string;
-    propertyType: "villa" | "homestay";
+    propertyType: "villa" | "homestay" | "nha-pho";
     checkIn: string;
     checkOut: string;
     nights: number;
@@ -41,7 +41,7 @@ function rowToBooking(row: Record<string, unknown>): Booking {
         (new Date(checkOut).getTime() - new Date(checkIn).getTime()) / (1000 * 60 * 60 * 24)
     );
     const propertyId = (row.property_id as string) || "";
-    const propertyType = propertyId.startsWith("villa") ? "villa" : "homestay";
+    const propertyType = propertyId.startsWith("villa") ? "villa" : propertyId.startsWith("nha-pho") ? "nha-pho" : "homestay";
 
     return {
         id: row.id as string,
@@ -315,7 +315,7 @@ export default function BookingsPage() {
                                         </td>
                                         <td className="px-5 py-4">
                                             <div className="flex items-center gap-2">
-                                                <span className={`w-2 h-2 rounded-full ${b.propertyType === "villa" ? "bg-cyan-500" : "bg-violet-500"}`} />
+                                                <span className={`w-2 h-2 rounded-full ${b.propertyType === "villa" ? "bg-cyan-500" : b.propertyType === "homestay" ? "bg-violet-500" : "bg-amber-500"}`} />
                                                 <span className="text-sm text-gray-700">{b.propertyName}</span>
                                             </div>
                                         </td>

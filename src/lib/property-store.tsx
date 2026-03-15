@@ -9,7 +9,7 @@ function rowToProperty(row: Record<string, unknown>): Property {
     return {
         id: row.id as string,
         name: row.name as string,
-        type: row.type as "villa" | "homestay",
+        type: row.type as "villa" | "homestay" | "nha-pho",
         description: (row.description as string) || "",
         longDescription: (row.long_description as string) || "",
         isContactForPrice: (row.is_contact_for_price as boolean) || false,
@@ -94,7 +94,7 @@ interface PropertyStore {
     updateProperty: (id: string, updates: Partial<Property>) => Promise<void>;
     deleteProperty: (id: string) => Promise<void>;
     getPropertyById: (id: string) => Property | undefined;
-    getByType: (type: "villa" | "homestay") => Property[];
+    getByType: (type: "villa" | "homestay" | "nha-pho") => Property[];
     getAllProperties: () => Property[];
     refreshProperties: () => Promise<void>;
 }
@@ -192,7 +192,7 @@ export function PropertyProvider({ children }: { children: React.ReactNode }) {
     );
 
     const getByType = useCallback(
-        (type: "villa" | "homestay") => properties.filter(p => p.type === type),
+        (type: "villa" | "homestay" | "nha-pho") => properties.filter(p => p.type === type),
         [properties]
     );
 

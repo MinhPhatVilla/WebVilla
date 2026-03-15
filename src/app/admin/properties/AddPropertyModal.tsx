@@ -61,7 +61,7 @@ export interface ImageFile {
 
 export interface PropertyFormData {
     name: string;
-    type: "villa" | "homestay";
+    type: "villa" | "homestay" | "nha-pho";
     location: string;
     address: string;
     description: string;
@@ -99,7 +99,7 @@ export default function AddPropertyModal({ onClose, onSubmit, editMode = false, 
 
     // Form state — initialize from initialData if editMode
     const [name, setName] = useState(initialData?.name || "");
-    const [type, setType] = useState<"villa" | "homestay">(initialData?.type || "villa");
+    const [type, setType] = useState<"villa" | "homestay" | "nha-pho">(initialData?.type || "villa");
     const [location, setLocation] = useState(initialData?.location || "");
     const [address, setAddress] = useState(initialData?.address || "");
     const [description, setDescription] = useState(initialData?.description || "");
@@ -344,18 +344,20 @@ export default function AddPropertyModal({ onClose, onSubmit, editMode = false, 
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-2">Loại hình</label>
                                 <div className="flex gap-3">
-                                    {(["villa", "homestay"] as const).map(t => (
+                                    {(["villa", "homestay", "nha-pho"] as const).map(t => (
                                         <button
                                             key={t}
                                             onClick={() => setType(t)}
                                             className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all border-2 ${type === t
                                                 ? t === "villa"
                                                     ? "border-cyan-500 bg-cyan-50 text-cyan-700"
-                                                    : "border-violet-500 bg-violet-50 text-violet-700"
+                                                    : t === "homestay"
+                                                        ? "border-violet-500 bg-violet-50 text-violet-700"
+                                                        : "border-amber-500 bg-amber-50 text-amber-700"
                                                 : "border-gray-200 text-gray-500 hover:border-gray-300"
                                                 }`}
                                         >
-                                            {t === "villa" ? "🏡 Villa" : "🏠 Homestay"}
+                                            {t === "villa" ? "🏡 Villa" : t === "homestay" ? "🏠 Homestay" : "🏘️ Nhà Phố"}
                                         </button>
                                     ))}
                                 </div>
@@ -644,7 +646,7 @@ export default function AddPropertyModal({ onClose, onSubmit, editMode = false, 
                                 <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Xem trước</p>
                                 <div className="bg-white rounded-xl p-4 border border-gray-200">
                                     <div className="flex items-center gap-2 mb-1">
-                                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${type === "villa" ? "bg-cyan-100 text-cyan-700" : "bg-violet-100 text-violet-700"}`}>
+                                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${type === "villa" ? "bg-cyan-100 text-cyan-700" : type === "homestay" ? "bg-violet-100 text-violet-700" : "bg-amber-100 text-amber-700"}`}>
                                             {type}
                                         </span>
                                         <span className="text-sm font-bold text-gray-900">{name || "Tên nơi ở"}</span>

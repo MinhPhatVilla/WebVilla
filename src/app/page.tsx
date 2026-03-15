@@ -8,7 +8,7 @@ import { Property } from "@/types/property";
 import { usePropertyStore } from "@/lib/property-store";
 import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/lib/supabase";
-import { MapPin, Star, Users, BedDouble, Waves, Flame, Phone, X, SlidersHorizontal, LogIn, UserCircle, LogOut, ChevronDown, Heart, Luggage, MessageSquare, Settings, Globe, HelpCircle, Home, Building, Palmtree } from "lucide-react";
+import { MapPin, Star, Users, BedDouble, Waves, Flame, Phone, X, SlidersHorizontal, LogIn, UserCircle, LogOut, ChevronDown, Heart, Luggage, MessageSquare, Settings, Globe, HelpCircle, Home, Building, Palmtree, Store } from "lucide-react";
 import SearchBar from "@/components/SearchBar";
 
 // ========== FILTERS TYPE ==========
@@ -66,8 +66,8 @@ function PropertyCard({ property, isWeekend = false, isBooked = false }: { prope
                             )}
                         </div>
                         {/* Type Badge */}
-                        <div className="absolute top-4 left-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold uppercase shadow-lg">
-                            {property.type}
+                        <div className={`absolute top-4 left-4 text-white px-3 py-1 rounded-full text-xs font-bold uppercase shadow-lg ${property.type === 'villa' ? 'bg-gradient-to-r from-cyan-500 to-blue-600' : property.type === 'homestay' ? 'bg-gradient-to-r from-violet-500 to-purple-600' : 'bg-gradient-to-r from-amber-500 to-orange-600'}`}>
+                            {property.type === 'nha-pho' ? 'Nhà Phố' : property.type}
                         </div>
                     </div>
 
@@ -134,7 +134,7 @@ export default function HomePage() {
     const router = useRouter();
     const { user, profile, signOut } = useAuth();
     const [showUserMenu, setShowUserMenu] = useState(false);
-    const [activeTab, setActiveTab] = useState<'villa' | 'homestay' | 'all'>('all');
+    const [activeTab, setActiveTab] = useState<'villa' | 'homestay' | 'nha-pho' | 'all'>('all');
     const [filters, setFilters] = useState<SearchFilters>({
         location: "",
         checkIn: "",
@@ -165,6 +165,7 @@ export default function HomePage() {
         // Tab filter
         if (activeTab === 'villa') list = store.getByType('villa');
         else if (activeTab === 'homestay') list = store.getByType('homestay');
+        else if (activeTab === 'nha-pho') list = store.getByType('nha-pho');
         else list = [...allProperties];
 
         // Location filter
@@ -301,6 +302,15 @@ export default function HomePage() {
                                     }`}
                             >
                                 <Home size={14} className="text-green-600 group-hover:text-white" /> Homestay
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('nha-pho')}
+                                className={`px-4 py-2 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${activeTab === 'nha-pho'
+                                    ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg'
+                                    : 'text-gray-600 hover:text-gray-900'
+                                    }`}
+                            >
+                                <Store size={14} className="text-amber-600 group-hover:text-white" /> Nhà Phố
                             </button>
                         </div>
 
@@ -440,9 +450,9 @@ export default function HomePage() {
                             <p className="sm:hidden text-gray-400 text-xs">@villavungtaureview — Xem ngay trên TikTok 🎬</p>
                             {/* Desktop: text cũ */}
                             <p className="hidden sm:block text-white font-bold text-base group-hover:text-[#FE2C55] transition-colors">
-                                📺 Xem review Villa thực tế trên TikTok
+                                🇻🇳 Xem review Villa thực tế trên TikTok
                             </p>
-                            <p className="hidden sm:block text-gray-400 text-sm">@villavungtaureview — Video thực tế, đánh giá chân thật 🎬</p>
+                            <p className="hidden sm:block text-gray-400 text-sm">@villavungtaureview — Minh Phát Villa thật từ video đến trải nghiệm 🇻🇳</p>
                         </div>
                         {/* Mobile: nút nhỏ gọn */}
                         <div className="sm:hidden flex items-center gap-1 bg-[#FE2C55] text-white px-3 py-1.5 rounded-full text-xs font-bold group-hover:bg-[#ff4b6e] transition-all shadow-lg flex-shrink-0">
@@ -465,13 +475,18 @@ export default function HomePage() {
                         <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-blue-500/10"></div>
                         <div className="relative z-10 max-w-4xl mx-auto">
                             <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3">
-                                {activeTab === 'villa' ? '🏠 Biệt Thự Sang Trọng'
-                                    : activeTab === 'homestay' ? '🏡 Homestay Ấm Cúng'
-                                        : '🏖️ Villa & Homestay Vũng Tàu'}
+                                {activeTab === 'villa' ? '🏠 Villa giá từ HSSV đến Sang Trọng'
+                                    : activeTab === 'homestay' ? '🏡 Homestay cho cặp đôi và nhóm bạn, gia đình dưới 10 khách'
+                                        : activeTab === 'nha-pho' ? '🏘️ Những căn Nhà Phố cho đoàn khách không cần hồ bơi, vẫn nướng được bbq và sạch sẽ'
+                                            : '🏖️ Villa & Homestay & Nhà Phố Vũng Tàu'}
                             </h2>
-                            <p className="text-lg text-gray-600 mb-6">
-                                Trải nghiệm kỳ nghỉ đẳng cấp với hồ bơi riêng, view biển tuyệt đẹp
+                            <p className="text-lg text-gray-600 mb-4">
+                                {activeTab === 'villa' ? 'Trải nghiệm kỳ nghỉ tuyệt vời cùng gia đình hoặc nhóm bạn — hồ bơi riêng, nướng BBQ và view biển chill'
+                                    : activeTab === 'homestay' ? 'Trải nghiệm những chiếc Home xinh xắn, sạch sẽ, view biển đẹp nhất Vũng Tàu'
+                                        : activeTab === 'nha-pho' ? 'Trải nghiệm những căn Nhà Phố đẹp giá tốt nhất Vũng Tàu'
+                                            : 'Trải nghiệm kỳ nghỉ tuyệt vời cùng gia đình hoặc nhóm bạn — hồ bơi riêng, nướng BBQ và view biển chill'}
                             </p>
+                            <p className="text-sm font-semibold text-cyan-600 mb-6 tracking-wide">✨ Hệ thống hơn 1000 căn chuyên cho thuê tại Vũng Tàu</p>
                             <div className="flex justify-center gap-4 flex-wrap">
                                 <div className="bg-white px-5 py-2.5 rounded-full shadow-md">
                                     <span className="text-xl font-bold text-blue-600">{allProperties.length}</span>

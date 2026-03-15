@@ -45,7 +45,7 @@ export default function PropertiesPage() {
     const store = usePropertyStore();
     const allProps = store.properties;
     const [searchTerm, setSearchTerm] = useState("");
-    const [filterType, setFilterType] = useState<"all" | "villa" | "homestay">("all");
+    const [filterType, setFilterType] = useState<"all" | "villa" | "homestay" | "nha-pho">("all");
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
     const [showDeleteModal, setShowDeleteModal] = useState<string | null>(null);
     const [showDetailModal, setShowDetailModal] = useState<Property | null>(null);
@@ -101,6 +101,7 @@ export default function PropertiesPage() {
                         { key: "all", label: "Tất cả" },
                         { key: "villa", label: "Villa" },
                         { key: "homestay", label: "Homestay" },
+                        { key: "nha-pho", label: "Nhà Phố" },
                     ] as const).map(f => (
                         <button
                             key={f.key}
@@ -232,7 +233,7 @@ export default function PropertiesPage() {
                             id: "",
                             name: data.name,
                             type: data.type,
-                            description: data.description || `${data.type === 'villa' ? 'Biệt thự' : 'Homestay'} ${data.name} tại ${data.location}`,
+                            description: data.description || `${data.type === 'villa' ? 'Biệt thự' : data.type === 'homestay' ? 'Homestay' : 'Nhà phố'} ${data.name} tại ${data.location}`,
                             isContactForPrice: data.isContactForPrice,
                             contactPriceWeekday: data.contactPriceWeekday,
                             contactPriceWeekend: data.contactPriceWeekend,
@@ -331,7 +332,7 @@ function PropertyCard({ property: p, onView, onEdit, onDelete }: { property: Pro
             <div className="relative h-44 overflow-hidden">
                 <Image src={p.images[0]} alt={p.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute top-3 left-3">
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${p.type === "villa" ? "bg-cyan-500 text-white" : "bg-violet-500 text-white"
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${p.type === "villa" ? "bg-cyan-500 text-white" : p.type === "homestay" ? "bg-violet-500 text-white" : "bg-amber-500 text-white"
                         }`}>
                         {p.type.toUpperCase()}
                     </span>
@@ -419,8 +420,8 @@ function PropertyRow({ property: p, onView, onEdit, onDelete }: { property: Prop
             </div>
             <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-0.5">
-                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${p.type === "villa" ? "bg-cyan-100 text-cyan-700" : "bg-violet-100 text-violet-700"
-                        }`}>{p.type}</span>
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${p.type === "villa" ? "bg-cyan-100 text-cyan-700" : p.type === "homestay" ? "bg-violet-100 text-violet-700" : "bg-amber-100 text-amber-700"
+                        }`}>{p.type === "nha-pho" ? "NHÀ PHỐ" : p.type}</span>
                     <h3 className="font-bold text-gray-900 text-sm truncate">{p.name}</h3>
                 </div>
                 <p className="text-xs text-gray-500 flex items-center gap-1">
@@ -589,8 +590,8 @@ function PropertyDetailModal({ property, onClose, fmtPrice }: { property: Proper
                 <div className="p-6 space-y-5">
                     {/* Info row */}
                     <div className="flex flex-wrap items-center gap-3">
-                        <span className={`px-3 py-1 rounded-full font-bold text-xs uppercase ${property.type === "villa" ? "bg-cyan-100 text-cyan-700" : "bg-violet-100 text-violet-700"
-                            }`}>{property.type}</span>
+                        <span className={`px-3 py-1 rounded-full font-bold text-xs uppercase ${property.type === "villa" ? "bg-cyan-100 text-cyan-700" : property.type === "homestay" ? "bg-violet-100 text-violet-700" : "bg-amber-100 text-amber-700"
+                            }`}>{property.type === "nha-pho" ? "NHÀ PHỐ" : property.type}</span>
                         <span className="flex items-center gap-1 text-sm"><Star size={14} className="text-yellow-500 fill-yellow-500" /> {property.rating}</span>
                         <span className="text-sm text-gray-500">·</span>
                         <span className="flex items-center gap-1 text-sm text-gray-500"><BedDouble size={14} /> {property.attributes.bedrooms} PN</span>
