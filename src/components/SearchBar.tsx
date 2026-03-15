@@ -199,6 +199,7 @@ export default function SearchBar({ onSearch, isCompact = false }: SearchBarProp
     const [guests, setGuests] = useState(1);
     const [isMobileModalOpen, setIsMobileModalOpen] = useState(false);
     const searchRef = useRef<HTMLDivElement>(null);
+    const portalRef = useRef<HTMLDivElement>(null);
 
     const locations = [
         { name: "Vũng Tàu", icon: "🏖️", desc: "Tất cả khu vực Vũng Tàu" },
@@ -220,7 +221,10 @@ export default function SearchBar({ onSearch, isCompact = false }: SearchBarProp
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
-            if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+            const target = event.target as Node;
+            const insideSearch = searchRef.current?.contains(target);
+            const insidePortal = portalRef.current?.contains(target);
+            if (!insideSearch && !insidePortal) {
                 setActiveField(null);
             }
         }
@@ -439,7 +443,7 @@ export default function SearchBar({ onSearch, isCompact = false }: SearchBarProp
                         )}
 
                         {/* Dropdown Container */}
-                        <div className={`
+                        <div ref={portalRef} className={`
                         md:fixed md:left-1/2 md:-translate-x-1/2 md:top-40 md:flex md:justify-center
                         ${isMobileModalOpen ? "relative flex-1 overflow-y-auto px-4 pb-28" : "fixed bottom-0 left-0 right-0 md:bottom-auto"}
                     `}
