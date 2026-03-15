@@ -424,9 +424,10 @@ export default function SearchBar({ onSearch, isCompact = false }: SearchBarProp
                 {/* ========== DROPDOWNS ========== */}
                 {activeField && (
                     <>
-                        {/* Desktop Overlay Background */}
+                        {/* Desktop Overlay Background — fixed phủ toàn page */}
                         <div
-                            className="hidden md:block fixed inset-0 bg-black/60 backdrop-blur-sm z-[90] animate-in fade-in"
+                            className="hidden md:block fixed inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in"
+                            style={{ zIndex: 9998 }}
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setActiveField(null);
@@ -435,9 +436,11 @@ export default function SearchBar({ onSearch, isCompact = false }: SearchBarProp
 
                         {/* Dropdown Container */}
                         <div className={`
-                        z-[100] md:absolute md:bottom-auto md:top-full md:mt-4 md:z-50 md:flex md:justify-start
+                        md:absolute md:bottom-auto md:top-full md:mt-4 md:flex md:justify-start
                         ${isMobileModalOpen ? "relative flex-1 overflow-y-auto px-4 pb-28 md:static" : "fixed bottom-0 left-0 right-0"}
-                    `}>
+                    `}
+                        style={{ zIndex: 9999 }}
+                    >
 
                             {/* Location Dropdown */}
                             {activeField === "location" && (
@@ -565,7 +568,7 @@ export default function SearchBar({ onSearch, isCompact = false }: SearchBarProp
                                     <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl mb-3">
                                         <div>
                                             <p className="font-bold text-gray-900">Người lớn</p>
-                                            <p className="text-xs text-gray-500">Từ 13 tuổi trở lên</p>
+                                            <p className="text-xs text-gray-500">Từ 4 tuổi trở lên</p>
                                         </div>
                                         <div className="flex items-center gap-3">
                                             <button
@@ -577,8 +580,8 @@ export default function SearchBar({ onSearch, isCompact = false }: SearchBarProp
                                             </button>
                                             <span className="text-2xl font-bold text-gray-900 w-8 text-center">{guests}</span>
                                             <button
-                                                onClick={() => setGuests(Math.min(30, guests + 1))}
-                                                disabled={guests >= 30}
+                                                onClick={() => setGuests(Math.min(100, guests + 1))}
+                                                disabled={guests >= 100}
                                                 className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-cyan-500 hover:bg-cyan-50 transition-all disabled:opacity-30 disabled:cursor-not-allowed active:scale-90"
                                             >
                                                 <Plus size={16} />
@@ -602,7 +605,10 @@ export default function SearchBar({ onSearch, isCompact = false }: SearchBarProp
                                         ))}
                                     </div>
 
-                                    <p className="text-xs text-gray-400 mt-3 text-center">Tối đa 30 khách</p>
+                                    <div className="flex items-center justify-center gap-2 mt-4 py-2.5 px-4 bg-green-50 rounded-xl border border-green-100">
+                                        <span className="text-base">👶</span>
+                                        <p className="text-xs font-bold text-green-700">Từ 4 tuổi trở xuống <span className="text-green-500 font-extrabold uppercase">FREE</span></p>
+                                    </div>
                                 </div>
                             )}
                         </div>

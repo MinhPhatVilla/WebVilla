@@ -65,6 +65,7 @@ export interface PropertyFormData {
     location: string;
     address: string;
     description: string;
+    tiktokUrl: string;
     bedrooms: number;
     beds: number;
     bathrooms: number;
@@ -103,6 +104,7 @@ export default function AddPropertyModal({ onClose, onSubmit, editMode = false, 
     const [location, setLocation] = useState(initialData?.location || "");
     const [address, setAddress] = useState(initialData?.address || "");
     const [description, setDescription] = useState(initialData?.description || "");
+    const [tiktokUrl, setTiktokUrl] = useState(initialData?.videoUrl || "");
     const [bedrooms, setBedrooms] = useState(initialData?.attributes.bedrooms || 3);
     const [beds, setBeds] = useState(initialData?.attributes.beds || 3);
     const [bathrooms, setBathrooms] = useState(initialData?.attributes.bathrooms || 2);
@@ -296,7 +298,7 @@ export default function AddPropertyModal({ onClose, onSubmit, editMode = false, 
     // Submit
     const handleSubmit = () => {
         onSubmit({
-            name, type, location, address, description,
+            name, type, location, address, description, tiktokUrl,
             bedrooms, beds, bathrooms, capacity, amenities,
             priceWeekday, priceWeekend, imageFiles,
             customPrices, isContactForPrice,
@@ -411,6 +413,22 @@ export default function AddPropertyModal({ onClose, onSubmit, editMode = false, 
                                     rows={3}
                                     className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100 outline-none text-sm font-medium transition-all resize-none"
                                 />
+                            </div>
+
+                            {/* TikTok Video URL */}
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-2">
+                                    <svg className="inline w-4 h-4 mr-1 mb-0.5 text-[#FE2C55]" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 0 0-.79-.05A6.34 6.34 0 0 0 3.15 15a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.87a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.01-.3z"/></svg>
+                                    Link TikTok Video
+                                </label>
+                                <input
+                                    type="url"
+                                    value={tiktokUrl}
+                                    onChange={e => setTiktokUrl(e.target.value)}
+                                    placeholder="https://www.tiktok.com/@user/video/1234567890"
+                                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-pink-400 focus:ring-2 focus:ring-pink-100 outline-none text-sm font-medium transition-all"
+                                />
+                                <p className="text-xs text-gray-400 mt-1">Paste link video TikTok review của căn này (nếu có)</p>
                             </div>
 
                             {/* Attributes */}

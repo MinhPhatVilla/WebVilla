@@ -396,20 +396,141 @@ function TopBar({ onLogout }: { onLogout: () => void }) {
 
     const newCount = notifications.filter(n => n.isNew).length;
 
+    const [globalSearch, setGlobalSearch] = useState("");
+    const [searchResults, setSearchResults] = useState<{ type: string; label: string; sub: string; link: string }[]>([]);
+    const [showSearchDropdown, setShowSearchDropdown] = useState(false);
+    const searchDropdownRef = useRef<HTMLDivElement>(null);
+
+    // Search logic
+    useEffect(() => {
+        if (!globalSearch.trim()) {
+            setSearchResults([]);
+            return;
+        }
+        const q = globalSearch.toLowerCase();
+        const doSearch = async () => {
+            const results: { type: string; label: string; sub: string; link: string }[] = [];
+
+            // Quick nav
+            const navLinks = [
+                { label: "Tổng quan", link: "/admin", keywords: ["tổng quan", "dashboard", "home"] },
+                { label: "Quản lý nơi ở", link: "/admin/properties", keywords: ["nơi ở", "property", "villa", "homestay", "nhà phố", "quản lý"] },
+                { label: "Đơn đặt phòng", link: "/admin/bookings", keywords: ["đơn", "booking", "đặt phòng"] },
+                { label: "Người dùng", link: "/admin/users", keywords: ["người dùng", "user", "khách"] },
+            ];
+            navLinks.forEach(n => {
+                if (n.label.toLowerCase().includes(q) || n.keywords.some(k => k.includes(q))) {
+                    results.push({ type: "nav", label: n.label, sub: "Trang quản trị", link: n.link });
+                }
+            });
+
+            // Search properties
+            try {
+                const { data: props } = await supabase
+                    .from("properties")
+                    .select("id, name, type, location")
+                    .or(`name.ilike.%${globalSearch}%,location.ilike.%${globalSearch}%`)
+                    .limit(5);
+                if (props) {
+                    props.forEach(p => {
+                        results.push({
+                            type: "property",
+                            label: p.name,
+                            sub: `${(p.type as string).toUpperCase()} • ${p.location}`,
+                            link: "/admin/properties"
+                        });
+                    });
+                }
+            } catch { }
+
+            // Search bookings
+            try {
+                const { data: bookings } = await supabase
+                    .from("bookings")
+                    .select("id, guest_name, property_name, status")
+                    .or(`guest_name.ilike.%${globalSearch}%,property_name.ilike.%${globalSearch}%`)
+                    .limit(5);
+                if (bookings) {
+                    bookings.forEach(b => {
+                        results.push({
+                            type: "booking",
+                            label: b.guest_name,
+                            sub: `Đặt ${b.property_name} • ${b.status}`,
+                            link: "/admin/bookings"
+                        });
+                    });
+                }
+            } catch { }
+
+            setSearchResults(results);
+        };
+        const timer = setTimeout(doSearch, 300);
+        return () => clearTimeout(timer);
+    }, [globalSearch]);
+
+    // Close search dropdown on outside click
+    useEffect(() => {
+        const handleClick = (e: MouseEvent) => {
+            if (searchDropdownRef.current && !searchDropdownRef.current.contains(e.target as Node)) {
+                setShowSearchDropdown(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClick);
+        return () => document.removeEventListener("mousedown", handleClick);
+    }, []);
+
     return (
         <header className="h-16 bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-30 flex items-center justify-between px-6">
             <div>
                 <h1 className="text-xl font-extrabold text-gray-900">{getTitle()}</h1>
             </div>
             <div className="flex items-center gap-3">
-                {/* Search */}
-                <div className="hidden md:flex items-center gap-2 bg-gray-100 rounded-xl px-4 py-2.5 w-64">
-                    <Search size={16} className="text-gray-400" />
-                    <input
-                        type="text"
-                        placeholder="Tìm kiếm..."
-                        className="bg-transparent text-sm font-medium text-gray-700 focus:outline-none w-full placeholder-gray-400"
-                    />
+                {/* Global Search — Functional */}
+                <div className="relative hidden md:block" ref={searchDropdownRef}>
+                    <div className="flex items-center gap-2 bg-gray-100 rounded-xl px-4 py-2.5 w-64 focus-within:ring-2 focus-within:ring-cyan-400 focus-within:bg-white transition-all">
+                        <Search size={16} className="text-gray-400" />
+                        <input
+                            type="text"
+                            placeholder="Tìm nơi ở, đơn, khách..."
+                            value={globalSearch}
+                            onChange={e => { setGlobalSearch(e.target.value); setShowSearchDropdown(true); }}
+                            onFocus={() => globalSearch && setShowSearchDropdown(true)}
+                            className="bg-transparent text-sm font-medium text-gray-700 focus:outline-none w-full placeholder-gray-400"
+                        />
+                        {globalSearch && (
+                            <button onClick={() => { setGlobalSearch(""); setSearchResults([]); setShowSearchDropdown(false); }} className="text-gray-400 hover:text-gray-600">
+                                <X size={14} />
+                            </button>
+                        )}
+                    </div>
+                    {showSearchDropdown && globalSearch.trim() && (
+                        <div className="absolute top-full mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2">
+                            {searchResults.length > 0 ? (
+                                <div className="max-h-[360px] overflow-y-auto divide-y divide-gray-50">
+                                    {searchResults.map((r, i) => (
+                                        <button
+                                            key={`${r.type}-${i}`}
+                                            onClick={() => { router.push(r.link); setShowSearchDropdown(false); setGlobalSearch(""); }}
+                                            className="w-full text-left px-4 py-3 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+                                        >
+                                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${r.type === 'property' ? 'bg-cyan-100 text-cyan-600' : r.type === 'booking' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-600'}`}>
+                                                {r.type === 'property' ? <Building2 size={14} /> : r.type === 'booking' ? <CalendarCheck size={14} /> : <Search size={14} />}
+                                            </div>
+                                            <div className="min-w-0">
+                                                <p className="text-sm font-bold text-gray-900 truncate">{r.label}</p>
+                                                <p className="text-xs text-gray-500 truncate">{r.sub}</p>
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="p-6 text-center">
+                                    <Search size={20} className="mx-auto text-gray-300 mb-2" />
+                                    <p className="text-sm text-gray-500">Không tìm thấy kết quả cho &quot;{globalSearch}&quot;</p>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
 
                 {/* Notifications */}

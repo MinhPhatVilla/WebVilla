@@ -14,6 +14,7 @@ import {
     Calendar, Shield, Clock, ChevronDown, ChevronUp, Minus, Plus, Search, Dribbble,
     Ship, LifeBuoy, Volume2, Music
 } from "lucide-react";
+import TikTokEmbed from "@/components/TikTokEmbed";
 
 // ========== IMAGE GALLERY COMPONENT ==========
 function ImageGallery({ images, name }: { images: string[]; name: string }) {
@@ -507,6 +508,30 @@ export default function PropertyDetailPage() {
                                 {property.longDescription || property.description}
                             </p>
                         </div>
+
+                        {/* TikTok Video Section */}
+                        {property.videoUrl && property.videoUrl.includes('tiktok') && (
+                            <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-3xl p-6 md:p-8 overflow-hidden relative">
+                                <div className="absolute top-0 right-0 w-40 h-40 bg-[#FE2C55]/10 rounded-full blur-3xl" />
+                                <div className="relative z-10">
+                                    <div className="flex items-center gap-3 mb-6">
+                                        <div className="flex items-center gap-2 bg-[#FE2C55]/20 text-[#FE2C55] px-4 py-2 rounded-full text-sm font-bold">
+                                            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 0 0-.79-.05A6.34 6.34 0 0 0 3.15 15a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.87a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.01-.3z"/></svg>
+                                            Video Review
+                                        </div>
+                                        <a
+                                            href={property.videoUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-gray-400 text-xs hover:text-[#FE2C55] transition-colors"
+                                        >
+                                            Mở trên TikTok ↗
+                                        </a>
+                                    </div>
+                                    <TikTokEmbed url={property.videoUrl} propertyName={property.name} />
+                                </div>
+                            </div>
+                        )}
 
                         {/* Quick Stats */}
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">

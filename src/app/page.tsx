@@ -10,6 +10,7 @@ import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/lib/supabase";
 import { MapPin, Star, Users, BedDouble, Waves, Flame, Phone, X, SlidersHorizontal, LogIn, UserCircle, LogOut, ChevronDown, Heart, Luggage, MessageSquare, Settings, Globe, HelpCircle, Home, Building, Palmtree, Store } from "lucide-react";
 import SearchBar from "@/components/SearchBar";
+import TikTokEmbed from "@/components/TikTokEmbed";
 
 // ========== FILTERS TYPE ==========
 interface SearchFilters {
@@ -421,7 +422,7 @@ export default function HomePage() {
             </div>
 
             {/* Search Bar - Sticky on Desktop only + Thu nhỏ khi scroll */}
-            <div className={`md:sticky md:top-16 z-40 bg-gradient-to-b from-cyan-50/95 md:to-cyan-50/80 md:backdrop-blur-md px-4 border-b border-cyan-100/50 transition-all duration-300 ${isScrolled ? 'py-2' : 'py-4'}`}>
+            <div className={`relative md:sticky md:top-16 bg-gradient-to-b from-cyan-50/95 md:to-cyan-50/80 md:backdrop-blur-md px-4 border-b border-cyan-100/50 transition-all duration-300 ${isScrolled ? 'py-2' : 'py-4'}`} style={{ zIndex: 10000 }}>
                 <div className={`max-w-4xl mx-auto block transition-transform duration-300 ${isScrolled ? 'scale-[0.92] origin-center' : 'scale-100'}`}>
                     <SearchBar onSearch={handleSearch} isCompact={isScrolled} />
                 </div>
@@ -443,16 +444,18 @@ export default function HomePage() {
                             </svg>
                         </div>
                         <div className="text-center sm:text-left flex-1 min-w-0">
-                            {/* Mobile: text mới */}
-                            <p className="sm:hidden text-white font-bold text-sm group-hover:text-[#FE2C55] transition-colors">
+                            {/* Mobile: text mới + cờ VN SVG */}
+                            <p className="sm:hidden text-white font-bold text-sm group-hover:text-[#FE2C55] transition-colors flex items-center justify-center gap-1.5">
+                                <svg className="w-4 h-3 flex-shrink-0" viewBox="0 0 30 20" fill="none"><rect width="30" height="20" rx="2" fill="#DA251D"/><path d="M15 3.5l1.76 5.41h5.69l-4.6 3.35 1.76 5.41L15 14.32l-4.61 3.35 1.76-5.41-4.6-3.35h5.69L15 3.5z" fill="#FFCD00"/></svg>
                                 Minh Phát Villa — Thật từ video đến trải nghiệm
                             </p>
                             <p className="sm:hidden text-gray-400 text-xs">@villavungtaureview — Xem ngay trên TikTok 🎬</p>
-                            {/* Desktop: text cũ */}
+                            {/* Desktop: text + cờ VN SVG */}
                             <p className="hidden sm:block text-white font-bold text-base group-hover:text-[#FE2C55] transition-colors">
-                                🇻🇳 Xem review Villa thực tế trên TikTok
+                                <svg className="inline w-5 h-4 mr-1.5 mb-0.5" viewBox="0 0 30 20" fill="none"><rect width="30" height="20" rx="2" fill="#DA251D"/><path d="M15 3.5l1.76 5.41h5.69l-4.6 3.35 1.76 5.41L15 14.32l-4.61 3.35 1.76-5.41-4.6-3.35h5.69L15 3.5z" fill="#FFCD00"/></svg>
+                                Xem review Villa thực tế trên TikTok
                             </p>
-                            <p className="hidden sm:block text-gray-400 text-sm">@villavungtaureview — Minh Phát Villa thật từ video đến trải nghiệm 🇻🇳</p>
+                            <p className="hidden sm:block text-gray-400 text-sm">@villavungtaureview — Minh Phát Villa thật từ video đến trải nghiệm <svg className="inline w-4 h-3 ml-1 mb-0.5" viewBox="0 0 30 20" fill="none"><rect width="30" height="20" rx="2" fill="#DA251D"/><path d="M15 3.5l1.76 5.41h5.69l-4.6 3.35 1.76 5.41L15 14.32l-4.61 3.35 1.76-5.41-4.6-3.35h5.69L15 3.5z" fill="#FFCD00"/></svg></p>
                         </div>
                         {/* Mobile: nút nhỏ gọn */}
                         <div className="sm:hidden flex items-center gap-1 bg-[#FE2C55] text-white px-3 py-1.5 rounded-full text-xs font-bold group-hover:bg-[#ff4b6e] transition-all shadow-lg flex-shrink-0">
@@ -492,15 +495,78 @@ export default function HomePage() {
                                     <span className="text-xl font-bold text-blue-600">{allProperties.length}</span>
                                     <span className="text-gray-500 ml-2 text-sm">căn cho thuê</span>
                                 </div>
-                                <div className="bg-white px-5 py-2.5 rounded-full shadow-md">
-                                    <span className="text-xl font-bold text-green-600">24/7</span>
-                                    <span className="text-gray-500 ml-2 text-sm">hỗ trợ</span>
-                                </div>
+                                <a
+                                    href="https://zalo.me/0333160365"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 px-6 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all group flex items-center gap-2"
+                                >
+                                    <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.14 2 11.2c0 2.89 1.44 5.47 3.68 7.17-.1.76-.55 2.82-.63 3.26-.1.54.2.53.42.39.17-.11 2.4-1.63 3.38-2.29.98.18 2 .27 3.15.27 5.52 0 10-4.14 10-9.2S17.52 2 12 2z"/></svg>
+                                    <span className="text-white font-bold text-sm">Liên Hệ Zalo Tư Vấn</span>
+                                </a>
                             </div>
                         </div>
                     </section>
                 )
             }
+
+            {/* ===== TIKTOK VIDEO RANDOM SECTION ===== */}
+            {(() => {
+                const videosAvailable = allProperties.filter(p => p.videoUrl && p.videoUrl.trim() && p.videoUrl.includes('tiktok'));
+                if (videosAvailable.length === 0) return null;
+                // Deterministic random based on time (changes every page load)
+                const randomIdx = Math.floor(Date.now() / 60000) % videosAvailable.length;
+                const randomProp = videosAvailable[randomIdx];
+                return (
+                    <section className="max-w-7xl mx-auto px-4 py-8">
+                        <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-3xl p-6 md:p-10 overflow-hidden relative">
+                            {/* Background decorations */}
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-[#FE2C55]/10 rounded-full blur-3xl" />
+                            <div className="absolute bottom-0 left-0 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl" />
+                            
+                            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                                {/* Text Content */}
+                                <div className="text-center lg:text-left">
+                                    <div className="inline-flex items-center gap-2 bg-[#FE2C55]/20 text-[#FE2C55] px-4 py-2 rounded-full text-sm font-bold mb-4">
+                                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 0 0-.79-.05A6.34 6.34 0 0 0 3.15 15a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.87a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.01-.3z"/></svg>
+                                        Video Review Thực Tế
+                                    </div>
+                                    <h2 className="text-2xl md:text-3xl font-extrabold text-white mb-3">
+                                        Xem trước khi đặt phòng
+                                    </h2>
+                                    <p className="text-gray-400 text-sm md:text-base mb-6 leading-relaxed">
+                                        Video review thực tế từ <span className="text-white font-bold">@villavungtaureview</span> — Giúp bạn chọn nơi ở phù hợp nhất.
+                                    </p>
+                                    <div className="flex items-center justify-center lg:justify-start gap-3">
+                                        <Link
+                                            href={`/${randomProp.type}/${randomProp.id}`}
+                                            className="bg-white text-gray-900 px-6 py-3 rounded-full font-bold text-sm hover:bg-gray-100 transition-all shadow-lg"
+                                        >
+                                            Xem chi tiết căn này →
+                                        </Link>
+                                        <a
+                                            href="https://www.tiktok.com/@villavungtaureview"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="border-2 border-gray-600 text-gray-300 px-6 py-3 rounded-full font-bold text-sm hover:border-[#FE2C55] hover:text-[#FE2C55] transition-all"
+                                        >
+                                            Xem tất cả video
+                                        </a>
+                                    </div>
+                                    <p className="text-gray-500 text-xs mt-4">
+                                        📍 {randomProp.name} — {randomProp.location}
+                                    </p>
+                                </div>
+                                
+                                {/* TikTok Video Embed */}
+                                <div className="flex justify-center">
+                                    <TikTokEmbed url={randomProp.videoUrl} propertyName={randomProp.name} compact />
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                );
+            })()}
 
             {/* ===== ACTIVE FILTERS BAR ===== */}
             {

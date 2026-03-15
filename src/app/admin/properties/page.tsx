@@ -257,7 +257,7 @@ export default function PropertiesPage() {
                             images: uploadedImageUrls.length > 0 ? uploadedImageUrls : [
                                 "https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=800&auto=format&fit=crop"
                             ],
-                            videoUrl: "",
+                            videoUrl: data.tiktokUrl || "",
                             location: data.location,
                             address: data.address,
                             rating: 5.0,
@@ -307,6 +307,7 @@ export default function PropertiesPage() {
                                     foosball: data.amenities.includes("foosball"),
                                 },
                                 images: uploadedImageUrls.length > 0 ? uploadedImageUrls : showEditModal.images,
+                                videoUrl: data.tiktokUrl,
                                 location: data.location,
                                 address: data.address,
                             });
@@ -334,7 +335,7 @@ function PropertyCard({ property: p, onView, onEdit, onDelete }: { property: Pro
                 <div className="absolute top-3 left-3">
                     <span className={`px-3 py-1 rounded-full text-xs font-bold ${p.type === "villa" ? "bg-cyan-500 text-white" : p.type === "homestay" ? "bg-violet-500 text-white" : "bg-amber-500 text-white"
                         }`}>
-                        {p.type.toUpperCase()}
+                        {p.type === "nha-pho" ? "NHÀ PHỐ" : p.type.toUpperCase()}
                     </span>
                 </div>
                 <div className="absolute top-3 right-3">
